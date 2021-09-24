@@ -28,13 +28,14 @@ def simulate():
         nodes_to_resolve = spread_burn(G, p1_burn, p2_burn, new_burns)
         print(nodes_to_resolve)
         resolve_conflicts(G, nodes_to_resolve)
+        new_burns = nodes_to_resolve
 
-    output(G)
+        output(G)
 
 
 def build_graph():
     # Make a graph to burn over
-    return nx.path_graph(10)
+    return nx.barbell_graph(5,5)
 
 def all_unburned(G):
     # Given a graph, returns a list of all nodes which are unburned.
@@ -60,8 +61,8 @@ def random_burn(unburned):
 def spread_burn(G, p1_burn, p2_burn, new_burns):
     # Spread the fire for vertices which have been newly burned
     # Both players' picks + where the spread occurred last time
-    #print(f"DEBUG: player 1 picks {p1_burn}")
-    #print(f"DEBUG: player 2 picks {p2_burn}")
+    print(f"DEBUG: player 1 picks {p1_burn}")
+    print(f"DEBUG: player 2 picks {p2_burn}")
     # We can resolve these burns immediately
     if p1_burn == p2_burn:
         G.nodes[p1_burn]["current_burn"] = BurnType.BOTH
@@ -107,12 +108,19 @@ def resolve_conflicts(G, nodes_to_resolve):
         elif BurnType.P2_ONLY in burn_types and BurnType.BOTH in burn_types:
             G.nodes[resolve]["current_burn"] = BurnType.P2_ONLY
         else: # there can only be one burn type left! Just take that one
-            G.nodes[resolve]["current_burn"]
+            G.nodes[resolve]["current_burn"] = next(iter(burn_types))
 
 
 def output(G):
     # Give the visualisation and logging results
-    nx.draw(G)
+
+    colour_map = {BurnType.NONE: 'gray', BurnType.P1_ONLY: 'red', BurnType.P2_ONLY: 'blue', BurnType.BOTH: 'green'}
+
+    pos = nx.kamada_kawai_layout(G) # fixes the layout of the graph, maintaining consistency with each step
+
+    node_colours = [colour_map[G.nodes[node]["current_burn"]] for node in G]
+    nx.draw(G, pos, with_labels=True, node_color=node_colours)
+
     plt.show()
 
 simulate()
