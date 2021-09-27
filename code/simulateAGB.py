@@ -2,7 +2,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib import animation as anim
 from enum import Enum
-import random
+from PIL import Image
+import random, time, os
 
 class BurnType(Enum):
     NONE = 0
@@ -21,6 +22,9 @@ def simulate():
 
     nx.set_node_attributes(G, values=default_attrs)
 
+    images = []
+    frame_no=0
+
     while still_to_burn(G):
         print("still to burn")
         p1_burn = player_1_burn(G)
@@ -30,12 +34,17 @@ def simulate():
         resolve_conflicts(G, nodes_to_resolve)
         new_burns = nodes_to_resolve
 
-        output(G)
+        save_image(G, images, frame_no)
+        frame_no += 1
+    
+    print(images)
+    filename = "test"
+    make_gif(images, filename)
 
 
 def build_graph():
     # Make a graph to burn over
-    return nx.barbell_graph(5,5)
+    return nx.hexagonal_lattice_graph(20, 20)
 
 def all_unburned(G):
     # Given a graph, returns a list of all nodes which are unburned.
@@ -111,7 +120,7 @@ def resolve_conflicts(G, nodes_to_resolve):
             G.nodes[resolve]["current_burn"] = next(iter(burn_types))
 
 
-def output(G):
+def save_image(G, images, frame_no):
     # Give the visualisation and logging results
 
     colour_map = {BurnType.NONE: 'gray', BurnType.P1_ONLY: 'red', BurnType.P2_ONLY: 'blue', BurnType.BOTH: 'green'}
@@ -119,8 +128,16 @@ def output(G):
     pos = nx.kamada_kawai_layout(G) # fixes the layout of the graph, maintaining consistency with each step
 
     node_colours = [colour_map[G.nodes[node]["current_burn"]] for node in G]
-    nx.draw(G, pos, with_labels=True, node_color=node_colours)
 
-    plt.show()
+    nx.draw(G, pos, with_labels=True, node_color=node_colours)
+    # saving to a file like this is a bodge, but it'll do since this is just to help me visualise things
+    filename = f"{int(time.time())}_{frame_no}.jpg"
+    plt.savefig(filename)
+    img = Image.open(filename)
+    images.append(img)
+    
+
+def make_gif(images, filename):
+    images[0].save(f"{filename}.gif", save_all=True, append_images=images[1:], optimize=False, duration=100, loop=0)
 
 simulate()
