@@ -1,5 +1,4 @@
-# AdversarialGraphBurning
-MSci project on Adversarial Graph Burning - an extension of graph burning designed to model social contagion with competiion.
+# Adversarial Graph Burning - extending graph burning to model social contagion with competition
 
 In 2014, Bonato et. al introduced graph burning, a graph process designed to model the spread of contagion in graphs, such as social influence over a network of people. This project aims to investigate a new variant of graph burning, known as adversarial graph burning (or AGB for short), where two distinct types of influence spread on a graph simultaneously, blocking each other from spreading. This extension of graph burning appears well suited for modelling contagion on graphs with competition, such as companies advertising competing products on a social network.
 
