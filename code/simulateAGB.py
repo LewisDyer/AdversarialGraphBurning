@@ -12,6 +12,25 @@ class BurnType(Enum):
     P2_ONLY = 2
     BOTH = 3
 
+class NodesOverTime:
+    def __init__(self):
+        self.p1_nodes = []
+        self.ne_nodes = []
+        self.p2_nodes = []
+        self.un_nodes = []
+    
+    def update(self, G):
+        self.p1_nodes.append(len(all_burn(G, BurnType.P1_ONLY)))
+        self.ne_nodes.append(len(all_burn(G, BurnType.BOTH)))
+        self.p2_nodes.append(len(all_burn(G, BurnType.P2_ONLY)))
+        self.un_nodes.append(len(all_burn(G, BurnType.NONE)))
+
+    def output(self):
+        return [self.p1_nodes, self.ne_nodes, self.p2_nodes, self.un_nodes]
+
+
+
+
 def simulate():
     # Main function, run this to simulate AGB
 
@@ -26,7 +45,8 @@ def simulate():
     images = []
     round_no=1
     draw_images = False
-
+    node_counts = []
+    
     while still_to_burn(G):
         #print("still to burn")
         p1_burn = player_1_burn(G)
@@ -38,6 +58,8 @@ def simulate():
         
         if(draw_images):
             save_image(G, images, round_no)
+
+        
         round_no += 1
     
     if(draw_images):
@@ -156,6 +178,7 @@ class TrialResult:
         output.append(f"Number of P2 nodes: {self.p2_nodes}")
 
         return "\n".join(output)
+
 def logging(G):
     # print out logging info about the process which has just terminated.
 
