@@ -4,6 +4,7 @@ from matplotlib import animation as anim
 from enum import Enum
 from PIL import Image
 import random, time, os
+import code.burn_strategies as burns
 
 class BurnType(Enum):
     NONE = 0
@@ -41,7 +42,6 @@ def simulate():
     make_gif(images, filename)
     logging(G)
 
-
 def build_graph():
     # Make a graph to burn over
     return nx.hexagonal_lattice_graph(5, 5)
@@ -57,15 +57,11 @@ def all_burn(G, burn_type):
 
 def player_1_burn(G):
     # Player 1's strategy for picking a vertex to burn
-    return random_burn(all_burn(G, BurnType.NONE))
+    return burns.random(all_burn(G, BurnType.NONE))
 
 def player_2_burn(G):
     # Player 2's strategy for picking a vertex to burn
-    return random_burn(all_burn(G, BurnType.NONE))
-
-def random_burn(unburned):
-    # A basic random strategy: Given a list of unburned vertices, just pick one randomly!
-    return random.choice(unburned)
+    return burns.random(all_burn(G, BurnType.NONE))
 
 def spread_burn(G, p1_burn, p2_burn, new_burns):
     # Spread the fire for vertices which have been newly burned
@@ -95,7 +91,6 @@ def spread_burn(G, p1_burn, p2_burn, new_burns):
                 nodes_to_resolve.add(next_node)
     
     return nodes_to_resolve
-
 
 def still_to_burn(G):
     # Are there any unburned vertices remaining?
@@ -136,7 +131,6 @@ def save_image(G, images, frame_no):
     img = Image.open(filename)
     images.append(img)
     
-
 def make_gif(images, filename):
     images[0].save(f"{filename}.gif", save_all=True, append_images=images[1:], optimize=False, duration=100, loop=0)
 
