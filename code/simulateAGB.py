@@ -24,7 +24,7 @@ def simulate():
     nx.set_node_attributes(G, values=default_attrs)
 
     images = []
-    frame_no=0
+    round_no=1
     draw_images = False
 
     while still_to_burn(G):
@@ -37,8 +37,8 @@ def simulate():
         new_burns = nodes_to_resolve
         
         if(draw_images):
-            save_image(G, images, frame_no)
-            frame_no += 1
+            save_image(G, images, round_no)
+        round_no += 1
     
     if(draw_images):
         filename = "test"
@@ -136,15 +136,30 @@ def save_image(G, images, frame_no):
 def make_gif(images, filename):
     images[0].save(f"{filename}.gif", save_all=True, append_images=images[1:], optimize=False, duration=100, loop=0)
 
+class TrialResult:
+    def __init__(self, G):
+        self.no_nodes = G.number_of_nodes()
+        self.p1_nodes = len(all_burn(G, BurnType.P1_ONLY))
+        self.ne_nodes = len(all_burn(G, BurnType.BOTH))
+        self.p2_nodes = len(all_burn(G, BurnType.P2_ONLY))
+
+        self.p1_score = self.p1_nodes + 0.5*self.ne_nodes
+        self.p2_score = self.p2_nodes + 0.5*self.ne_nodes
+    
+    def __str__(self):
+        output = []
+        output.append(f"Number of nodes: {self.no_nodes}")
+        output.append(f"Player 1 score: {self.p1_score}")
+        output.append(f"Player 2 score: {self.p2_score}")
+        output.append(f"Number of P1 nodes: {self.p1_nodes}")
+        output.append(f"Number of neutral nodes: {self.ne_nodes}")
+        output.append(f"Number of P2 nodes: {self.p2_nodes}")
+
+        return "\n".join(output)
 def logging(G):
     # print out logging info about the process which has just terminated.
 
-    print(f"Number of nodes: {G.number_of_nodes()}")
-    print(f"Player 1 score: {len(all_burn(G, BurnType.P1_ONLY)) + 0.5*len(all_burn(G, BurnType.BOTH))}")
-    print(f"Player 2 score: {len(all_burn(G, BurnType.P2_ONLY)) + 0.5*len(all_burn(G, BurnType.BOTH))}")
-    
-    print(f"Number of P1 nodes: {len(all_burn(G, BurnType.P1_ONLY))}")
-    print(f"Number of neutral nodes: {len(all_burn(G, BurnType.BOTH))}")
-    print(f"Number of P2 nodes: {len(all_burn(G, BurnType.P2_ONLY))}")
-    
+    trial = TrialResult(G)
+    print(trial)
+
 simulate()
