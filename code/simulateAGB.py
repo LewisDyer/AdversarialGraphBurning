@@ -40,28 +40,29 @@ def simulate():
     print(images)
     filename = "test"
     make_gif(images, filename)
+    logging(G)
 
 
 def build_graph():
     # Make a graph to burn over
-    return nx.hexagonal_lattice_graph(20, 20)
+    return nx.hexagonal_lattice_graph(5, 5)
 
-def all_unburned(G):
-    # Given a graph, returns a list of all nodes which are unburned.
-    unburned = []
+def all_burn(G, burn_type):
+    # Given a graph, returns a list of all nodes with a given burn type
+    this_burn = []
     for n in G.nodes():
-        if G.nodes[n]['current_burn'] == BurnType.NONE:
-            unburned.append(n)
+        if G.nodes[n]['current_burn'] == burn_type:
+            this_burn.append(n)
     
-    return(unburned)
+    return(this_burn)
 
 def player_1_burn(G):
     # Player 1's strategy for picking a vertex to burn
-    return random_burn(all_unburned(G))
+    return random_burn(all_burn(G, BurnType.NONE))
 
 def player_2_burn(G):
     # Player 2's strategy for picking a vertex to burn
-    return random_burn(all_unburned(G))
+    return random_burn(all_burn(G, BurnType.NONE))
 
 def random_burn(unburned):
     # A basic random strategy: Given a list of unburned vertices, just pick one randomly!
@@ -82,7 +83,7 @@ def spread_burn(G, p1_burn, p2_burn, new_burns):
     new_burns.add(p1_burn)
     new_burns.add(p2_burn)
 
-    unburned = all_unburned(G)
+    unburned = all_burn(G, BurnType.NONE)
     nodes_to_resolve = set()
 
     for node_to_burn in new_burns:
@@ -99,7 +100,7 @@ def spread_burn(G, p1_burn, p2_burn, new_burns):
 
 def still_to_burn(G):
     # Are there any unburned vertices remaining?
-    return (all_unburned(G) != [])
+    return (all_burn(G, BurnType.NONE) != [])
 
 def resolve_conflicts(G, nodes_to_resolve):
     # Deal with any multiple-burn scenarios and update the final graph
@@ -131,7 +132,7 @@ def save_image(G, images, frame_no):
 
     nx.draw(G, pos, with_labels=True, node_color=node_colours)
     # saving to a file like this is a bodge, but it'll do since this is just to help me visualise things
-    filename = f"{int(time.time())}_{frame_no}.jpg"
+    filename = f"{int(time.time())}_{frame_no}.png"
     plt.savefig(filename)
     img = Image.open(filename)
     images.append(img)
@@ -139,5 +140,10 @@ def save_image(G, images, frame_no):
 
 def make_gif(images, filename):
     images[0].save(f"{filename}.gif", save_all=True, append_images=images[1:], optimize=False, duration=100, loop=0)
+
+def logging(G):
+    # print out logging info about the process which has just terminated.
+
+    print(f"Number of nodes: {G.number_of_nodes()}")
 
 simulate()
