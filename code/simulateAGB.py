@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 from matplotlib import animation as anim
 from enum import Enum
 from PIL import Image
-import random, time, os
-import code.burn_strategies as burns
+import time, os
+import burn_strategies as burns
 
 class BurnType(Enum):
     NONE = 0
@@ -25,6 +25,7 @@ def simulate():
 
     images = []
     frame_no=0
+    draw_images = False
 
     while still_to_burn(G):
         #print("still to burn")
@@ -34,17 +35,19 @@ def simulate():
         #print(nodes_to_resolve)
         resolve_conflicts(G, nodes_to_resolve)
         new_burns = nodes_to_resolve
-
-        save_image(G, images, frame_no)
-        frame_no += 1
+        
+        if(draw_images):
+            save_image(G, images, frame_no)
+            frame_no += 1
     
-    filename = "test"
-    make_gif(images, filename)
+    if(draw_images):
+        filename = "test"
+        make_gif(images, filename)
     logging(G)
 
 def build_graph():
     # Make a graph to burn over
-    return nx.hexagonal_lattice_graph(5, 5)
+    return nx.grid_2d_graph(25, 25)
 
 def all_burn(G, burn_type):
     # Given a graph, returns a list of all nodes with a given burn type
@@ -57,11 +60,11 @@ def all_burn(G, burn_type):
 
 def player_1_burn(G):
     # Player 1's strategy for picking a vertex to burn
-    return burns.random(all_burn(G, BurnType.NONE))
+    return burns.random_burn(all_burn(G, BurnType.NONE))
 
 def player_2_burn(G):
     # Player 2's strategy for picking a vertex to burn
-    return burns.random(all_burn(G, BurnType.NONE))
+    return burns.random_burn(all_burn(G, BurnType.NONE))
 
 def spread_burn(G, p1_burn, p2_burn, new_burns):
     # Spread the fire for vertices which have been newly burned
@@ -113,7 +116,6 @@ def resolve_conflicts(G, nodes_to_resolve):
             G.nodes[resolve]["current_burn"] = BurnType.P2_ONLY
         else: # there can only be one burn type left! Just take that one
             G.nodes[resolve]["current_burn"] = next(iter(burn_types))
-
 
 def save_image(G, images, frame_no):
     # Give the visualisation and logging results
