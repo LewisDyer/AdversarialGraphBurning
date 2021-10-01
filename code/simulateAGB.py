@@ -26,18 +26,17 @@ def simulate():
     frame_no=0
 
     while still_to_burn(G):
-        print("still to burn")
+        #print("still to burn")
         p1_burn = player_1_burn(G)
         p2_burn = player_2_burn(G)
         nodes_to_resolve = spread_burn(G, p1_burn, p2_burn, new_burns)
-        print(nodes_to_resolve)
+        #print(nodes_to_resolve)
         resolve_conflicts(G, nodes_to_resolve)
         new_burns = nodes_to_resolve
 
         save_image(G, images, frame_no)
         frame_no += 1
     
-    print(images)
     filename = "test"
     make_gif(images, filename)
     logging(G)
@@ -71,8 +70,8 @@ def random_burn(unburned):
 def spread_burn(G, p1_burn, p2_burn, new_burns):
     # Spread the fire for vertices which have been newly burned
     # Both players' picks + where the spread occurred last time
-    print(f"DEBUG: player 1 picks {p1_burn}")
-    print(f"DEBUG: player 2 picks {p2_burn}")
+    #print(f"DEBUG: player 1 picks {p1_burn}")
+    #print(f"DEBUG: player 2 picks {p2_burn}")
     # We can resolve these burns immediately
     if p1_burn == p2_burn:
         G.nodes[p1_burn]["current_burn"] = BurnType.BOTH
@@ -106,7 +105,7 @@ def resolve_conflicts(G, nodes_to_resolve):
     # Deal with any multiple-burn scenarios and update the final graph
     for resolve in nodes_to_resolve:
         burn_types = G.nodes[resolve]["prospective_burns"]
-        print(f"DEBUG: Burn types of {resolve} are {burn_types}")
+        #print(f"DEBUG: Burn types of {resolve} are {burn_types}")
 
         ## IMPORTANT: Main section for handling burn type conflicts
         if BurnType.P1_ONLY in burn_types and BurnType.P2_ONLY in burn_types:
@@ -145,5 +144,11 @@ def logging(G):
     # print out logging info about the process which has just terminated.
 
     print(f"Number of nodes: {G.number_of_nodes()}")
-
+    print(f"Player 1 score: {len(all_burn(G, BurnType.P1_ONLY)) + 0.5*len(all_burn(G, BurnType.BOTH))}")
+    print(f"Player 2 score: {len(all_burn(G, BurnType.P2_ONLY)) + 0.5*len(all_burn(G, BurnType.BOTH))}")
+    
+    print(f"Number of P1 nodes: {len(all_burn(G, BurnType.P1_ONLY))}")
+    print(f"Number of neutral nodes: {len(all_burn(G, BurnType.BOTH))}")
+    print(f"Number of P2 nodes: {len(all_burn(G, BurnType.P2_ONLY))}")
+    
 simulate()
