@@ -3,13 +3,33 @@ import matplotlib.pyplot as plt
 from matplotlib import animation as anim
 from enum import Enum
 from PIL import Image
-import random, time, os
+import time, os
+import burn_strategies as burns
 
 class BurnType(Enum):
     NONE = 0
     P1_ONLY = 1
     P2_ONLY = 2
     BOTH = 3
+
+class NodesOverTime:
+    def __init__(self):
+        self.p1_nodes = []
+        self.ne_nodes = []
+        self.p2_nodes = []
+        self.un_nodes = []
+    
+    def update(self, G):
+        self.p1_nodes.append(len(all_burn(G, BurnType.P1_ONLY)))
+        self.ne_nodes.append(len(all_burn(G, BurnType.BOTH)))
+        self.p2_nodes.append(len(all_burn(G, BurnType.P2_ONLY)))
+        self.un_nodes.append(len(all_burn(G, BurnType.NONE)))
+
+    def output(self):
+        return [self.p1_nodes, self.ne_nodes, self.p2_nodes, self.un_nodes]
+
+
+
 
 def simulate():
     # Main function, run this to simulate AGB
@@ -23,55 +43,57 @@ def simulate():
     nx.set_node_attributes(G, values=default_attrs)
 
     images = []
-    frame_no=0
-
+    round_no=1
+    draw_images = False
+    node_counts = []
+    
     while still_to_burn(G):
-        print("still to burn")
+        #print("still to burn")
         p1_burn = player_1_burn(G)
         p2_burn = player_2_burn(G)
         nodes_to_resolve = spread_burn(G, p1_burn, p2_burn, new_burns)
-        print(nodes_to_resolve)
+        #print(nodes_to_resolve)
         resolve_conflicts(G, nodes_to_resolve)
         new_burns = nodes_to_resolve
+        
+        if(draw_images):
+            save_image(G, images, round_no)
 
-        save_image(G, images, frame_no)
-        frame_no += 1
+        
+        round_no += 1
     
-    filename = "test"
-    images.extend([images[-1]]*5) # add 5 copies of last image so it pauses on the final result a bit longer
-    make_gif(images, filename)
-
+    if(draw_images):
+        filename = "test"
+        images.extend([images[-1]]*5) # add 5 copies of last image so it pauses on the final result a bit longer
+        make_gif(images, filename)
+    logging(G)
 
 def build_graph():
     # Make a graph to burn over
-    return nx.grid_2d_graph(5,5)
+    return nx.grid_2d_graph(25, 25)
 
-def all_unburned(G):
-    # Given a graph, returns a list of all nodes which are unburned.
-    unburned = []
+def all_burn(G, burn_type):
+    # Given a graph, returns a list of all nodes with a given burn type
+    this_burn = []
     for n in G.nodes():
-        if G.nodes[n]['current_burn'] == BurnType.NONE:
-            unburned.append(n)
+        if G.nodes[n]['current_burn'] == burn_type:
+            this_burn.append(n)
     
-    return(unburned)
+    return(this_burn)
 
 def player_1_burn(G):
     # Player 1's strategy for picking a vertex to burn
-    return random_burn(all_unburned(G))
+    return burns.random_burn(all_burn(G, BurnType.NONE))
 
 def player_2_burn(G):
     # Player 2's strategy for picking a vertex to burn
-    return random_burn(all_unburned(G))
-
-def random_burn(unburned):
-    # A basic random strategy: Given a list of unburned vertices, just pick one randomly!
-    return random.choice(unburned)
+    return burns.random_burn(all_burn(G, BurnType.NONE))
 
 def spread_burn(G, p1_burn, p2_burn, new_burns):
     # Spread the fire for vertices which have been newly burned
     # Both players' picks + where the spread occurred last time
-    print(f"DEBUG: player 1 picks {p1_burn}")
-    print(f"DEBUG: player 2 picks {p2_burn}")
+    #print(f"DEBUG: player 1 picks {p1_burn}")
+    #print(f"DEBUG: player 2 picks {p2_burn}")
     # We can resolve these burns immediately
     if p1_burn == p2_burn:
         G.nodes[p1_burn]["current_burn"] = BurnType.BOTH
@@ -82,7 +104,7 @@ def spread_burn(G, p1_burn, p2_burn, new_burns):
     new_burns.add(p1_burn)
     new_burns.add(p2_burn)
 
-    unburned = all_unburned(G)
+    unburned = all_burn(G, BurnType.NONE)
     nodes_to_resolve = set()
 
     for node_to_burn in new_burns:
@@ -96,16 +118,15 @@ def spread_burn(G, p1_burn, p2_burn, new_burns):
     
     return nodes_to_resolve
 
-
 def still_to_burn(G):
     # Are there any unburned vertices remaining?
-    return (all_unburned(G) != [])
+    return (all_burn(G, BurnType.NONE) != [])
 
 def resolve_conflicts(G, nodes_to_resolve):
     # Deal with any multiple-burn scenarios and update the final graph
     for resolve in nodes_to_resolve:
         burn_types = G.nodes[resolve]["prospective_burns"]
-        print(f"DEBUG: Burn types of {resolve} are {burn_types}")
+        #print(f"DEBUG: Burn types of {resolve} are {burn_types}")
 
         ## IMPORTANT: Main section for handling burn type conflicts
         if BurnType.P1_ONLY in burn_types and BurnType.P2_ONLY in burn_types:
@@ -119,7 +140,6 @@ def resolve_conflicts(G, nodes_to_resolve):
         else: # there can only be one burn type left! Just take that one
             G.nodes[resolve]["current_burn"] = next(iter(burn_types))
 
-
 def save_image(G, images, frame_no):
     # Give the visualisation and logging results
 
@@ -131,13 +151,39 @@ def save_image(G, images, frame_no):
 
     nx.draw(G, pos, with_labels=True, node_color=node_colours)
     # saving to a file like this is a bodge, but it'll do since this is just to help me visualise things
-    filename = f"{int(time.time())}_{frame_no}.jpg"
+    filename = f"{int(time.time())}_{frame_no}.png"
     plt.savefig(filename)
     img = Image.open(filename)
     images.append(img)
     
-
 def make_gif(images, filename):
     images[0].save(f"{filename}.gif", save_all=True, append_images=images[1:], optimize=False, duration=100, loop=0)
+
+class TrialResult:
+    def __init__(self, G):
+        self.no_nodes = G.number_of_nodes()
+        self.p1_nodes = len(all_burn(G, BurnType.P1_ONLY))
+        self.ne_nodes = len(all_burn(G, BurnType.BOTH))
+        self.p2_nodes = len(all_burn(G, BurnType.P2_ONLY))
+
+        self.p1_score = self.p1_nodes + 0.5*self.ne_nodes
+        self.p2_score = self.p2_nodes + 0.5*self.ne_nodes
+    
+    def __str__(self):
+        output = []
+        output.append(f"Number of nodes: {self.no_nodes}")
+        output.append(f"Player 1 score: {self.p1_score}")
+        output.append(f"Player 2 score: {self.p2_score}")
+        output.append(f"Number of P1 nodes: {self.p1_nodes}")
+        output.append(f"Number of neutral nodes: {self.ne_nodes}")
+        output.append(f"Number of P2 nodes: {self.p2_nodes}")
+
+        return "\n".join(output)
+
+def logging(G):
+    # print out logging info about the process which has just terminated.
+
+    trial = TrialResult(G)
+    print(trial)
 
 simulate()
