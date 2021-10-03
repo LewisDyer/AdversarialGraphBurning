@@ -37,14 +37,14 @@ def simulate():
         save_image(G, images, frame_no)
         frame_no += 1
     
-    print(images)
     filename = "test"
+    images.extend([images[-1]]*5) # add 5 copies of last image so it pauses on the final result a bit longer
     make_gif(images, filename)
 
 
 def build_graph():
     # Make a graph to burn over
-    return nx.hexagonal_lattice_graph(20, 20)
+    return nx.grid_2d_graph(5,5)
 
 def all_unburned(G):
     # Given a graph, returns a list of all nodes which are unburned.
