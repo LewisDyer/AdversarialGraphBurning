@@ -44,7 +44,7 @@ def simulate():
 
     images = []
     round_no=1
-    draw_images = False
+    draw_images = True
     show_progress = True
 
     node_counts = NodesOverTime(G)
@@ -60,6 +60,7 @@ def simulate():
         
         if(draw_images):
             save_image(G, images, round_no)
+            plt.clf()
 
         node_counts.update(G)
 
@@ -69,6 +70,7 @@ def simulate():
         filename = "test"
         images.extend([images[-1]]*5) # add 5 copies of last image so it pauses on the final result a bit longer
         make_gif(images, filename)
+        plt.clf()
     logging(G)
 
     if(show_progress):
@@ -76,7 +78,7 @@ def simulate():
 
 def build_graph():
     # Make a graph to burn over
-    return nx.grid_2d_graph(25, 25)
+    return nx.barbell_graph(25, 25)
 
 def all_burn(G, burn_type):
     # Given a graph, returns a list of all nodes with a given burn type
