@@ -45,6 +45,8 @@ def simulate():
     images = []
     round_no=1
     draw_images = False
+    show_progress = True
+
     node_counts = NodesOverTime(G)
     
     while still_to_burn(G):
@@ -67,7 +69,10 @@ def simulate():
         filename = "test"
         images.extend([images[-1]]*5) # add 5 copies of last image so it pauses on the final result a bit longer
         make_gif(images, filename)
-    logging(G, node_counts)
+    logging(G)
+
+    if(show_progress):
+        progress_graph(G, node_counts)
 
 def build_graph():
     # Make a graph to burn over
@@ -181,11 +186,21 @@ class TrialResult:
 
         return "\n".join(output)
 
-def logging(G, node_counts):
+def logging(G):
     # print out logging info about the process which has just terminated.
 
     trial = TrialResult(G)
     print(trial)
-    print(node_counts.output())
+
+def progress_graph(G, node_counts):
+    rounds = len(node_counts.output()[1])
+    
+    for count in node_counts.output():
+        plt.plot(range(rounds), count)
+    
+    plt.legend(["Player 1 nodes", "Both nodes", "Player 2 nodes", "Unburned nodes"])
+    plt.xlabel("Round number")
+    plt.ylabel("Number of vertices")
+    plt.show()
 
 simulate()
