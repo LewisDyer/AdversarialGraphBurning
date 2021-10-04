@@ -78,7 +78,7 @@ def simulate():
 
 def build_graph():
     # Make a graph to burn over
-    return nx.barbell_graph(25, 25)
+    return nx.grid_2d_graph(25, 25, periodic=True)
 
 def all_burn(G, burn_type):
     # Given a graph, returns a list of all nodes with a given burn type
@@ -157,7 +157,7 @@ def save_image(G, images, frame_no):
 
     node_colours = [colour_map[G.nodes[node]["current_burn"]] for node in G]
 
-    nx.draw(G, pos, with_labels=True, node_color=node_colours)
+    nx.draw(G, pos, with_labels=False, node_color=node_colours)
     # saving to a file like this is a bodge, but it'll do since this is just to help me visualise things
     filename = f"{int(time.time())}_{frame_no}.png"
     plt.savefig(filename)
