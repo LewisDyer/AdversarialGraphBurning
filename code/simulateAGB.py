@@ -13,11 +13,11 @@ class BurnType(Enum):
     BOTH = 3
 
 class NodesOverTime:
-    def __init__(self):
-        self.p1_nodes = []
-        self.ne_nodes = []
-        self.p2_nodes = []
-        self.un_nodes = []
+    def __init__(self, G):
+        self.p1_nodes = [0]
+        self.ne_nodes = [0]
+        self.p2_nodes = [0]
+        self.un_nodes = [G.number_of_nodes()]
     
     def update(self, G):
         self.p1_nodes.append(len(all_burn(G, BurnType.P1_ONLY)))
@@ -45,7 +45,7 @@ def simulate():
     images = []
     round_no=1
     draw_images = False
-    node_counts = []
+    node_counts = NodesOverTime(G)
     
     while still_to_burn(G):
         #print("still to burn")
@@ -59,14 +59,15 @@ def simulate():
         if(draw_images):
             save_image(G, images, round_no)
 
-        
+        node_counts.update(G)
+
         round_no += 1
     
     if(draw_images):
         filename = "test"
         images.extend([images[-1]]*5) # add 5 copies of last image so it pauses on the final result a bit longer
         make_gif(images, filename)
-    logging(G)
+    logging(G, node_counts)
 
 def build_graph():
     # Make a graph to burn over
@@ -180,10 +181,11 @@ class TrialResult:
 
         return "\n".join(output)
 
-def logging(G):
+def logging(G, node_counts):
     # print out logging info about the process which has just terminated.
 
     trial = TrialResult(G)
     print(trial)
+    print(node_counts.output())
 
 simulate()
