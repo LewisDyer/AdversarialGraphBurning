@@ -28,6 +28,57 @@ class NodesOverTime:
     def output(self):
         return [self.p1_nodes, self.ne_nodes, self.p2_nodes, self.un_nodes]
 
+class Experiment:
+    
+    def __init__(self):
+        self.trials = []
+    
+    def add_trial(self, trial):
+        self.trials.append(trial)
+    
+    def get_no_trials(self):
+        return len(self.trials)
+    
+    def csv_titles(self):
+        # return string giving title of each heading, for a csv file
+        return "No. nodes,P1 nodes,Neutral nodes,P2 nodes,P1 score,P2 score,P1 clusters,P2 clusters"
+    
+    def output_csv(self, filename):
+        with open(filename, 'w') as results_file:
+            results_file.write(self.csv_titles()+"\n")
+            for trial in self.trials:
+                results_file.write(trial.csv_trial() + "\n")
+
+class TrialResult:
+
+    def __init__(self, G):
+        self.no_nodes = G.number_of_nodes()
+        self.p1_nodes = len(all_burn(G, BurnType.P1_ONLY))
+        self.ne_nodes = len(all_burn(G, BurnType.BOTH))
+        self.p2_nodes = len(all_burn(G, BurnType.P2_ONLY))
+
+        self.p1_score = self.p1_nodes + 0.5*self.ne_nodes
+        self.p2_score = self.p2_nodes + 0.5*self.ne_nodes
+
+        self.p1_clusters = count_clusters(G, 1)
+        self.p2_clusters = count_clusters(G, 2)
+    
+    def __str__(self):
+        output = []
+        output.append(f"Number of nodes: {self.no_nodes}")
+        output.append(f"Number of P1 nodes: {self.p1_nodes}")
+        output.append(f"Number of neutral nodes: {self.ne_nodes}")
+        output.append(f"Number of P2 nodes: {self.p2_nodes}")
+        output.append(f"Player 1 score: {self.p1_score}")
+        output.append(f"Player 2 score: {self.p2_score}")
+        output.append(f"Player 1 clusters: {self.p1_clusters}")
+        output.append(f"Player 2 clusters: {self.p2_clusters}")
+
+        return "\n".join(output)
+    
+    def csv_trial(self):
+        return f"{self.no_nodes},{self.p1_nodes},{self.ne_nodes},{self.p2_nodes},{self.p1_score},{self.p2_score},{self.p1_clusters},{self.p2_clusters}"
+
 def simulate():
     # Main function, run this to simulate AGB
 
@@ -41,7 +92,7 @@ def simulate():
 
     images = []
     round_no=1
-    draw_images = False
+    draw_images = True
     show_progress = False
 
     node_counts = NodesOverTime(G)
@@ -80,7 +131,7 @@ def expers(runs):
         result = simulate()
         exp.add_trial(result)
     
-    exp.output_csv("test_experiment.csv")
+    exp.output_csv("test_experiment_100_clusters.csv")
 
 def build_graph():
     # Make a graph to burn over
@@ -165,59 +216,13 @@ def save_image(G, images, frame_no):
 
     nx.draw(G, pos, with_labels=False, node_color=node_colours)
     # saving to a file like this is a bodge, but it'll do since this is just to help me visualise things
-    filename = f"{int(time.time())}_{frame_no}.png"
+    filename = f"{int(time.time())}_{frame_no}.jpg"
     plt.savefig(filename)
     img = Image.open(filename)
     images.append(img)
     
 def make_gif(images, filename):
     images[0].save(f"{filename}.gif", save_all=True, append_images=images[1:], optimize=False, duration=100, loop=0)
-
-class Experiment:
-    
-    def __init__(self):
-        self.trials = []
-    
-    def add_trial(self, trial):
-        self.trials.append(trial)
-    
-    def get_no_trials(self):
-        return len(self.trials)
-    
-    def csv_titles(self):
-        # return string giving title of each heading, for a csv file
-        return "No. nodes,P1 nodes,Neutral nodes,P2 nodes,P1 score,P2 score"
-    
-    def output_csv(self, filename):
-        with open(filename, 'w') as results_file:
-            results_file.write(self.csv_titles()+"\n")
-            for trial in self.trials:
-                results_file.write(trial.csv_trial() + "\n")
-
-class TrialResult:
-
-    def __init__(self, G):
-        self.no_nodes = G.number_of_nodes()
-        self.p1_nodes = len(all_burn(G, BurnType.P1_ONLY))
-        self.ne_nodes = len(all_burn(G, BurnType.BOTH))
-        self.p2_nodes = len(all_burn(G, BurnType.P2_ONLY))
-
-        self.p1_score = self.p1_nodes + 0.5*self.ne_nodes
-        self.p2_score = self.p2_nodes + 0.5*self.ne_nodes
-    
-    def __str__(self):
-        output = []
-        output.append(f"Number of nodes: {self.no_nodes}")
-        output.append(f"Number of P1 nodes: {self.p1_nodes}")
-        output.append(f"Number of neutral nodes: {self.ne_nodes}")
-        output.append(f"Number of P2 nodes: {self.p2_nodes}")
-        output.append(f"Player 1 score: {self.p1_score}")
-        output.append(f"Player 2 score: {self.p2_score}")
-
-        return "\n".join(output)
-    
-    def csv_trial(self):
-        return f"{self.no_nodes},{self.p1_nodes},{self.ne_nodes},{self.p2_nodes},{self.p1_score},{self.p2_score}"
 
 def logging(G, print_logs):
     # print out logging info about the process which has just terminated.
@@ -226,6 +231,17 @@ def logging(G, print_logs):
     if print_logs:
         print(trial)
     return trial
+
+def count_clusters(G, player_no):
+    if player_no == 1:
+        vertices = all_burn(G, BurnType.P1_ONLY) + all_burn(G, BurnType.BOTH)
+    elif player_no == 2:
+        vertices = all_burn(G, BurnType.P2_ONLY) + all_burn(G, BurnType.BOTH)
+    else:
+        return None # invalid player number
+    
+    SG = G.subgraph(vertices)
+    return nx.number_connected_components(SG)
 
 def progress_graph(G, node_counts):
     rounds = len(node_counts.output()[1])
@@ -238,4 +254,4 @@ def progress_graph(G, node_counts):
     plt.ylabel("Number of vertices")
     plt.show()
 
-expers(10000)
+expers(1)
