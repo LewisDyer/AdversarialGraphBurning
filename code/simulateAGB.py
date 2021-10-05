@@ -28,9 +28,6 @@ class NodesOverTime:
     def output(self):
         return [self.p1_nodes, self.ne_nodes, self.p2_nodes, self.un_nodes]
 
-
-
-
 def simulate():
     # Main function, run this to simulate AGB
 
@@ -44,8 +41,8 @@ def simulate():
 
     images = []
     round_no=1
-    draw_images = True
-    show_progress = True
+    draw_images = False
+    show_progress = False
 
     node_counts = NodesOverTime(G)
     
@@ -71,14 +68,23 @@ def simulate():
         images.extend([images[-1]]*5) # add 5 copies of last image so it pauses on the final result a bit longer
         make_gif(images, filename)
         plt.clf()
-    logging(G)
-
     if(show_progress):
         progress_graph(G, node_counts)
 
+    return logging(G, True)
+
+def expers(runs):
+
+    exp = Experiment()
+    for run in range(runs):
+        result = simulate()
+        exp.add_trial(result)
+    
+    exp.output_csv("test_experiment.csv")
+
 def build_graph():
     # Make a graph to burn over
-    return nx.grid_2d_graph(25, 25, periodic=True)
+    return nx.grid_2d_graph(25, 25)
 
 def all_burn(G, burn_type):
     # Given a graph, returns a list of all nodes with a given burn type
@@ -167,7 +173,29 @@ def save_image(G, images, frame_no):
 def make_gif(images, filename):
     images[0].save(f"{filename}.gif", save_all=True, append_images=images[1:], optimize=False, duration=100, loop=0)
 
+class Experiment:
+    
+    def __init__(self):
+        self.trials = []
+    
+    def add_trial(self, trial):
+        self.trials.append(trial)
+    
+    def get_no_trials(self):
+        return len(self.trials)
+    
+    def csv_titles(self):
+        # return string giving title of each heading, for a csv file
+        return "No. nodes,P1 nodes,Neutral nodes,P2 nodes,P1 score,P2 score"
+    
+    def output_csv(self, filename):
+        with open(filename, 'w') as results_file:
+            results_file.write(self.csv_titles()+"\n")
+            for trial in self.trials:
+                results_file.write(trial.csv_trial() + "\n")
+
 class TrialResult:
+
     def __init__(self, G):
         self.no_nodes = G.number_of_nodes()
         self.p1_nodes = len(all_burn(G, BurnType.P1_ONLY))
@@ -180,19 +208,24 @@ class TrialResult:
     def __str__(self):
         output = []
         output.append(f"Number of nodes: {self.no_nodes}")
-        output.append(f"Player 1 score: {self.p1_score}")
-        output.append(f"Player 2 score: {self.p2_score}")
         output.append(f"Number of P1 nodes: {self.p1_nodes}")
         output.append(f"Number of neutral nodes: {self.ne_nodes}")
         output.append(f"Number of P2 nodes: {self.p2_nodes}")
+        output.append(f"Player 1 score: {self.p1_score}")
+        output.append(f"Player 2 score: {self.p2_score}")
 
         return "\n".join(output)
+    
+    def csv_trial(self):
+        return f"{self.no_nodes},{self.p1_nodes},{self.ne_nodes},{self.p2_nodes},{self.p1_score},{self.p2_score}"
 
-def logging(G):
+def logging(G, print_logs):
     # print out logging info about the process which has just terminated.
 
     trial = TrialResult(G)
-    print(trial)
+    if print_logs:
+        print(trial)
+    return trial
 
 def progress_graph(G, node_counts):
     rounds = len(node_counts.output()[1])
@@ -205,4 +238,4 @@ def progress_graph(G, node_counts):
     plt.ylabel("Number of vertices")
     plt.show()
 
-simulate()
+expers(10000)
