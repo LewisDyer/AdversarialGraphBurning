@@ -131,11 +131,11 @@ def expers(runs):
         result = simulate()
         exp.add_trial(result)
     
-    exp.output_csv("test_experiment_100_clusters.csv")
+    exp.output_csv("test_experiment_25_clusters.csv")
 
 def build_graph():
     # Make a graph to burn over
-    return nx.grid_2d_graph(25, 25)
+    return nx.grid_2d_graph(50, 50)
 
 def all_burn(G, burn_type):
     # Given a graph, returns a list of all nodes with a given burn type
@@ -254,4 +254,5 @@ def progress_graph(G, node_counts):
     plt.ylabel("Number of vertices")
     plt.show()
 
-expers(1)
+#expers(1)
+simulate()
