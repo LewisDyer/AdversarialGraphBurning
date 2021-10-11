@@ -92,7 +92,7 @@ def simulate():
 
     images = []
     round_no=1
-    draw_images = True
+    draw_images = False
     show_progress = False
 
     node_counts = NodesOverTime(G)
@@ -101,6 +101,8 @@ def simulate():
         #print("still to burn")
         p1_burn = player_1_burn(G)
         p2_burn = player_2_burn(G)
+        #print(f"DEBUG: P1 picks {p1_burn}")
+        #print(f"DEBUG: P2 picks {p2_burn}")
         nodes_to_resolve = spread_burn(G, p1_burn, p2_burn, new_burns)
         #print(nodes_to_resolve)
         resolve_conflicts(G, nodes_to_resolve)
@@ -131,7 +133,7 @@ def expers(runs):
         result = simulate()
         exp.add_trial(result)
     
-    exp.output_csv("test_experiment_25_clusters.csv")
+    exp.output_csv("test_experiment_degree_random_50.csv")
 
 def build_graph():
     # Make a graph to burn over
@@ -148,11 +150,11 @@ def all_burn(G, burn_type):
 
 def player_1_burn(G):
     # Player 1's strategy for picking a vertex to burn
-    return burns.random_burn(all_burn(G, BurnType.NONE))
+    return burns.degree_burn(G)
 
 def player_2_burn(G):
     # Player 2's strategy for picking a vertex to burn
-    return burns.random_burn(all_burn(G, BurnType.NONE))
+    return burns.random_burn(G)
 
 def spread_burn(G, p1_burn, p2_burn, new_burns):
     # Spread the fire for vertices which have been newly burned
@@ -214,7 +216,7 @@ def save_image(G, images, frame_no):
 
     node_colours = [colour_map[G.nodes[node]["current_burn"]] for node in G]
 
-    nx.draw(G, pos, with_labels=False, node_color=node_colours)
+    nx.draw(G, pos, with_labels=True, node_color=node_colours)
     # saving to a file like this is a bodge, but it'll do since this is just to help me visualise things
     filename = f"{int(time.time())}_{frame_no}.jpg"
     plt.savefig(filename)
@@ -254,5 +256,4 @@ def progress_graph(G, node_counts):
     plt.ylabel("Number of vertices")
     plt.show()
 
-#expers(1)
-simulate()
+expers(1000)
