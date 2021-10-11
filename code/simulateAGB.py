@@ -133,11 +133,11 @@ def expers(runs):
         result = simulate()
         exp.add_trial(result)
     
-    exp.output_csv("test_experiment_degree_random_50.csv")
+    exp.output_csv("test_experiment_between_random_25.csv")
 
 def build_graph():
     # Make a graph to burn over
-    return nx.grid_2d_graph(50, 50)
+    return nx.grid_2d_graph(25, 25)
 
 def all_burn(G, burn_type):
     # Given a graph, returns a list of all nodes with a given burn type
@@ -150,7 +150,7 @@ def all_burn(G, burn_type):
 
 def player_1_burn(G):
     # Player 1's strategy for picking a vertex to burn
-    return burns.degree_burn(G)
+    return burns.between_burn(G)
 
 def player_2_burn(G):
     # Player 2's strategy for picking a vertex to burn
