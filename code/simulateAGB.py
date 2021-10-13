@@ -150,7 +150,7 @@ def all_burn(G, burn_type):
 
 def player_1_burn(G):
     # Player 1's strategy for picking a vertex to burn
-    return burns.between_burn(G)
+    return burns.far_from_own(G, 1)
 
 def player_2_burn(G):
     # Player 2's strategy for picking a vertex to burn
@@ -256,4 +256,4 @@ def progress_graph(G, node_counts):
     plt.ylabel("Number of vertices")
     plt.show()
 
-expers(1000)
+expers(100)
