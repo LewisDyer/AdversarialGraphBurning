@@ -134,7 +134,7 @@ def expers(runs):
         result = simulate()
         exp.add_trial(result)
     
-    exp.output_csv("test_experiment_farfrom_random_powerlaw_200.csv")
+    exp.output_csv("test_experiment_between_between_powerlaw_200.csv")
 
 def build_graph():
     # Make a graph to burn over
@@ -157,11 +157,11 @@ def all_burn(G, burn_type):
 
 def player_1_burn(G):
     # Player 1's strategy for picking a vertex to burn
-    return burns.far_from_own(G, 1)
+    return burns.between_burn(G)
 
 def player_2_burn(G):
     # Player 2's strategy for picking a vertex to burn
-    return burns.random_burn(G)
+    return burns.between_burn(G)
 
 def spread_burn(G, p1_burn, p2_burn, new_burns):
     # Spread the fire for vertices which have been newly burned
