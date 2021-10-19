@@ -68,7 +68,7 @@ def far_from_own(G, player_no):
         for dest in own_vertices:
             try:
                 dist = nx.shortest_path_length(G, start, dest)
-            except NetworkXNoPath:
+            except:
                 dist = math.inf
             if dist < furthest_dist:
                 furthest_dist = dist
