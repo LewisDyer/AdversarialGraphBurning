@@ -1,4 +1,5 @@
 import networkx as nx
+from networkx.utils import powerlaw_sequence
 import matplotlib.pyplot as plt
 from matplotlib import animation as anim
 from enum import Enum
@@ -133,11 +134,17 @@ def expers(runs):
         result = simulate()
         exp.add_trial(result)
     
-    exp.output_csv("test_experiment_between_random_25.csv")
+    exp.output_csv("test_experiment_between_between_powerlaw_200.csv")
 
 def build_graph():
     # Make a graph to burn over
-    return nx.grid_2d_graph(25, 25)
+    seq = [int(n) for n in powerlaw_sequence(200)]
+    while not nx.is_graphical(seq):
+        seq = [int(n) for n in powerlaw_sequence(200)]
+    print(seq)
+    G = nx.havel_hakimi_graph(seq)
+    print(G)
+    return G
 
 def all_burn(G, burn_type):
     # Given a graph, returns a list of all nodes with a given burn type
@@ -150,11 +157,11 @@ def all_burn(G, burn_type):
 
 def player_1_burn(G):
     # Player 1's strategy for picking a vertex to burn
-    return burns.far_from_own(G, 1)
+    return burns.between_burn(G)
 
 def player_2_burn(G):
     # Player 2's strategy for picking a vertex to burn
-    return burns.random_burn(G)
+    return burns.between_burn(G)
 
 def spread_burn(G, p1_burn, p2_burn, new_burns):
     # Spread the fire for vertices which have been newly burned
@@ -256,4 +263,4 @@ def progress_graph(G, node_counts):
     plt.ylabel("Number of vertices")
     plt.show()
 
-expers(100)
+expers(500)

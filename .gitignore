@@ -1,6 +1,7 @@
 # experiment visualisation
 *.gif
-
+*.png
+*.jpg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
