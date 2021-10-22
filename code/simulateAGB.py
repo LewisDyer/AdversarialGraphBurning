@@ -5,7 +5,8 @@ from matplotlib import animation as anim
 from enum import Enum
 from PIL import Image
 import time, os
-import burn_strategies as burns
+from burn_strategies import *
+from graph_builders import *
 
 class BurnType(Enum):
     NONE = 0
@@ -85,15 +86,19 @@ def simulate():
 
     G = build_graph()
 
+    print(G.nodes())
+
     new_burns = set()
 
     default_attrs = {node:{"current_burn": BurnType.NONE, "prospective_burns":set()} for node in G.nodes()}
 
+
+    print(default_attrs)
     nx.set_node_attributes(G, values=default_attrs)
 
     images = []
     round_no=1
-    draw_images = False
+    draw_images = True
     show_progress = False
 
     node_counts = NodesOverTime(G)
@@ -102,8 +107,8 @@ def simulate():
         #print("still to burn")
         p1_burn = player_1_burn(G)
         p2_burn = player_2_burn(G)
-        #print(f"DEBUG: P1 picks {p1_burn}")
-        #print(f"DEBUG: P2 picks {p2_burn}")
+        print(f"DEBUG: P1 picks {p1_burn}")
+        print(f"DEBUG: P2 picks {p2_burn}")
         nodes_to_resolve = spread_burn(G, p1_burn, p2_burn, new_burns)
         #print(nodes_to_resolve)
         resolve_conflicts(G, nodes_to_resolve)
@@ -138,13 +143,7 @@ def expers(runs):
 
 def build_graph():
     # Make a graph to burn over
-    seq = [int(n) for n in powerlaw_sequence(200)]
-    while not nx.is_graphical(seq):
-        seq = [int(n) for n in powerlaw_sequence(200)]
-    print(seq)
-    G = nx.havel_hakimi_graph(seq)
-    print(G)
-    return G
+    return game_of_thrones()
 
 def all_burn(G, burn_type):
     # Given a graph, returns a list of all nodes with a given burn type
@@ -157,11 +156,11 @@ def all_burn(G, burn_type):
 
 def player_1_burn(G):
     # Player 1's strategy for picking a vertex to burn
-    return burns.between_burn(G)
+    return random_burn(G)
 
 def player_2_burn(G):
     # Player 2's strategy for picking a vertex to burn
-    return burns.between_burn(G)
+    return random_burn(G)
 
 def spread_burn(G, p1_burn, p2_burn, new_burns):
     # Spread the fire for vertices which have been newly burned
@@ -186,7 +185,7 @@ def spread_burn(G, p1_burn, p2_burn, new_burns):
         # spread the fire from each newly burned node to its unburned neighbours
         for next_node in G.neighbors(node_to_burn):
             if next_node in unburned:
-                #print(f"DEBUG: {node_to_burn} spreads {fire_type} to {next_node}")
+                print(f"DEBUG: {node_to_burn} spreads {fire_type} to {next_node}")
                 G.nodes[next_node]["prospective_burns"].add(fire_type)
                 nodes_to_resolve.add(next_node)
     
@@ -223,7 +222,7 @@ def save_image(G, images, frame_no):
 
     node_colours = [colour_map[G.nodes[node]["current_burn"]] for node in G]
 
-    nx.draw(G, pos, with_labels=True, node_color=node_colours)
+    nx.draw(G, pos, with_labels=False, node_color=node_colours)
     # saving to a file like this is a bodge, but it'll do since this is just to help me visualise things
     filename = f"{int(time.time())}_{frame_no}.jpg"
     plt.savefig(filename)
@@ -263,4 +262,4 @@ def progress_graph(G, node_counts):
     plt.ylabel("Number of vertices")
     plt.show()
 
-expers(500)
+simulate()

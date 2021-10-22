@@ -1,16 +1,16 @@
 import networkx as nx
 import random
-import simulateAGB as sim
+from simulateAGB import all_burn, BurnType
 import math
 
 def random_burn(G):
     # A basic random strategy: just pick a random vertex.
-    unburned = sim.all_burn(G, sim.BurnType.NONE)
+    unburned = all_burn(G, BurnType.NONE)
     return random.choice(unburned)
 
 def degree_burn(G):
     # Slightly more involved: take the subgraph of unburned vertices, and pick the vertex of highest degree. If there are multiple of highest degree, pick any of them randomly.
-    unburned = sim.all_burn(G, sim.BurnType.NONE)
+    unburned = all_burn(G, BurnType.NONE)
     SG = G.subgraph(unburned)
 
     all_degrees = sorted(SG.degree, key=lambda x: x[1], reverse=True)
@@ -21,7 +21,7 @@ def degree_burn(G):
 
 def between_burn(G):
     # Select the unburned node with the highest betweeness centrality
-    unburned = sim.all_burn(G, sim.BurnType.NONE)
+    unburned = all_burn(G, BurnType.NONE)
 
     SG = G.subgraph(unburned)
 
@@ -36,7 +36,7 @@ def between_burn(G):
 
 def closeness_burn(G):
     # Select the unburned node with the highest closeness centrality
-    unburned = sim.all_burn(G, sim.BurnType.NONE)
+    unburned = all_burn(G, BurnType.NONE)
 
     SG = G.subgraph(unburned)
 
@@ -52,13 +52,13 @@ def closeness_burn(G):
 def far_from_own(G, player_no):
     # Returns the node that's furthest away from another node of the player's own colour.
     if player_no == 1:
-        own_vertices = sim.all_burn(G, sim.BurnType.P1_ONLY) + sim.all_burn(G, sim.BurnType.BOTH)
+        own_vertices = all_burn(G, BurnType.P1_ONLY) + all_burn(G, BurnType.BOTH)
     elif player_no == 2:
-        own_vertices = sim.all_burn(G, sim.BurnType.P2_ONLY) + sim.all_burn(G, sim.BurnType.BOTH)
+        own_vertices = all_burn(G, BurnType.P2_ONLY) + all_burn(G, BurnType.BOTH)
     else:
         return None # invalid player number
     
-    unburned = sim.all_burn(G, sim.BurnType.NONE)
+    unburned = all_burn(G, BurnType.NONE)
     most_isolated_dist = 0
     most_isolated_nodes = []
     # checks all unburned/own pairs, quite inefficient especially midway through
