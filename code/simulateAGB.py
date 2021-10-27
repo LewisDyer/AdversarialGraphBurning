@@ -2,17 +2,18 @@ import networkx as nx
 from networkx.utils import powerlaw_sequence
 import matplotlib.pyplot as plt
 from matplotlib import animation as anim
-from enum import Enum
+from enum import Enum, auto
 from PIL import Image
 import time, os
-from burn_strategies import *
-from graph_builders import *
+
+import burn_strategies as burns
+import graph_builders as build
 
 class BurnType(Enum):
-    NONE = 0
-    P1_ONLY = 1
-    P2_ONLY = 2
-    BOTH = 3
+    NONE = auto()
+    P1_ONLY = auto()
+    P2_ONLY = auto()
+    BOTH = auto()
 
 class NodesOverTime:
     def __init__(self, G):
@@ -83,32 +84,27 @@ class TrialResult:
 
 def simulate():
     # Main function, run this to simulate AGB
-
     G = build_graph()
 
-    print(G.nodes())
 
     new_burns = set()
 
     default_attrs = {node:{"current_burn": BurnType.NONE, "prospective_burns":set()} for node in G.nodes()}
 
-
-    print(default_attrs)
     nx.set_node_attributes(G, values=default_attrs)
 
     images = []
     round_no=1
-    draw_images = True
+    draw_images = False
     show_progress = False
 
     node_counts = NodesOverTime(G)
-    
-    while still_to_burn(G):
-        #print("still to burn")
-        p1_burn = player_1_burn(G)
-        p2_burn = player_2_burn(G)
-        print(f"DEBUG: P1 picks {p1_burn}")
-        print(f"DEBUG: P2 picks {p2_burn}")
+    still_to_burn = all_burn(G, BurnType.NONE)
+    while still_to_burn != []:
+        p1_burn = player_1_burn(G, still_to_burn)
+        p2_burn = player_2_burn(G, still_to_burn)
+        #print(f"DEBUG: P1 picks {p1_burn}")
+        #print(f"DEBUG: P2 picks {p2_burn}")
         nodes_to_resolve = spread_burn(G, p1_burn, p2_burn, new_burns)
         #print(nodes_to_resolve)
         resolve_conflicts(G, nodes_to_resolve)
@@ -121,6 +117,8 @@ def simulate():
         node_counts.update(G)
 
         round_no += 1
+
+        still_to_burn = all_burn(G, BurnType.NONE)
     
     if(draw_images):
         filename = "test"
@@ -130,7 +128,7 @@ def simulate():
     if(show_progress):
         progress_graph(G, node_counts)
 
-    return logging(G, True)
+    return logging(G, False)
 
 def expers(runs):
 
@@ -138,29 +136,25 @@ def expers(runs):
     for run in range(runs):
         result = simulate()
         exp.add_trial(result)
+        print(f"Completed trial {run}/{runs}")
     
-    exp.output_csv("test_experiment_between_between_powerlaw_200.csv")
+    exp.output_csv("test_experiment_between_random_got.csv")
 
 def build_graph():
     # Make a graph to burn over
-    return game_of_thrones()
+    return build.game_of_thrones()
 
 def all_burn(G, burn_type):
-    # Given a graph, returns a list of all nodes with a given burn type
-    this_burn = []
-    for n in G.nodes():
-        if G.nodes[n]['current_burn'] == burn_type:
-            this_burn.append(n)
     
-    return(this_burn)
+    return([n for n in G.nodes() if G.nodes[n]['current_burn'] == burn_type])
 
-def player_1_burn(G):
+def player_1_burn(G, still_to_burn):
     # Player 1's strategy for picking a vertex to burn
-    return random_burn(G)
+    return burns.between_burn(G, still_to_burn)
 
-def player_2_burn(G):
+def player_2_burn(G, still_to_burn):
     # Player 2's strategy for picking a vertex to burn
-    return random_burn(G)
+    return burns.random_burn(G, still_to_burn)
 
 def spread_burn(G, p1_burn, p2_burn, new_burns):
     # Spread the fire for vertices which have been newly burned
@@ -185,8 +179,8 @@ def spread_burn(G, p1_burn, p2_burn, new_burns):
         # spread the fire from each newly burned node to its unburned neighbours
         for next_node in G.neighbors(node_to_burn):
             if next_node in unburned:
-                print(f"DEBUG: {node_to_burn} spreads {fire_type} to {next_node}")
                 G.nodes[next_node]["prospective_burns"].add(fire_type)
+                #print(f"DEBUG: {node_to_burn} spreads to {next_node}")
                 nodes_to_resolve.add(next_node)
     
     return nodes_to_resolve
@@ -262,4 +256,6 @@ def progress_graph(G, node_counts):
     plt.ylabel("Number of vertices")
     plt.show()
 
-simulate()
+
+if __name__ == '__main__':
+    expers(200)

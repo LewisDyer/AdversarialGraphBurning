@@ -3,15 +3,14 @@ import random
 from simulateAGB import all_burn, BurnType
 import math
 
-def random_burn(G):
-    # A basic random strategy: just pick a random vertex.
-    unburned = all_burn(G, BurnType.NONE)
-    return random.choice(unburned)
 
-def degree_burn(G):
+def random_burn(G, still_to_burn):
+    # A basic random strategy: just pick a random vertex.
+    return random.choice(still_to_burn)
+
+def degree_burn(G, still_to_burn):
     # Slightly more involved: take the subgraph of unburned vertices, and pick the vertex of highest degree. If there are multiple of highest degree, pick any of them randomly.
-    unburned = all_burn(G, BurnType.NONE)
-    SG = G.subgraph(unburned)
+    SG = G.subgraph(still_to_burn)
 
     all_degrees = sorted(SG.degree, key=lambda x: x[1], reverse=True)
 
@@ -19,31 +18,30 @@ def degree_burn(G):
     highest_degrees = [node[0] for node in all_degrees if node[1] == max_degree] # get all vertices of highest degree
     return random.choice(highest_degrees) # pick a random one!
 
-def between_burn(G):
+def between_burn(G, still_to_burn):
     # Select the unburned node with the highest betweeness centrality
-    unburned = all_burn(G, BurnType.NONE)
 
-    SG = G.subgraph(unburned)
+    SG = G.subgraph(still_to_burn)
 
     betweens = list(nx.betweenness_centrality(SG, normalized=False).items())
 
     all_betweens = sorted(betweens, key=lambda x: x[1], reverse=True)
-    unb_betweens = [node for node in all_betweens if node[0] in unburned]
+    unb_betweens = [node for node in all_betweens if node[0] in still_to_burn]
+    #print(unb_betweens)
 
     max_between = unb_betweens[0][1]
     highest_betweens = [node[0] for node in unb_betweens if node[1] == max_between]
     return random.choice(highest_betweens)
 
-def closeness_burn(G):
+def closeness_burn(G, still_to_burn):
     # Select the unburned node with the highest closeness centrality
-    unburned = all_burn(G, BurnType.NONE)
 
-    SG = G.subgraph(unburned)
+    SG = G.subgraph(still_to_burn)
 
     closeness = list(nx.closeness_centrality(SG).items())
 
     all_closeness = sorted(closeness, key=lambda x: x[1], reverse=True)
-    unb_closeness = [node for node in all_closeness if node[0] in unburned]
+    unb_closeness = [node for node in all_closeness if node[0] in still_to_burn]
 
     max_closeness = unb_closeness[0][1]
     highest_closeness = [node[0] for node in unb_closeness if node[1] == max_closeness]
