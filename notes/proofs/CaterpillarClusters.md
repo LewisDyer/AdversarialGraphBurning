@@ -34,3 +34,17 @@ So only need to consider 2^(n-2) trees - treat these as bitstrings starting and 
 
 00010010
 
+## BOUNDS
+
+As an aside, adding more leaves to new nodes is monotonic in cluster count, since you can simulate the effect of having no leaves by just burning the path vertex, which will get the leaf later.
+
+For a path vertex of length n (for n > 3):
+
+Lower bound: ceiling(n/3). This is (0,0,...,0), the path on n vertices.
+
+Upper bound: This is for (0,1,...,1,0), the caterpiller graph where every non-end path vertex has 1 leaf. ceiling((2n-2)/3)
+
+It's a repeating pattern where you burn red 2 leaves then burn the next one blue, so it acts like a barrier and you can reset the cycle. 2 clusters every 3 path vertices on average
+(note however that this has 2n-2 vertices, so it doesn't break path extremity)
+
+Note: for this pattern, better to burn the very first vertex red, then the first leaf blue and proceed like that - this just helps generalise this method to all caterpillar graphs.
