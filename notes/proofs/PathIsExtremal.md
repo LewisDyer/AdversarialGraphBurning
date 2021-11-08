@@ -23,3 +23,12 @@ Idea: Take the longest path as a subgraph of the original vertex. "move" vertice
 ## REMARK
 
 Let C(G) be the set of valid colourings via AGB over the graph G. Defining G' as above, C(G) is not a subset of C(G'), and C(G') is not a subset of C(G) - counterexample is RBBR then connecting vertices 1 and 3 from G to G', and RBRB in the inverse direction with the same connection
+
+
+# AN ACTUAL PROOF
+
+Each round, at most 1 cluster can be created. 2 vertices are burned, and at least 3 vertices are burned as a result if there are at least 3 unburned vertices. if the chosen vertices both have degree 1, there's there 2 vertices left or another vertex gets burned via spread, since it's a connected graph. and if at least 1 has degree 2 then you get it via spreading.
+
+# COR
+
+at most this many rounds
