@@ -48,3 +48,13 @@ It's a repeating pattern where you burn red 2 leaves then burn the next one blue
 (note however that this has 2n-2 vertices, so it doesn't break path extremity)
 
 Note: for this pattern, better to burn the very first vertex red, then the first leaf blue and proceed like that - this just helps generalise this method to all caterpillar graphs.
+
+## Proof Idea
+
+I think that this proof is going to be algorithmic in nature: Rather than a formula, I'll provide an algorithm that will show you how to colour a given caterpillar graph.
+
+First off, I need to find a way to partition a reduced caterpillar graph into several caterpillar graphs, then find the optimal way to colour each of these pieces. Note this might give me a bound rather than an exact result, but it's a strong start.
+
+## The partitions
+
+Remark: For any caterpillar tree, if it begins with a 1, I can replace it with two 0s to get the exact same graph.
