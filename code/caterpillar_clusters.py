@@ -139,4 +139,4 @@ def combine_graphs(pieces, subgraphs):
 
 if __name__ == '__main__':
     # 01011100
-    count_clusters("00111010")
+    count_clusters("01011100")
