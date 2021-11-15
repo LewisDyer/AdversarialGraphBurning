@@ -1,8 +1,6 @@
-%% example.tex
-%% Jeremy Singer
-%% 16 Oct 12
-
 \documentclass{mpaper}
+\usepackage{amsthm}
+\newtheorem{definition}{Definition}[section]
 
 \begin{document}
 
@@ -81,49 +79,45 @@ references.
 How many references? Hard to say. Five is not enough, 50 is pushing
 it.
 
-\subsection{User Interface}
 
-Blah blah blah
-Blah blah blah
-Blah blah blah
-Blah blah blah
+\section{Adversarial Graph Burning}
+% define AGB formally (not sure if defining regular graph burning is needed formally?)
 
-% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsection{Foo}
+\subsection{Defining Adversarial Graph Burning}
 
-Blah blah blah
-Blah blah blah
-Blah blah blah
+First, we formalise the process of Adversarial Graph Burning on a graph $G$. Throughout, we presume that $G$ is a finite, simple, undirected graph.
 
-\subsubsection{Bar}
-\textsf{Blah} \textit{blah} \textbf{blah}
+\begin{definition}
+\label{def/AGB}
 
-\section{Evaluation}
+Adversarial Graph Burning (or AGB for short) is a discrete-time graph process for two players (and by convention, player 1 and 2 are red and blue, respectively). Each vertex is assigned one of 4 colours:
 
-Graphs are always good. I recommend getting to grips with Matlab, R or
-gnuplot rather than exporting horribly Excel bitmapped graphs.
+\begin{enumerate}
+  \item \emph{White} vertices have not been burned by either player yet.
+  \item \emph{Red} vertices have been burned by player 1.
+  \item \emph{Blue} vertices have been burned by player 2.
+  \item \emph{Green} vertices have been burned by \emph{both} players.
+\end{enumerate}
+
+At time $t=0$, all vertices are white. At each time $t > 0$, each player simultaneously chooses one white vertex to burn.
+
+\end{definition}
+
+\subsection{Burning Sequences}
+
+\subsection{Bounding the length of burning sequences}
+
+\section{Counting Monochromatic Components}
+
+\subsection{Monochromatic components on paths}
+
+\subsection{Caterpillar graphs}
+
+\subsection{Monochromatic components on caterpillar graphs}
 
 
-\begin{quotation}
- The Assyrian came down like the wolf on the fold,
- And his cohorts were gleaming in purple and gold;
- And the sheen of their spears was like stars on the sea,
- When the blue wave rolls nightly on deep Galilee.
-
- Like the leaves of the forest when Summer is green,
- That host with their banners at sunset were seen:
- Like the leaves of the forest when Autumn hath blown,
- That host on the morrow lay withered and strown.
-\end{quotation}
-
-\section{Conclusions}
-
-The standard Lorem Ipsum passage, used since the 1500s
-
-``Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.''
-\vskip8pt \noindent
 {\bf Acknowledgments.}
-This is optional; it is a location for you to thank people
+Firstly, I would like to thank my supervisors - Jessica Enright, William Pettersson and John Sylvester - for their continual guidance and support throughout the project. I wouldd also like to thank my parents, for always caring for me, and supporting my goals when I thought they could never be attained. And, last but not least, I would like to thank my girlfriend Jodie, for her never-ending love and kindness.
 
 \bibliographystyle{abbrv}
 \bibliography{example}
