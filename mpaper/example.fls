@@ -120,8 +120,6 @@ INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr9.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\base\fontenc.sty
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\base\fontenc.sty
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\ecrm0900.tfm
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\amscls\amsthm.sty
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\amscls\amsthm.sty
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\l3backend\l3backend-pdfmode.def
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\l3backend\l3backend-pdfmode.def
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.aux
@@ -134,14 +132,22 @@ INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\context\base\mkii\supp-pd
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\context\base\mkii\supp-pdf.mkii
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\epstopdf-pkg\epstopdf-base.sty
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\epstopdf-pkg\epstopdf-base.sty
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\grfext\grfext.sty
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\grfext\grfext.sty
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\hyperref\nameref.sty
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\hyperref\nameref.sty
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\refcount\refcount.sty
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\refcount\refcount.sty
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\generic\gettitlestring\gettitlestring.sty
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\generic\gettitlestring\gettitlestring.sty
-OUTPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.out
+INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.out
+INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.out
+INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.out
+INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.out
 OUTPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.pdf
+INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.out
+INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.out
+OUTPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.out
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\CompSci_colour.pdf
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\CompSci_colour.pdf
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\CompSci_colour.pdf
@@ -174,6 +180,7 @@ INPUT e:\Level 5\AdversarialGraphBurning\mpaper\alice.pdf
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\alice.pdf
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\alice.pdf
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\alice.pdf
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\ae\aecsc10.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\helvetic\phvb8t.vf
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\helvetic\phvb8r.tfm
 INPUT C:\Users\Lewis\AppData\Local\MiKTeX\pdftex\config\pdftex.map
@@ -198,12 +205,21 @@ INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmb10.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmib10.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmib10.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbsy10.tfm
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\vf\public\ae\aecsc10.vf
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmcsc10.tfm
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi10.tfm
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi10.tfm
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsy10.tfm
+INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.bbl
+INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.bbl
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.aux
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.out
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.out
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\base\8r.enc
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmb10.pfb
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmb10.pfb
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmcsc10.pfb
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmcsc10.pfb
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi9.pfb
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi9.pfb
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmr6.pfb
