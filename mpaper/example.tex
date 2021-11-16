@@ -1,6 +1,9 @@
 \documentclass{mpaper}
 
 \newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
 
 \begin{document}
 
@@ -90,7 +93,7 @@ First, we formalise the process of Adversarial Graph Burning on a graph $G$. Thr
 \begin{definition}
 \label{def/AGB}
 
-Adversarial Graph Burning (or AGB for short) is a discrete-time graph process for two players (and by convention, player 1 and 2 are red and blue, respectively). Each vertex is assigned one of 4 colours:
+Adversarial Graph Burning (or AGB for short) is a discrete-time graph process for two players. Each vertex is assigned one of 4 colours:
 
 \begin{enumerate}
   \item \emph{White} vertices have not been burned by either player yet.
@@ -99,19 +102,164 @@ Adversarial Graph Burning (or AGB for short) is a discrete-time graph process fo
   \item \emph{Green} vertices have been burned by \emph{both} players.
 \end{enumerate}
 
-At time $t=0$, all vertices are white. At each time $t > 0$, each player simultaneously chooses one white vertex to burn.
+At time $t=0$, all vertices are initially white. Each round consists of two main steps. First, both players simultaneously choose a white vertex, burning the vertex into that player's respective colour. Secondly, all non-white vertices spread their colour onto adjacent white vertices, according to the following rules:
+
+\begin{itemize}
+  \item If a white vertex is burned by multiple vertices, all with the same colour, the white vertex is also burned with the same colour.
+  \item If a white vertex is burned by both red and blue vertices, the white vertex will become green.
+  \item If a white vertex is burned by either red or blue vertices (but not both), and also by green vertices, the white vertex will become red or blue, respectively. 
+\end{itemize}
 
 \end{definition}
 
+In particular, these rules ensure that this process is symmetrical, so the choice of player is unimportant.
+
+Our main interest in this problem will be to count the maximum number of monochromatic components that can appear in any colouring of $G$ resulting from an instance of the AGB process. Our definition of "monochromatic components" differs slightly from most other uses of the term, so we define it separately here to account for these differences, and use slightly different terminology to emphasise these differences:
+
+\begin{definition}
+  \label{def/clusters}
+
+Given a graph $G$, with an assignment of colours resulting from the AGB process, a \emph{red cluster} is a connected component in the subgraph induced by all red and green vertices in $G$. 
+
+We also introduce the restriction that, in the AGB process, both players may only choose to burn the same vertex if there are no other remaining white vertices to burn.
+\end{definition}
+
+We note that only red clusters are defined here - blue clusters could of course be defined similarly, though since the AGB process is symmetrical we need only define red clusters.
+
+In addition, the latter restriction on AGB is relatively minor, and mainly aims to remove some degenerate cases when counting red clusters, without needing to explicitly define exceptions for later results.
+
+The latter restriction here mainly removes a number of degenerate cases when counting red clusters
+
 \subsection{Burning Sequences}
 
+We now introduce a compact notation for describing a particular instance of adversarial graph burning.
+
+\begin{definition}
+\label{def/burning-sequence}
+
+Given a graph $G$, a \emph{burning sequence} of length $n$, $B \in (V(G) \times V(G))^n$, is a sequence of tuples, $(r_1, b_1), (r_2, b_2), \dots, (r_n, b_n)$, such that player 1 burns vertex $r_t$ and player 2 burns vertex $b_t$ at time $t$.
+\end{definition}
+
+This sequence describes possible choices for the first $n$ rounds of the AGB process, but some further care is required to ensure this sequence describes valid choices for this process:
+
+\begin{definition}
+\label{def/valid-burning}
+
+Given a burning sequence $B$, $B$ is said to be \emph{valid} if:
+
+\begin{enumerate}
+  \item For every vertex that appears in the $i^{th}$ term of $B$, say $v_i$, for every vertex in the $j^{th}$ term of $B$ such that $j < i$, say $v_j$ the distance between $v_i$ and $v_j$ is at most $(i-j)$.
+  \item After the burning sequence described by $B$ is completed on $G$, every vertex is $G$ is non-white. 
+\end{enumerate}
+
+\end{definition}
+
+From this definition, an immediate corollary is that the original graph burning progress is a subset of adversarial graph burning:
+
+\begin{corollary}
+\label{cor/burning-subset}
+
+Given a valid burning sequence for the original graph burning problem, say $(v_1, v_2, \dots, v_n)$, the burning sequence $(v_1, v_1), (v_2, v_2), \dots, (v_n, v_n)$ describes a valid burning sequence in adversarial graph burning.
+
+\end{corollary}
+
 \subsection{Bounding the length of burning sequences}
+
+A useful question in the adversarial graph burning problem is to consider the maximum number of rounds required for this process to terminate, providing a potentially useful upper bound for the number of valid burning sequences for a graph $G$. The following result gives a useful bound for connected graphs:
+
+\begin{theorem}
+  \label{thm/connected-bound}
+  For a connected graph $G$ with $n$ vertices, the maximum number of rounds required for the AGB process to terminate is $\lceil \frac{n}{3} \rceil$.
+\end{theorem}
+
+\begin{proof}
+  Given a graph $G$, consider $U$, the subgraph induced by all white vertices in $G$. We aim to show that, if $U$ contains at least $3$ vertices, each round of AGB removes at least $3$ vertices from $U$.
+  
+  If every vertex in $U$ is of degree at least $2$, then we are done - the two chosen vertices are removed from $U$, and at least one other vertex must be adjacent to these choices, and thus is removed.
+  
+  If exactly one vertex in $U$ is of degree less than $2$, then by the restriction introduced in Definition \ref{def/clusters}, if $U$ contains at least $3$ vertices, then one of the chosen vertices has degree at least $2$, so at least $3$ vertices will be removed from $U$ this round.
+
+  If $U$ contains at least two vertices of degree $1$, if they are not adjacent we are done, since their adjacent vertices will also be removed. If they are adjacent, then either they are the only two vertices remaining, or there is another vertex that is not adjacent to either vertex of degree 1. Since $G$ is connected, this other vertex must be adjacent to a vertex that is not in $U$, so thise vertex will be removed on the same round as the two other chosen vertices.
+
+  If $U$ contains one vertex of degree $1$ and at least 1 vertex of degree $0$, then the vertex of degree $1$ must be adjacent to a vertex of degree at least $2$, so the above case holds. 
+
+  If $U$ only contains vertices of degree $0$, all of these vertices will be burned this round since they must be adjacent to previously burned vertices, so if there are at least $3$ vertices in $U$ then at least $3$ vertices will be removed from $U$ this round. 
+
+  Hence, while at least $3$ vertices remain unburned, at least $3$ vertices are burned each round, and if there are ever less than $3$ vertices remaining they will all be burned in 1 round, so the maximum number of rounds to burn all vertices is $\lceil \frac{n}{3} \rceil$.
+  
+\end{proof}
 
 \section{Counting Monochromatic Components}
 
 \subsection{Monochromatic components on paths}
 
+Our first key observation when counting red clusters is that at most one cluster can be added per round. This is because red vertices can be added in two different ways. If red vertices are added via spreading from adjacent vertices, no new clusters are created in this way (though existing clusters may be merged together, \emph{reducing} the number of red clusters on the graph). So red clusters can only be created by player 1 choosing vertices to burn, but only one vertex can be burned by player 1 each turn. Coupled with Theorem \ref{thm/connected-bound}, this gives a useful bound for the number of clusters on connected graphs:
+
+\begin{corollary}
+  \label{cor/path-clusters}
+
+  Let $G$ be a connected graph on $n$ vertices. Then the maximum number of red clusters on $G$ is $\lceil \frac{n}{3} \rceil$, and this maximum is attainable when $G$ is a path on $n$ vertices.
+
+\end{corollary}
+
+\begin{proof}
+
+Firstly, since each round can introduce at most 1 red cluster, and since the maximum number of rounds on $G$ is $\lceil \frac{n}{3} \rceil$ by Theorem \ref{thm/connected-bound}, the maximum number of red clusters on $G$ is $\lceil \frac{n}{3} \rceil$.
+
+Now let $G$ be the path on $n$ vertices. Listing the vertices of $G$ in order from $v_1, v_2, \dots, v_n$, the burning sequence $(v_1, v_2), (v_4, v_5), \dots, (v_{n-2}, v_{n-1})$ contains $\lceil \frac{n}{3} \rceil$ red clusters.
+
+%might add a diagram here?
+
+\end{proof}
+
 \subsection{Caterpillar graphs}
+
+We now consider a natural extension of paths, and provide a method for counting clusters on these graphs.
+
+\begin{definition}
+  \label{def/caterpillars}
+
+  A \emph{caterpillar graph} is a graph obtained by taking a path, and adding any number of vertices of degree 1 (known as leaves), that are adjacent to a vertex on the original path.
+
+\end{definition}
+
+In order to count clusters on caterpillar graphs, it will be useful to introduce more compact notation for describing caterpillar graphs:
+
+\begin{definition}
+  \label{def/caterpillar-strings}
+
+  Given a caterpillar graph built on a path with $n$ vertices, its \emph{caterpillar string} is a sequence $C \in \mathbb{N}^n$ of the form $(c_1, \dots, c_n)$, where $c_i$ denotes the number of leaves adjacent to the $i^{th}$ path vertex. For instance, the caterpillar string $(1,0,2,3)$ represents the caterpillar graph shown in Figure [INSERT A PICTURE HERE].
+
+\end{definition}
+
+Clearly, there are a countably infinite number of caterpillar strings of length n. However, for the purposes of counting clusters, the following lemma shows that we can reduce the set of caterpillar strings to a finite subset of strings of a given form:
+
+\begin{lemma}
+  \label{lem/reduced-caterpillars}
+
+  Given a caterpillar string $C$, the maximum number of red clusters in $C$ is equal to the maximum number of red clusters in the caterpillar string given by
+
+  \begin{equation*}
+  C'_i = \begin{cases}
+    0 & C_i = 0 \\
+    1 & C_i \geq 1
+  \end{cases}
+  \end{equation*}
+
+  Moreover, given such a caterpillar string $C'$, if the first or last element in $C'$ is $1$, this can be removed and two zeros can be appended to the start of end of the sequence respectively, giving an equivalent caterpillar string, say $C''$ After performing these two operations, we say that $C''$ is a \emph{reduced caterpillar string}.
+\end{lemma}
+
+\begin{proof}
+
+For the first reduction, suppose a given path vertex $v_i$ has at least $2$ adjacent leaves. Pick two of these leaves without loss of generality, calling them $l_1$ and $l_2$, and consider the subgraph induced by $v_i$, $l_1$ and $l_2$.
+
+Suppose that this subgraph contains $2$ red clusters. Then both leaves must be coloured red. However, this is only possible when $v_i$ is also red. Since both leaf vertices are not adjacent, so 2 rounds are required to colour them both red, and hence the first one coloured red will spread to $v_i$, colouring it red. And if $v_i$ was already coloured blue, it would spread its colour to at least one of $l_1$ and $l_2$, so this subgraph can contain at most $1$ red cluster. And since the leaves were chosen without any loss of generality, either no leaves are red, all leaves are red, or exactly one leaf is red, so all but one leaf can be removed without changing the overall number of clusters.
+
+For the second reduction, If one of the endpoints has a leaf, the leaf can be considered as part of the path too, leading to a longer sequence without counting it as a leaf vertex.
+% maybe a diagram here?
+\end{proof}
+
+Therefore, the set of reduced caterpillar strings of length $n$ is given by the set of bitstrings of length $n$ beginning and ending with a $0$, hence there are $2^{n-2}$ reduced caterpillar strings of length n.
 
 \subsection{Monochromatic components on caterpillar graphs}
 

@@ -17,7 +17,7 @@ def count_clusters(caterpillar):
         print("Invalid bitstring")
         return None
 
-    with open("code\partition_tables.json", "r") as table:
+    with open("code/partition_tables.json", "r") as table:
         part_data = table.read() 
         
     part_table = json.loads(part_data)
