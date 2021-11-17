@@ -14,11 +14,14 @@
 \maketitle
 
 \begin{abstract}
-According to Simon Peyton Jones, an abstract should address
-four key questions. First, what is the problem that this
-paper tackles? Second, why is this an interesting problem?
-Third, what is the solution this paper proposes?
-Finally, why is the proposed solution a good one?
+%very rough for now
+We introduce adversarial graph burning, an extension of the graph burning process to contagion with competition. We develop multiple results on the number of monochromatic components on graph colourings resulting from adversarial graph burning.
+
+%According to Simon Peyton Jones, an abstract should address
+%four key questions. First, what is the problem that this
+%paper tackles? Second, why is this an interesting problem?
+%Third, what is the solution this paper proposes?
+%Finally, why is the proposed solution a good one?
 \end{abstract}
 
 \section{Introduction}
@@ -128,8 +131,6 @@ We note that only red clusters are defined here - blue clusters could of course 
 
 In addition, the latter restriction on AGB is relatively minor, and mainly aims to remove some degenerate cases when counting red clusters, without needing to explicitly define exceptions for later results.
 
-The latter restriction here mainly removes a number of degenerate cases when counting red clusters
-
 \subsection{Burning Sequences}
 
 We now introduce a compact notation for describing a particular instance of adversarial graph burning.
@@ -154,7 +155,7 @@ Given a burning sequence $B$, $B$ is said to be \emph{valid} if:
 
 \end{definition}
 
-From this definition, an immediate corollary is that the original graph burning progress is a subset of adversarial graph burning:
+From this definition, an immediate corollary is that the original graph burning problem is a subset of adversarial graph burning:
 
 \begin{corollary}
 \label{cor/burning-subset}
@@ -165,7 +166,7 @@ Given a valid burning sequence for the original graph burning problem, say $(v_1
 
 \subsection{Bounding the length of burning sequences}
 
-A useful question in the adversarial graph burning problem is to consider the maximum number of rounds required for this process to terminate, providing a potentially useful upper bound for the number of valid burning sequences for a graph $G$. The following result gives a useful bound for connected graphs:
+A useful question in the adversarial graph burning problem is to consider the maximum number of rounds required for this process to terminate, providing an upper bound for the number of valid burning sequences for a graph $G$. The following result gives a useful bound for connected graphs:
 
 \begin{theorem}
   \label{thm/connected-bound}
@@ -174,16 +175,20 @@ A useful question in the adversarial graph burning problem is to consider the ma
 
 \begin{proof}
   Given a graph $G$, consider $U$, the subgraph induced by all white vertices in $G$. We aim to show that, if $U$ contains at least $3$ vertices, each round of AGB removes at least $3$ vertices from $U$.
+
+  If $U$ contains at least $3$ vertices, then we choose $2$ vertices to initially burn, say $v_1$ and $v_2$, and we need to show that at least one other distinct vertex is adjacent to $v_1$ or $v_2$. Considering the possible degrees of $v_1$ and $v_2$ in $U$, there are two potentially problematic cases, while the other cases are straightforward.
+
+  If $v_1$ and $v_2$ are both adjacent and have degree $1$, then no other vertices are adjacent to them. However, since $U$ has at least $3$ vertices, some other vertex $v_3$ must be in $U$, but not connected to $v_1$ or $v_2$. However, since $G$ is connected, $v_3$ must be adjacent to some non-white vertex in $G$, so $v_3$ must also be removed this round. A similar argument holds when $v_1$ and $v_2$ are both degree $0$.
   
-  If every vertex in $U$ is of degree at least $2$, then we are done - the two chosen vertices are removed from $U$, and at least one other vertex must be adjacent to these choices, and thus is removed.
+  %If every vertex in $U$ is of degree at least $2$, then we are done - the two chosen vertices are removed from $U$, and at least one other vertex must be adjacent to these choices, and thus is removed.
   
-  If exactly one vertex in $U$ is of degree less than $2$, then by the restriction introduced in Definition \ref{def/clusters}, if $U$ contains at least $3$ vertices, then one of the chosen vertices has degree at least $2$, so at least $3$ vertices will be removed from $U$ this round.
+  %If exactly one vertex in $U$ is of degree less than $2$, then by the restriction introduced in Definition \ref{def/clusters}, one of the chosen vertices has degree at least $2$, so at least $3$ vertices will be removed from $U$ this round.
 
-  If $U$ contains at least two vertices of degree $1$, if they are not adjacent we are done, since their adjacent vertices will also be removed. If they are adjacent, then either they are the only two vertices remaining, or there is another vertex that is not adjacent to either vertex of degree 1. Since $G$ is connected, this other vertex must be adjacent to a vertex that is not in $U$, so thise vertex will be removed on the same round as the two other chosen vertices.
+  %If $U$ contains at least two vertices of degree $1$, if they are not adjacent we are done, since their adjacent vertices will also be removed. If they are adjacent, then either they are the only two vertices remaining, or there is another vertex that is not adjacent to either vertex of degree 1. Since $G$ is connected, this other vertex must be adjacent to a vertex that is not in $U$, so thise vertex will be removed on the same round as the two other chosen vertices.
 
-  If $U$ contains one vertex of degree $1$ and at least 1 vertex of degree $0$, then the vertex of degree $1$ must be adjacent to a vertex of degree at least $2$, so the above case holds. 
+  %If $U$ contains one vertex of degree $1$ and at least 1 vertex of degree $0$, then the vertex of degree $1$ must be adjacent to a vertex of degree at least $2$, so the above case holds. 
 
-  If $U$ only contains vertices of degree $0$, all of these vertices will be burned this round since they must be adjacent to previously burned vertices, so if there are at least $3$ vertices in $U$ then at least $3$ vertices will be removed from $U$ this round. 
+  %If $U$ only contains vertices of degree $0$, all of these vertices will be burned this round since they must be adjacent to previously burned vertices, so if there are at least $3$ vertices in $U$ then at least $3$ vertices will be removed from $U$ this round. 
 
   Hence, while at least $3$ vertices remain unburned, at least $3$ vertices are burned each round, and if there are ever less than $3$ vertices remaining they will all be burned in 1 round, so the maximum number of rounds to burn all vertices is $\lceil \frac{n}{3} \rceil$.
   
@@ -246,26 +251,45 @@ Clearly, there are a countably infinite number of caterpillar strings of length 
   \end{cases}
   \end{equation*}
 
-  Moreover, given such a caterpillar string $C'$, if the first or last element in $C'$ is $1$, this can be removed and two zeros can be appended to the start of end of the sequence respectively, giving an equivalent caterpillar string, say $C''$ After performing these two operations, we say that $C''$ is a \emph{reduced caterpillar string}.
+  Moreover, given such a caterpillar string $C'$, if the first or last element in $C'$ is $1$, this can be removed and two zeros can be appended to the start or end of the sequence respectively, giving an equivalent caterpillar string, say $C''$. After performing these two operations, we say that $C''$ is a \emph{reduced caterpillar string}.
 \end{lemma}
 
 \begin{proof}
 
 For the first reduction, suppose a given path vertex $v_i$ has at least $2$ adjacent leaves. Pick two of these leaves without loss of generality, calling them $l_1$ and $l_2$, and consider the subgraph induced by $v_i$, $l_1$ and $l_2$.
 
-Suppose that this subgraph contains $2$ red clusters. Then both leaves must be coloured red. However, this is only possible when $v_i$ is also red. Since both leaf vertices are not adjacent, so 2 rounds are required to colour them both red, and hence the first one coloured red will spread to $v_i$, colouring it red. And if $v_i$ was already coloured blue, it would spread its colour to at least one of $l_1$ and $l_2$, so this subgraph can contain at most $1$ red cluster. And since the leaves were chosen without any loss of generality, either no leaves are red, all leaves are red, or exactly one leaf is red, so all but one leaf can be removed without changing the overall number of clusters.
+Suppose that this subgraph contains $2$ red clusters. Then both leaves must be coloured red. However, this is only possible when $v_i$ is also red. Since both leaf vertices are not adjacent, 2 rounds are required to colour them both red, and hence the first one coloured red will spread to $v_i$, colouring it red. And if $v_i$ was already coloured blue, it would spread its colour to at least one of $l_1$ and $l_2$, so by contradiction this subgraph can contain at most $1$ red cluster. And since the leaves were chosen without any loss of generality, either no leaves are red, all leaves are red along with their common path vertex, or exactly one leaf is red, so all but one leaf can be removed without changing the overall number of clusters.
 
-For the second reduction, If one of the endpoints has a leaf, the leaf can be considered as part of the path too, leading to a longer sequence without counting it as a leaf vertex.
+For the second reduction, if one of the endpoints has a leaf, the leaf can be treated as a path vertex rather than a leaf vertex, removing a leaf from the existing endpoint and becoming the new endpoint instead.
 % maybe a diagram here?
 \end{proof}
 
-Therefore, the set of reduced caterpillar strings of length $n$ is given by the set of bitstrings of length $n$ beginning and ending with a $0$, hence there are $2^{n-2}$ reduced caterpillar strings of length n.
+Therefore, the set of reduced caterpillar strings of length $n$ is given by the set of bitstrings of length $n$ beginning and ending with a $0$, hence there are $2^{n-2}$ reduced caterpillar strings of length n. In practice this may be reduced even further, since reversing the reduced caterpillar string gives another string that may be different, but which always represents an isomorphic caterpillar graph.
 
 \subsection{Monochromatic components on caterpillar graphs}
 
+As discussed in Lemma \ref{lem/reduced-caterpillars}, we can transform any caterpillar graph into a reduced caterpillar graph while keeping the same number of maximum red clusters on the graph. We now present the following algorithm to count the maximum number of red clusters on any reduced caterpillar graph:
+
+Given a reduced caterpillar string, partition this string into pieces of length 3, leaving any remainder characters in the last piece which may be shorter than 3 characters, and treat each of these pieces as a (not necessarily reduced) caterpillar string.
+
+For each of these pieces, we can easily compute the maximum number of red clusters which originate in this piece, given some starting and ending constraints. These constraints are comprised of 4 distinct cases:
+
+\begin{itemize}
+  \item In case \emph{RW}, when colouring of this piece begins, the first path vertex is white, but the previous adjacent path vertex, which if it exists is not part of this piece, is coloured red.
+  \item Case \emph{BW} is equivalent to case \emph{RW}, except the previous path vertex is blue instead of red. This is also the case applied for the very first piece, in order to ensure that colouring the first path vertex red correctly counts the start of a new red cluster.
+  \item Case \emph{R} is where the first path vertex is already coloured red, since the colouring of the previous piece is not fully contained within that piece.
+  \item Case \emph{B} is analogous to case \emph{R}.
+\end{itemize}
+
+These cases are defined for the start of a piece, but the ending constraints are analogous, and crucially correspond to the same starting constraint of the next piece.
+
+Since these pieces are small, each of these computations is small and relatively simple to perform. For each piece, this then produces a weighted directed bipartite graph $G_P$, with vertex set $\{RW_{start}, BW_{start}, R_{start}, B_{start}, \\ RW_{end}, BW_{end}, R_{end}, B_{end}\}$, such that an edge exists from $X_{start}$ to $Y_{end}$ if there exists a colouring of piece $P$ with starting constraint $X$ and ending constraint $P$, with weight equal to the number of clusters originating in $P$.
+
+Once all of these bipartite graphs are computed, the ending vertices of each piece can be merged with the starting vertices of the next piece, along with adding in a common source and sink vertex, removing every case bar case \emph{BW} from the first piece, and finally removing all unreachable vertices, generating a directed acyclic multipartite graph $G$. Then, the maximum number of red clusters on the reduced caterpillar graph is equal to the length of the longest path in $G$.
+
 
 {\bf Acknowledgments.}
-Firstly, I would like to thank my supervisors - Jessica Enright, William Pettersson and John Sylvester - for their continual guidance and support throughout the project. I wouldd also like to thank my parents, for always caring for me, and supporting my goals when I thought they could never be attained. And, last but not least, I would like to thank my girlfriend Jodie, for her never-ending love and kindness.
+Firstly, I would like to thank my supervisors - Jessica Enright, William Pettersson and John Sylvester - for their continual guidance and support throughout the project. I would also like to thank my parents, for always caring for me, and supporting my goals when I thought they could never be attained. And, last but not least, I would like to thank my girlfriend Jodie, for her never-ending love and kindness.
 
 \bibliographystyle{abbrv}
 \bibliography{example}
