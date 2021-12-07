@@ -1,3 +1,37 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{bonato_survey_2020}
+Anthony Bonato.
+\newblock A survey of graph burning.
+\newblock {\em arXiv:2009.10642 [math]}, September 2020.
+\newblock arXiv: 2009.10642 version: 1.
+
+\bibitem{bonato_burning_2014}
+Anthony Bonato, Jeannette Janssen, and Elham Roshanbin.
+\newblock Burning a {Graph} as a {Model} of {Social} {Contagion}.
+\newblock In Anthony Bonato, Fan~Chung Graham, and Paweł Prałat, editors,
+  {\em Algorithms and {Models} for the {Web} {Graph}}, Lecture {Notes} in
+  {Computer} {Science}, pages 13--22, Cham, 2014. Springer International
+  Publishing.
+
+\bibitem{girao_partitioning_2019}
+António Girão, Shoham Letzter, and Julian Sahasrabudhe.
+\newblock Partitioning a graph into monochromatic connected subgraphs.
+\newblock {\em Journal of Graph Theory}, 91(4):353--364, August 2019.
+
+\bibitem{matousek_large_2007}
+Jiří Matoušek and Aleš Přívětivý.
+\newblock Large {Monochromatic} {Components} in {Two}-colored {Grids}.
+\newblock {\em Electronic Notes in Discrete Mathematics}, 29:3--9, August 2007.
+
+\bibitem{richey_counting_nodate}
+Jacob Richey and Peter Winkler.
+\newblock Counting {Clusters} on a {Grid}.
+\newblock page~25.
+
+\bibitem{wood_defective_2018}
+David Wood.
+\newblock Defective and {Clustered} {Graph} {Colouring}.
+\newblock {\em Electronic Journal of Combinatorics}, 1, March 2018.
 
 \end{thebibliography}

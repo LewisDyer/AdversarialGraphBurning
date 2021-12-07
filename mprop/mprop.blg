@@ -4,47 +4,48 @@ The top-level auxiliary file: mprop.aux
 Reallocating 'name_of_file' (item size: 1) to 6 items.
 The style file: plain.bst
 Reallocating 'name_of_file' (item size: 1) to 6 items.
-I found no \citation commands---while reading file mprop.aux
 Database file #1: mprop.bib
-You've used 0 entries,
+Warning--empty journal in richey_counting_nodate
+Warning--empty year in richey_counting_nodate
+You've used 6 entries,
             2118 wiz_defined-function locations,
-            496 strings with 3983 characters,
-and the built_in function-call counts, 18 in all, are:
-= -- 0
-> -- 0
-< -- 0
-+ -- 0
-- -- 0
-* -- 2
-:= -- 7
-add.period$ -- 0
-call.type$ -- 0
-change.case$ -- 0
+            536 strings with 5044 characters,
+and the built_in function-call counts, 1928 in all, are:
+= -- 191
+> -- 87
+< -- 2
++ -- 34
+- -- 27
+* -- 132
+:= -- 332
+add.period$ -- 20
+call.type$ -- 6
+change.case$ -- 30
 chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 1
-format.name$ -- 0
-if$ -- 1
+cite$ -- 8
+duplicate$ -- 79
+empty$ -- 143
+format.name$ -- 27
+if$ -- 399
 int.to.chr$ -- 0
-int.to.str$ -- 0
-missing$ -- 0
-newline$ -- 3
-num.names$ -- 0
-pop$ -- 0
+int.to.str$ -- 6
+missing$ -- 6
+newline$ -- 34
+num.names$ -- 14
+pop$ -- 28
 preamble$ -- 1
-purify$ -- 0
+purify$ -- 24
 quote$ -- 0
-skip$ -- 1
+skip$ -- 58
 stack$ -- 0
-substring$ -- 0
-swap$ -- 0
-text.length$ -- 0
+substring$ -- 97
+swap$ -- 17
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 0
-warning$ -- 0
-while$ -- 0
-width$ -- 0
-write$ -- 2
-(There was 1 error message)
+type$ -- 24
+warning$ -- 2
+while$ -- 21
+width$ -- 7
+write$ -- 70
+(There were 2 warnings)

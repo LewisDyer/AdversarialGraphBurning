@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex mprop"] 1638802088 "mprop.aux" "mprop.bbl" "mprop" 1638802739
+["bibtex mprop"] 1638885131 "mprop.aux" "mprop.bbl" "mprop" 1638891564
   "C:/Users/Lewis/AppData/Local/Programs/MiKTeX/bibtex/bst/bibtex/plain.bst" 1291864736 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "mprop.aux" 1638802739 562 fffa01386124faca6cb6c0adbd5469e8 "pdflatex"
-  "mprop.bib" 1634540663 209 2849724cfa25dcb116d5d814ebaa27f4 ""
+  "mprop.aux" 1638891563 958 e6d6a566c1792b77b0a4619053c9ce36 "pdflatex"
+  "mprop.bib" 1638885102 8989 f9551ad7546d038728fa0b58cbe51686 ""
   (generated)
   "mprop.bbl"
   "mprop.blg"
-["pdflatex"] 1638802738 "e:/Level 5/AdversarialGraphBurning/mprop/mprop.tex" "e:/Level 5/AdversarialGraphBurning/mprop/mprop.pdf" "mprop" 1638802739
+["pdflatex"] 1638891563 "e:/Level 5/AdversarialGraphBurning/mprop/mprop.tex" "e:/Level 5/AdversarialGraphBurning/mprop/mprop.pdf" "mprop" 1638891564
   "C:/Users/Lewis/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1200.pk" 1638802086 14064 cd91d822cb6d08d542b7efe000a59d6b ""
   "C:/Users/Lewis/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1601457415 10020124 075e6606d03103c915904faa8a5339ce ""
   "C:/Users/Lewis/AppData/Local/MiKTeX/pdftex/config/pdftex.map" 1636990342 279423 19f22bd235481a1f56e475b67e8924bc ""
@@ -44,18 +44,18 @@
   "C:/Users/Lewis/AppData/Local/Programs/MiKTeX/tex/latex/graphics/keyval.sty" 1580746542 2677 e3b24ff953e5b58d924f163d25380312 ""
   "C:/Users/Lewis/AppData/Local/Programs/MiKTeX/tex/latex/graphics/trig.sty" 1580746542 4093 d7fa7d81d2870d509d25b17d0245e735 ""
   "C:/Users/Lewis/AppData/Local/Programs/MiKTeX/tex/latex/l3backend/l3backend-pdfmode.def" 1593421250 24606 ecae4e851ce9ce4554d156050e5057f9 ""
-  "e:/Level 5/AdversarialGraphBurning/mprop/mprop.aux" 1638802739 562 fffa01386124faca6cb6c0adbd5469e8 ""
-  "e:/Level 5/AdversarialGraphBurning/mprop/mprop.tex" 1638802737 8498 2fe867132df4291be1d37a1c26dd82f7 ""
+  "e:/Level 5/AdversarialGraphBurning/mprop/mprop.aux" 1638891563 958 e6d6a566c1792b77b0a4619053c9ce36 ""
+  "e:/Level 5/AdversarialGraphBurning/mprop/mprop.tex" 1638891562 9520 7b616913c5e30d7b5136305ab9db7a9f ""
   "images/CompSci_colour.pdf" 1634540663 28075 c76557abb17c39d627f34723eeeb3731 ""
-  "mprop.aux" 1638802739 562 fffa01386124faca6cb6c0adbd5469e8 "pdflatex"
-  "mprop.bbl" 1638802088 52 0eba253fc001332e731e8aba3f23127b "bibtex mprop"
+  "mprop.aux" 1638891563 958 e6d6a566c1792b77b0a4619053c9ce36 "pdflatex"
+  "mprop.bbl" 1638885131 1411 8cbca41f53c85a1231c6c4c19aae4a22 "bibtex mprop"
   "mprop.cls" 1634540663 2720 4e30baf8667ece5ca29815c211249eb5 ""
-  "mprop.tex" 1638802737 8498 2fe867132df4291be1d37a1c26dd82f7 ""
-  "mprop.toc" 1638802739 291 3ad91d6143362839856121e78fd0a40c "pdflatex"
+  "mprop.tex" 1638891562 9520 7b616913c5e30d7b5136305ab9db7a9f ""
+  "mprop.toc" 1638891563 291 7a0b1910b12270f19a5b4b0027f35f85 "pdflatex"
   (generated)
+  "mprop.toc"
   "mprop.pdf"
-  "e:/Level 5/AdversarialGraphBurning/mprop/mprop.log"
   "e:/Level 5/AdversarialGraphBurning/mprop/mprop.pdf"
+  "e:/Level 5/AdversarialGraphBurning/mprop/mprop.log"
   "mprop.aux"
   "mprop.log"
-  "mprop.toc"
