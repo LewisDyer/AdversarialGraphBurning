@@ -378,15 +378,40 @@ However, the number of vertices in $B_h$ is $2^{h+1}-1$, so the caterpillar rati
 
 %idea: find the longest path in the tree, take all vertices that are distance 1 away to find a caterpillar, consider remaining vertices
 
-This shows that, while colouring the maximal caterpillar gives a lower bound on the maximum number of red clusters in a tree $T$, an arbitrarily large proportion of the graph is not contained within the maximal caterpillar. Hence, colouring the remainder of $T \setminus C_T$ will be key to obtaining a tighter lower bound on the maximum number of red clusters in $T$.
+This shows that, while colouring the maximal caterpillar gives a lower bound on the maximum number of red clusters in a tree $G$, an arbitrarily large proportion of the graph is not contained within the maximal caterpillar. Hence, colouring the remainder of $G \setminus C_T$ will be key to obtaining a tighter lower bound on the maximum number of red clusters in $G$.
 
-We first remark that $T \setminus C_T$ must be disconnected, since otherwise $T$ would contain a cycle. In particular, $T \setminus C_T$ is comprised of a set of connected components that are all trees, so an effective approach for colouring trees could be applied recursively by generating successively smaller caterpillars. This suggests one idea for an initial approach:
+We first remark that $G \setminus C_T$ must be disconnected, since otherwise $G$ would contain a cycle. In particular, $G \setminus C_T$ is comprised of a set of connected components that are all trees, so an effective approach for colouring trees could be applied recursively by generating successively smaller caterpillars. This suggests one idea for an initial approach:
 
 \begin{enumerate}
-  \item Find the maximal caterpillar in $T$, $C_T$, and colour $C_T$ using our previous procedure.
-  \item After this is completed, consider the subgraph of $T$ induced by white vertices, say $F$, which is a forest.
+  \item Find the maximal caterpillar in $G$, $C_T$, and colour it using our previous techniques.
+  \item Consider the subgraph of $G$ induced by white vertices, say $F$, which is a forest.
   \item Colour the tree in $F$ with greatest diameter, and repeat until the entire graph is coloured.
 \end{enumerate}
+
+This approach must eventually terminate, since each tree in $F$ must have lower diameter than the maximal caterpillar that defined it, or else the longest path defining the maximal caterpillar would contain some vertices in $F$.
+
+
+Moreover, each tree in $F$ is adjacent to exactly one burned vertex - if it were adjacent to two or more burned vertices, this would define a cycle. We now use this fact to define some additional characteristics of each tree in $F$:
+
+\begin{definition}
+\label{def/roots}
+
+Given a tree $T$ in $F$, a subgraph of a graph $G$ the \emph{root} of a tree, denoted $r_T$, is the vertex which is adjacent to an already burned vertex in $G$. The root is \emph{red-adjacent} if this burned vertex is red, with an analogous definition for a \emph{blue-adjacent} root. In addition, the \emph{rooted diameter} of $T$ is given by:
+
+\begin{equation*}
+rd(T) = 1 + \max_{v \in V(T)} d(r_{T},v)
+\end{equation*} 
+
+\end{definition}
+
+From these definitions, it is apparent that, without choosing any vertices in $T$ to burn, any tree $T$ will be fully burned in $rd(T)$ rounds. As a corollary to this, the maximum number of clusters originating in $T$ is at most $rd(T)$. This provides an initial upper bound on the maximum number of red clusters in the graph $G$:
+
+\begin{corollary}
+\label{cor/root-distance-bound-1}
+Consider a partial colouring of $G$ as produced by the above procedure with red clusters and the forest of unburned vertices $F$ comprised of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is bounded above by $$\max_{T \in \mathcal{T}} rd(T)$$
+\end{corollary}
+
+Since this bound only considers the maximum rooted distance of any true, this can allow for significant simplification when considering many trees in a forest, particularly for small rooted distances. For instance, if every tree has rooted distance $1$, then every tree will be fully burned after 1 round. Therefore at most 1 cluster can be created, so as long as at least one tree has a blue-adjacent root.
 
 {\bf Acknowledgments.}
 Firstly, I would like to thank my supervisors - Jessica Enright, William Pettersson and John Sylvester - for their continual guidance and support throughout the project. I would also like to thank my parents, for always caring for me, and supporting my goals when I thought they could never be attained. And, last but not least, I would like to thank my girlfriend Jodie, for her never-ending love and kindness.
