@@ -171,15 +171,6 @@ INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\amsfonts\umsb.fd
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm10.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm7.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\symbols\msbm5.tfm
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\ae\aer6.tfm
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\ae\t1aett.fd
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\tex\latex\ae\t1aett.fd
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\ae\aett9.tfm
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\ae\aeb10.tfm
-INPUT e:\Level 5\AdversarialGraphBurning\mpaper\alice.pdf
-INPUT e:\Level 5\AdversarialGraphBurning\mpaper\alice.pdf
-INPUT e:\Level 5\AdversarialGraphBurning\mpaper\alice.pdf
-INPUT e:\Level 5\AdversarialGraphBurning\mpaper\alice.pdf
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\ae\aecsc10.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\helvetic\phvb8t.vf
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\helvetic\phvb8r.tfm
@@ -194,24 +185,19 @@ INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi9.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsl9.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\vf\public\ae\aer9.vf
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmu10.tfm
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\vf\public\ae\aer6.vf
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi6.tfm
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmu10.tfm
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\vf\public\ae\aett9.vf
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmtt9.tfm
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmib10.tfm
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\vf\public\ae\aeb10.vf
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmb10.tfm
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmib10.tfm
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmib10.tfm
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbsy10.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\vf\public\ae\aecsc10.vf
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmcsc10.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi10.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi10.tfm
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsy10.tfm
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\ae\aeb10.tfm
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.bbl
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.bbl
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\vf\public\ae\aeb10.vf
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmb10.tfm
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmib10.tfm
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmib10.tfm
+INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbsy10.tfm
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.aux
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.out
 INPUT e:\Level 5\AdversarialGraphBurning\mpaper\example.out
@@ -240,8 +226,6 @@ INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\c
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy9.pfb
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmti9.pfb
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmti9.pfb
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmtt9.pfb
-INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmtt9.pfb
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\symbols\msbm10.pfb
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\symbols\msbm10.pfb
 INPUT C:\Users\Lewis\AppData\Local\Programs\MiKTeX\fonts\type1\urw\helvetic\uhvb8a.pfb

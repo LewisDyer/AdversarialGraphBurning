@@ -7,7 +7,7 @@
 
 \begin{document}
 
-\title{Counting Monochromatic Components in Adversarial Graph Burning}
+\title{Counting Monochromatic Components in 2-Player Graph Burning}
 \author{Lewis Dyer}
 \matricnum{2299195}
 
@@ -15,88 +15,29 @@
 
 \begin{abstract}
 %very rough for now
-We introduce adversarial graph burning, an extension of the graph burning process to contagion with competition. We develop multiple results on the number of monochromatic components on graph colourings resulting from adversarial graph burning.
-
-%According to Simon Peyton Jones, an abstract should address
-%four key questions. First, what is the problem that this
-%paper tackles? Second, why is this an interesting problem?
-%Third, what is the solution this paper proposes?
-%Finally, why is the proposed solution a good one?
+We introduce 2-player graph burning, an extension of the graph burning process to contagion with competition. We develop multiple results on the number of monochromatic components on graph colourings resulting from 2-player graph burning.
 \end{abstract}
 
 \section{Introduction}
 
-This paper outlines the standard template for an MSci submission.
-In earlier years, MSci students at the School of Computing
-Science\footnote{\url{http://www.dcs.gla.ac.uk}},
-University of Glasgow, were expected to produce a full-length
-dissertation. Now, the requirement is for MSci students to
-write a paper of up to 14 pages in length, using the supplied
-\texttt{mpaper} \LaTeX style file.
-
-The precise structure of an MSci paper is not mandated, but it should
-probably cover in detail the following aspects of the project.
-\begin{enumerate}
-\item General description of the problem, motivation, relevance
-\item Background information, possibly including a literature survey
-\item Description of approach taken to solve the problem, including
-  high-level design and lower-level implementation details as appropriate
-\item Evaluation, qualitative or quantitative as appropriate
-\item Conclusion, including scope for future work
-\end{enumerate}
+INTRO GOES HERE
 
 \section{Background}
 
-This \LaTeX template is based on the ACM \texttt{sig-alternate} class.
-The layout is two-column text. Generally figures and tables only
-extend to one column width, e.g.\ Table \ref{tab-eg},
-but it is possible to make them
-stretch over both columns using the \texttt{figure*} and
-\texttt{table*} environments. For an example, see Figure \ref{fig-eg}.
-
-\begin{table}
-\begin{tabular}{l||c||p{2cm}}
-\emph{Operating System} & \emph{Version} & \emph{Verdict} \\ \hline \hline
-Ubuntu & 12.04 & Everyone's favourite Linux, unless you grew up with
-RedHat \\ \hline
-Slackware & xxx & Pseudo-hacker's Linux, how often do you recompile
-your kernel? \\ \hline
-Mac OS & 10.7 & For people with more money than sense \\ \hline
-\end{tabular}
-\caption{\label{tab-eg}Single column table of figures}
-\end{table}
-
-\begin{figure*}
-\begin{center}
-\includegraphics[scale=0.3]{alice.pdf}
-\end{center}
-\caption{\label{fig-eg}An example figure stretching over two columns}
-\end{figure*}
-
-\section{The WizWoz System}
-
-Again, Simon Peyton Jones has a lovely description of how to write a
-paper on his
-website\footnote{\url{http://research.microsoft.com/en-us/um/people/simonpj/papers/giving-a-talk/giving-a-talk.htm}}.
-Personally, I put URLs in footnotes and \emph{bona fide} references
-in the bibliography. For instance, Turing \cite{turing37computable}
-and Knuth \cite{knuth68art} would not be out of place in list of
-references.
-How many references? Hard to say. Five is not enough, 50 is pushing
-it.
+BACKGROUND GOES HERE, PROBABLY DESCRIBING GRAPH BURNING
 
 
-\section{Adversarial Graph Burning}
-% define AGB formally (not sure if defining regular graph burning is needed formally?)
+\section{2-Player Graph Burning}
+% define 2-GB formally (not sure if defining regular graph burning is needed formally?)
 
-\subsection{Defining Adversarial Graph Burning}
+\subsection{Defining 2-Player Graph Burning}
 
-First, we formalise the process of Adversarial Graph Burning on a graph $G$. Throughout, we presume that $G$ is a finite, simple, undirected graph.
+First, we formalise the process of 2-Player Graph Burning on a graph $G$. Throughout, we presume that $G$ is a finite, simple, undirected graph.
 
 \begin{definition}
-\label{def/AGB}
+\label{def/2-GB}
 
-Adversarial Graph Burning (or AGB for short) is a discrete-time graph process for two players. Each vertex is assigned one of 4 colours:
+2-Player Graph Burning (or 2-GB for short) is a discrete-time graph process for two players. Each vertex is assigned one of 4 colours:
 
 \begin{enumerate}
   \item \emph{White} vertices have not been burned by either player yet.
@@ -117,23 +58,23 @@ At time $t=0$, all vertices are initially white. Each round consists of two main
 
 In particular, these rules ensure that this process is symmetrical, so the choice of player is unimportant.
 
-Our main interest in this problem will be to count the maximum number of monochromatic components that can appear in any colouring of $G$ resulting from an instance of the AGB process. Our definition of "monochromatic components" differs slightly from most other uses of the term, so we define it separately here to account for these differences, and use slightly different terminology to emphasise these differences:
+Our main interest in this problem will be to count the maximum number of monochromatic components that can appear in any colouring of $G$ resulting from an instance of the 2-GB process. Our definition of "monochromatic components" differs slightly from most other uses of the term, so we define it separately here to account for these differences, and use slightly different terminology to emphasise these differences:
 
 \begin{definition}
   \label{def/clusters}
 
-Given a graph $G$, with an assignment of colours resulting from the AGB process, a \emph{red cluster} is a connected component in the subgraph induced by all red and green vertices in $G$. 
+Given a graph $G$, with an assignment of colours resulting from the 2-GB process, a \emph{red cluster} is a connected component in the subgraph induced by all red and green vertices in $G$. 
 
-We also introduce the restriction that, in the AGB process, both players may only choose to burn the same vertex if there are no other remaining white vertices to burn.
+We also introduce the restriction that, in the 2-GB process, both players may only choose to burn the same vertex if there are no other remaining white vertices to burn.
 \end{definition}
 
-We note that only red clusters are defined here - blue clusters could of course be defined similarly, though since the AGB process is symmetrical we need only define red clusters.
+We note that only red clusters are defined here - blue clusters could of course be defined similarly, though since the 2-GB process is symmetrical we need only define red clusters.
 
-In addition, the latter restriction on AGB is relatively minor, and mainly aims to remove some degenerate cases when counting red clusters, without needing to explicitly define exceptions for later results.
+In addition, the latter restriction on 2-GB is relatively minor, and mainly aims to remove some degenerate cases when counting red clusters, without needing to explicitly define exceptions for later results.
 
 \subsection{Burning Sequences}
 
-We now introduce a compact notation for describing a particular instance of adversarial graph burning.
+We now introduce a compact notation for describing a particular instance of 2-player graph burning.
 
 \begin{definition}
 \label{def/burning-sequence}
@@ -141,7 +82,7 @@ We now introduce a compact notation for describing a particular instance of adve
 Given a graph $G$, a \emph{burning sequence} of length $n$, $B \in (V(G) \times V(G))^n$, is a sequence of tuples, $(r_1, b_1), (r_2, b_2), \dots, (r_n, b_n)$, such that player 1 burns vertex $r_t$ and player 2 burns vertex $b_t$ at time $t$.
 \end{definition}
 
-This sequence describes possible choices for the first $n$ rounds of the AGB process, but some further care is required to ensure this sequence describes valid choices for this process:
+This sequence describes possible choices for the first $n$ rounds of the 2-GB process, but some further care is required to ensure this sequence describes valid choices for this process:
 
 \begin{definition}
 \label{def/valid-burning}
@@ -155,26 +96,26 @@ Given a burning sequence $B$, $B$ is said to be \emph{valid} if:
 
 \end{definition}
 
-From this definition, an immediate corollary is that the original graph burning problem is a subset of adversarial graph burning:
+From this definition, an immediate corollary is that the original graph burning problem is a subset of 2-player graph burning:
 
 \begin{corollary}
 \label{cor/burning-subset}
 
-Given a valid burning sequence for the original graph burning problem, say $(v_1, v_2, \dots, v_n)$, the burning sequence $(v_1, v_1), (v_2, v_2), \dots, (v_n, v_n)$ describes a valid burning sequence in adversarial graph burning.
+Given a valid burning sequence for the original graph burning problem, say $(v_1, v_2, \dots, v_n)$, the burning sequence $(v_1, v_1), (v_2, v_2), \dots, (v_n, v_n)$ describes a valid burning sequence in 2-player graph burning.
 
 \end{corollary}
 
 \subsection{Bounding the length of burning sequences}
 
-A useful question in the adversarial graph burning problem is to consider the maximum number of rounds required for this process to terminate, providing an upper bound for the number of valid burning sequences for a graph $G$. The following result gives a useful bound for connected graphs:
+A useful question in the 2-player graph burning problem is to consider the maximum number of rounds required for this process to terminate, providing an upper bound for the number of valid burning sequences for a graph $G$. The following result gives a useful bound for connected graphs:
 
 \begin{theorem}
   \label{thm/connected-bound}
-  For a connected graph $G$ with $n$ vertices, the maximum number of rounds required for the AGB process to terminate is $\lceil \frac{n}{3} \rceil$.
+  For a connected graph $G$ with $n$ vertices, the maximum number of rounds required for the 2-GB process to terminate is $\lceil \frac{n}{3} \rceil$.
 \end{theorem}
 
 \begin{proof}
-  Given a graph $G$, consider $U$, the subgraph induced by all white vertices in $G$. We aim to show that, if $U$ contains at least $3$ vertices, each round of AGB removes at least $3$ vertices from $U$.
+  Given a graph $G$, consider $U$, the subgraph induced by all white vertices in $G$. We aim to show that, if $U$ contains at least $3$ vertices, each round of 2-GB removes at least $3$ vertices from $U$.
 
   If $U$ contains at least $3$ vertices, then we choose $2$ vertices to initially burn, say $v_1$ and $v_2$, and we need to show that at least one other distinct vertex is adjacent to $v_1$ or $v_2$. Considering the possible degrees of $v_1$ and $v_2$ in $U$, there are two potentially problematic cases, while the other cases are straightforward.
 
@@ -327,7 +268,7 @@ Note that this lemma holds for caterpillar graphs even if they are not fully red
 
 The algorithm being exact follows from this lemma, since the multipartite graph constructed during the algorithm describes all possible ways to colour the caterpillar graph sequentially, and since the longest path is chosen the most optimal way to colour the whole graph is chosen, even if this means deviating from the greedy approach.
 
-\subsection{Graph diameter in adversarial graph burning}
+\subsection{Graph diameter in 2-player graph burning}
 
 A key heuristic when counting the maximal number of monochromatic components for a particular graph $G$ is the \emph{diameter} of $G$:
 
@@ -342,7 +283,7 @@ A key heuristic when counting the maximal number of monochromatic components for
   where $d(u,v)$ is the length of the shortest path between $u$ and $v$, and if no such path exists we say that $d(u,v) = \infty$.
 \end{definition}
 
-In the context of adversarial graph burning, this means that any instance of adversarial graph burning on $G$ will terminate within $D(G)$ rounds, when $G$ is connected. The following example suggests that graphs with low diameter tend to admit fewer clusters than high diameter graphs:
+In the context of 2-player graph burning, this means that any instance of 2-player graph burning on $G$ will terminate within $D(G)$ rounds, when $G$ is connected. The following example suggests that graphs with low diameter tend to admit fewer clusters than high diameter graphs:
 
 \begin{lemma}
 \label{lem/cycle-clusters}

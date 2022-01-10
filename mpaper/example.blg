@@ -4,45 +4,47 @@ The top-level auxiliary file: example.aux
 Reallocating 'name_of_file' (item size: 1) to 6 items.
 The style file: abbrv.bst
 Reallocating 'name_of_file' (item size: 1) to 8 items.
+I found no \citation commands---while reading file example.aux
 Database file #1: example.bib
-You've used 2 entries,
+You've used 0 entries,
             2118 wiz_defined-function locations,
-            509 strings with 3985 characters,
-and the built_in function-call counts, 537 in all, are:
-= -- 53
-> -- 14
+            496 strings with 3703 characters,
+and the built_in function-call counts, 18 in all, are:
+= -- 0
+> -- 0
 < -- 0
-+ -- 7
-- -- 4
-* -- 31
-:= -- 97
-add.period$ -- 6
-call.type$ -- 2
-change.case$ -- 8
++ -- 0
+- -- 0
+* -- 2
+:= -- 7
+add.period$ -- 0
+call.type$ -- 0
+change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 2
-duplicate$ -- 23
-empty$ -- 49
-format.name$ -- 4
-if$ -- 109
+cite$ -- 0
+duplicate$ -- 0
+empty$ -- 1
+format.name$ -- 0
+if$ -- 1
 int.to.chr$ -- 0
-int.to.str$ -- 2
-missing$ -- 3
-newline$ -- 13
-num.names$ -- 4
-pop$ -- 9
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 3
+num.names$ -- 0
+pop$ -- 0
 preamble$ -- 1
-purify$ -- 6
+purify$ -- 0
 quote$ -- 0
-skip$ -- 13
+skip$ -- 1
 stack$ -- 0
-substring$ -- 36
-swap$ -- 2
+substring$ -- 0
+swap$ -- 0
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 6
+type$ -- 0
 warning$ -- 0
-while$ -- 6
-width$ -- 3
-write$ -- 24
+while$ -- 0
+width$ -- 0
+write$ -- 2
+(There was 1 error message)

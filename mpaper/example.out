@@ -1,13 +1,12 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.2}{Background}{}% 2
-\BOOKMARK [1][-]{section.3}{The WizWoz System}{}% 3
-\BOOKMARK [1][-]{section.4}{Adversarial Graph Burning}{}% 4
-\BOOKMARK [2][-]{subsection.4.1}{Defining Adversarial Graph Burning}{section.4}% 5
-\BOOKMARK [2][-]{subsection.4.2}{Burning Sequences}{section.4}% 6
-\BOOKMARK [2][-]{subsection.4.3}{Bounding the length of burning sequences}{section.4}% 7
-\BOOKMARK [1][-]{section.5}{Counting Monochromatic Components}{}% 8
-\BOOKMARK [2][-]{subsection.5.1}{Monochromatic components on paths}{section.5}% 9
-\BOOKMARK [2][-]{subsection.5.2}{Caterpillar graphs}{section.5}% 10
-\BOOKMARK [2][-]{subsection.5.3}{Monochromatic components on caterpillar graphs}{section.5}% 11
-\BOOKMARK [2][-]{subsection.5.4}{Graph diameter in adversarial graph burning}{section.5}% 12
-\BOOKMARK [1][-]{section.6}{References}{}% 13
+\BOOKMARK [1][-]{section.3}{2-Player Graph Burning}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Defining 2-Player Graph Burning}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Burning Sequences}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Bounding the length of burning sequences}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{Counting Monochromatic Components}{}% 7
+\BOOKMARK [2][-]{subsection.4.1}{Monochromatic components on paths}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.2}{Caterpillar graphs}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.3}{Monochromatic components on caterpillar graphs}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.4}{Graph diameter in 2-player graph burning}{section.4}% 11
+\BOOKMARK [1][-]{section.5}{References}{}% 12
