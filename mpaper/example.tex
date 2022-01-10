@@ -287,6 +287,20 @@ Since these pieces are small, each of these computations is small and relatively
 
 Once all of these bipartite graphs are computed, the ending vertices of each piece can be merged with the starting vertices of the next piece, along with adding in a common source and sink vertex, removing every case bar case \emph{BW} from the first piece, generating a directed acyclic multipartite graph $G$. Then, the maximum number of red clusters on the reduced caterpillar graph is equal to the length of the longest path in $G$.
 
+For future reference, we shall summarise this algorithm below:
+
+\begin{definition}
+\label{def/caterpillar-algorithm}
+  Given a reduced caterpillar graph $G$, and assuming that each piece of length at most 3 has been pre-computed, a colouring for $G$ can be attained through the following algorithm:
+
+  Partition the reduced caterpillar graph into as many connected subgraphs containing at most 3 path vertices as possible, leaving any remaining vertices in a piece at the end which may be shorter than length 3.
+
+  For each piece, define a bipartite graph with vertices $$\{RW_{s}, BW_{s}, R_{s}, B_{s}, \\ RW_{e}, BW_{e}, R_{e}, B_{e}\}$$ such that an edge exists from $X_{s}$ to $Y_{e}$ with weight $w$ if the maximum number of red colourings originating this piece on a valid colouring with starting contraint $X$ and ending constraint $Y$ is $w$.
+
+  After defining these graphs, define a multipartite graph $M$, merging the ending constraints of each piece and the corresponding starting constraint of the subsequent piece, along with adding source and sink vertices. Then the maximum number of red clusters on the reduced caterpillar graph is equal to the length of the longest path in $M$.
+\end{definition}
+
+
 Assuming that the bipartite graphs for each possible piece are pre-computed beforehand, producing the directed acyclic graph $G$ takes $O(p)$ time where $p$ is the number of pieces to combine, since each piece requires combining two constant sets of vertices together, along with constant time operations to add source and sink vertices. Since each piece adds at most $4$ additional vertices to $G$, and at most $16$ additional edges, the number of vertices and edges in $G$ are both $O(p)$. And finding the longest path in a directed acyclic graph with $V$ vertices and $E$ edges takes $O(V+E)$ time, this algorithm takes $O(p)$ time overall. But since each piece is of length at most 3, the number of pieces is linear in the length of the caterpillar, so this algorithm takes $O(n)$ time, being linear in the length of the reduced caterpillar string.
 
 
@@ -301,7 +315,7 @@ This proof proceeds by induction on the number of pieces in $G$.
 
  If $G$ has just one piece, then clearly colouring this piece will attain the optimal colouring, so the base case trivially holds.
 
- Now suppose the lemma holds for a (not necessarily reduced) caterpillar graph consisting of at most $n-1$ pieces. Then $G$, a caterpillar graph with $n$ pieces, is made up of the concatenation of two caterpillar graphs - one graph with $n-1$ pieces followed by one piece.
+ Now suppose the lemma holds for any (not necessarily reduced) caterpillar graph consisting of at most $n-1$ pieces. Then $G$, a caterpillar graph with $n$ pieces, is made up of the concatenation of two caterpillar graphs - one graph with $n-1$ pieces followed by one piece.
 
 If either end piece is fully coloured first, the lemma holds from the inductive hypothesis. If a different piece is fully covered first, then $G$ is split into two smaller graphs, each with length less than $n-1$ pieces. If an optimal colouring for one of these graphs is attained using the inductive hypothesis, then the colouring will spread to the other piece, so it is not possible to colour each of these pieces sequentially - and hence, this colouring cannot be better than the optimal colouring, so the lemma holds in this case.
 
@@ -408,7 +422,7 @@ From these definitions, it is apparent that, without choosing any vertices in $T
 
 \begin{corollary}
 \label{cor/root-distance-bound-1}
-Consider a partial colouring of $G$ as produced by the above procedure with red clusters and the forest of unburned vertices $F$ comprised of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is bounded above by $$\max_{T \in \mathcal{T}} rd(T)$$
+Consider a partial colouring of $G$ as produced by the above procedure, and the forest of unburned vertices $F$ comprised of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is at most $$\max_{T \in \mathcal{T}} rd(T)$$
 \end{corollary}
 
 Since this bound only considers the maximum rooted distance of any true, this can allow for significant simplification when considering many trees in a forest, particularly for small rooted distances. For instance, if every tree has rooted distance $1$, then every tree will be fully burned after 1 round. Therefore at most 1 cluster can be created, so as long as at least one tree has a blue-adjacent root.
