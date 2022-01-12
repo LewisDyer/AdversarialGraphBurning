@@ -351,7 +351,7 @@ Moreover, each tree in $F$ is adjacent to exactly one burned vertex - if it were
 \begin{definition}
 \label{def/roots}
 
-Given a tree $T$ in $F$, a subgraph of a graph $G$ the \emph{root} of a tree, denoted $r_T$, is the vertex which is adjacent to an already burned vertex in $G$. The root is \emph{red-adjacent} if this burned vertex is red, with an analogous definition for a \emph{blue-adjacent} root. In addition, the \emph{rooted diameter} of $T$ is given by:
+Given a tree $T$ in $F$, a subgraph of a graph $G$, the \emph{root} of a tree, denoted $r_T$, is the vertex which is adjacent to an already burned vertex in $G$. The root is \emph{red-adjacent} if this burned vertex is red, with an analogous definition for a \emph{blue-adjacent} root. In addition, the \emph{rooted diameter} of $T$ is given by:
 
 \begin{equation*}
 rd(T) = 1 + \max_{v \in V(T)} d(r_{T},v)
@@ -362,11 +362,42 @@ rd(T) = 1 + \max_{v \in V(T)} d(r_{T},v)
 From these definitions, it is apparent that, without choosing any vertices in $T$ to burn, any tree $T$ will be fully burned in $rd(T)$ rounds. As a corollary to this, the maximum number of clusters originating in $T$ is at most $rd(T)$. This provides an initial upper bound on the maximum number of red clusters in the graph $G$:
 
 \begin{corollary}
-\label{cor/root-distance-bound-1}
+\label{cor/root-diameter-bound-1}
 Consider a partial colouring of $G$ as produced by the above procedure, and the forest of unburned vertices $F$ comprised of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is at most $$\max_{T \in \mathcal{T}} rd(T)$$
 \end{corollary}
 
-Since this bound only considers the maximum rooted distance of any true, this can allow for significant simplification when considering many trees in a forest, particularly for small rooted distances. For instance, if every tree has rooted distance $1$, then every tree will be fully burned after 1 round. Therefore at most 1 cluster can be created, so as long as at least one tree has a blue-adjacent root.
+Since this bound only considers the maximum rooted distance of any tree, this can allow for significant simplification when considering many trees in a forest, particularly for small rooted distances. For instance, if every tree has rooted diameter $1$, then every tree will be fully burned after 1 round. Therefore at most 1 cluster can be created, so as long as at least one tree has a blue-adjacent root.
+
+Since the caterpillar in $G$ was chosen to be maximal, this also imposes additional constraints on the rooted diameter of trees in $F$. This constraint relies on the underlying caterpillar providing a sequential structure to the tree, as described in the following definition:
+
+\begin{definition}
+\label{def/tree-distance}
+Given a tree $G$ with a maximal caterpillar $C_G$, denoting the endpoints of the caterpillar as vertices $s$ and $e$, the \emph{caterpillar distance} of any vertex $v$ on the path between $s$ and $e$ in $C_G$, denoted $cd(v)$, is either the length of the shortest path between $v$ and $s$, or the length of the shortest path betweeen $v$ and $e$, whichever is shorter.
+
+For a leaf vertex $l$ in $C_G$, the distance of $l$ is defined as the distance of its associated path vertex, minus 1.
+\end{definition}
+
+Once this notion of distance to a caterpillar endpoint is defined, the maximal nature of this caterpillar implies constraints on the size of trees in the resulting forest $\mathcal{F}$:
+
+\begin{lemma}
+\label{def/tree-size-constraint}
+
+For each tree $T$ in a forest $\mathcal{F}$ induced by the maximal caterpillar $C_G$, the rooted distance of $T$ is at most $cd(r_T)$.
+
+\end{lemma}
+
+If this constraint does not hold for some tree $T$, then the longest path in the tree $G$ would travel through $T$, so our caterpillar $C_G$ would not be maximal.
+
+Combining this lemma with Corollary \ref{cor/root-diameter-bound-1}, along with the maximal distance from a path vertex to a caterpillar endpoint, gives another key bound for the number of clusters in $\mathcal{F}$:
+
+\begin{theorem}
+\label{thm/root-diameter-bound-2}
+
+Consider a partial colouring of $G$ as produced by the above procedure, with a maximal caterpillar of length $L$, and the forest of unburned vertices $F$ comprised of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is at most $\lfloor \frac{L}{2} \rfloor$.
+
+\end{theorem}
+
+The main significance of this result is that the maximum number of clusters in a tree $G$ is proportional to the diameter of $G$, regardless of how many vertices are outside of the maximal caterpillar $C_G$. For example, the problem suggested in Lemma \ref{lem/ratio-tends-to-zero}, where arbitrarily many vertices may be outside of the maximal caterpillar, is mostly resolved - while the number of vertices outside of the caterpillar is unlimited, their distribution is constrained, in particular the size of the resulting trees which are formed, meaning that the number of clusters in these remaining vertices can be bounded.
 
 {\bf Acknowledgments.}
 Firstly, I would like to thank my supervisors - Jessica Enright, William Pettersson and John Sylvester - for their continual guidance and support throughout the project. I would also like to thank my parents, for always caring for me, and supporting my goals when I thought they could never be attained. And, last but not least, I would like to thank my girlfriend Jodie, for her never-ending love and kindness.
