@@ -393,11 +393,25 @@ Combining this lemma with Corollary \ref{cor/root-diameter-bound-1}, along with 
 \begin{theorem}
 \label{thm/root-diameter-bound-2}
 
-Consider a partial colouring of $G$ as produced by the above procedure, with a maximal caterpillar of length $L$, and the forest of unburned vertices $F$ comprised of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is at most $\lfloor \frac{L}{2} \rfloor$.
+Consider a partial colouring of $G$ as produced by the above procedure, with a maximal caterpillar of length $L$ (hence $G$ has diameter $L$), and the forest of unburned vertices $F$ comprised of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is at most $\lfloor \frac{L}{2} \rfloor$.
 
 \end{theorem}
 
 The main significance of this result is that the maximum number of clusters in a tree $G$ is proportional to the diameter of $G$, regardless of how many vertices are outside of the maximal caterpillar $C_G$. For example, the problem suggested in Lemma \ref{lem/ratio-tends-to-zero}, where arbitrarily many vertices may be outside of the maximal caterpillar, is mostly resolved - while the number of vertices outside of the caterpillar is unlimited, their distribution is constrained, in particular the size of the resulting trees which are formed, meaning that the number of clusters in these remaining vertices can be bounded.
+
+Furthermore, since the maximum number of red clusters on the maximal caterpillar $C_M$ is known, the following result is an easy corollary from Theorem \ref{thm/root-diameter-bound-2}:
+
+\begin{corollary}
+\label{cor/diameter_bound_full}
+
+Given a tree $G$ with diameter $L$, which is coloured by first colouring its maximal caterpillar $C_G$, the maximum number of red clusters on $G$ is at most $\frac{7L-2}{6}$.
+\end{corollary}
+
+\begin{proof}
+  As previously discussed, a caterpillar of length $n$ has at most $\frac{2n-2}{3}$ red clusters, since any such caterpillar can be reduced to a caterpillar with at most $2n-2$ vertices by Lemma \ref{lem/reduced-caterpillars}. And Theorem \ref{thm/root-diameter-bound-2} shows that the number of red clusters on the rest of the graph outside of the maximal caterpillar of length $L$ has at most $\lfloor \frac{L}{2} \rfloor$ red clusters, and hence at most $\frac{L}{2}$ red clusters, so summing these results together proves the corollary.
+\end{proof}
+
+This corollary leads to a potentially useful heuristic for the maximum number of red clusters in a tree, without performing any explicit colouring. Indeed, Corollary \ref{cor/diameter_bound_full} only requires computing the diameter of a given tree, which can be computed in O($|V|$) time. However, this method assumes that colouring the maximal caterpillar first maximises the total number of red clusters in the tree, which may not be the case.
 
 {\bf Acknowledgments.}
 Firstly, I would like to thank my supervisors - Jessica Enright, William Pettersson and John Sylvester - for their continual guidance and support throughout the project. I would also like to thank my parents, for always caring for me, and supporting my goals when I thought they could never be attained. And, last but not least, I would like to thank my girlfriend Jodie, for her never-ending love and kindness.
