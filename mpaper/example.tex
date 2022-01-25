@@ -372,9 +372,7 @@ Since the caterpillar in $G$ was chosen to be maximal, this also imposes additio
 
 \begin{definition}
 \label{def/tree-distance}
-Given a tree $G$ with a maximal caterpillar $C_G$, denoting the endpoints of the caterpillar as vertices $s$ and $e$, the \emph{caterpillar distance} of any vertex $v$ on the path between $s$ and $e$ in $C_G$, denoted $cd(v)$, is either the length of the shortest path between $v$ and $s$, or the length of the shortest path betweeen $v$ and $e$, whichever is shorter.
-
-For a leaf vertex $l$ in $C_G$, the distance of $l$ is defined as the distance of its associated path vertex, minus 1.
+Given a tree $G$ with a maximal caterpillar $C_G$, denoting the endpoints of the caterpillar as vertices $s$ and $e$, the \emph{caterpillar distance} of any leaf vertex $v$ on $C_G$, denoted $cd(v)$, equal to the length of the shortest path from $v$ to an endpoint of the longest path contained in $C_G$, minus 2.
 \end{definition}
 
 Once this notion of distance to a caterpillar endpoint is defined, the maximal nature of this caterpillar implies constraints on the size of trees in the resulting forest $\mathcal{F}$:
@@ -388,12 +386,14 @@ For each tree $T$ in a forest $\mathcal{F}$ induced by the maximal caterpillar $
 
 If this constraint does not hold for some tree $T$, then the longest path in the tree $G$ would travel through $T$, so our caterpillar $C_G$ would not be maximal.
 
+An important subtlety in this lemma is that the caterpillar distance of a vertex is only defined for leaf vertices on $C_G$. If there existed a tree in $G \setminus C_G$, rooted to some non-leaf vertex $v$ in $C_G$, then any vertices in the tree adjacent to $v$ could be added to $C_G$ as leaf vertices, contradicting that $C_G$ is rational, so any such tree must be rooted to a path vertex.
+
 Combining this lemma with Corollary \ref{cor/root-diameter-bound-1}, along with the maximal distance from a path vertex to a caterpillar endpoint, gives another key bound for the number of clusters in $\mathcal{F}$:
 
 \begin{theorem}
 \label{thm/root-diameter-bound-2}
 
-Consider a partial colouring of $G$ as produced by the above procedure, with a maximal caterpillar of length $L$ (hence $G$ has diameter $L$), and the forest of unburned vertices $F$ comprised of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is at most $\lfloor \frac{L}{2} \rfloor$.
+Consider a partial colouring of $G$ as produced by the above procedure, with a maximal caterpillar of length $L$ (hence $G$ has diameter $L$), and the forest of unburned vertices $F$ comprised of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is at most $\lfloor \frac{L}{2} - 1 \rfloor$.
 
 \end{theorem}
 
@@ -404,14 +404,49 @@ Furthermore, since the maximum number of red clusters on the maximal caterpillar
 \begin{corollary}
 \label{cor/diameter_bound_full}
 
-Given a tree $G$ with diameter $L$, which is coloured by first colouring its maximal caterpillar $C_G$, the maximum number of red clusters on $G$ is at most $\frac{7L-2}{6}$.
+Given a tree $G$ with diameter $L$, which is coloured by first colouring its maximal caterpillar $C_G$, the maximum number of red clusters on $G$ is at most $\frac{7(L-1)}{6}$.
 \end{corollary}
 
 \begin{proof}
-  As previously discussed, a caterpillar of length $n$ has at most $\frac{2n-2}{3}$ red clusters, since any such caterpillar can be reduced to a caterpillar with at most $2n-2$ vertices by Lemma \ref{lem/reduced-caterpillars}. And Theorem \ref{thm/root-diameter-bound-2} shows that the number of red clusters on the rest of the graph outside of the maximal caterpillar of length $L$ has at most $\lfloor \frac{L}{2} \rfloor$ red clusters, and hence at most $\frac{L}{2}$ red clusters, so summing these results together proves the corollary.
+  As previously discussed, a caterpillar of length $n$ has at most $\frac{2n-2}{3}$ red clusters, since any such caterpillar can be reduced to a caterpillar with at most $2n-2$ vertices by Lemma \ref{lem/reduced-caterpillars}. And Theorem \ref{thm/root-diameter-bound-2} shows that the number of red clusters on the rest of the graph outside of the maximal caterpillar of length $L$ has at most $\lfloor \frac{L}{2} - 1 \rfloor$ red clusters, and hence at most $\frac{L}{2} - 1$ red clusters, so summing these results together proves the corollary.
 \end{proof}
 
 This corollary leads to a potentially useful heuristic for the maximum number of red clusters in a tree, without performing any explicit colouring. Indeed, Corollary \ref{cor/diameter_bound_full} only requires computing the diameter of a given tree, which can be computed in O($|V|$) time. However, this method assumes that colouring the maximal caterpillar first maximises the total number of red clusters in the tree, which may not be the case.
+
+This heuristic, however, can be improved further. In particular, this heuristic makes the assumption that the trees outside the maximal caterpillar retain the same size until the caterpillar is completed, whereas in reality vertices within these trees will start burning the round after their root is burned. Therefore, after burning a root vertex, we need to consider the minimum number of rounds to burn the remainder of the caterpillar.
+
+\begin{corollary}
+  \label{cor/min_rounds_caterpillar}
+  Given a maximal caterpillar $C_G$ with length $L$, and index its path vertices from $1$ to $L$, where vertex $1$ is coloured first when colouring a caterpillar. After colouring the leaf vertex $v$ adjacent to path vertex $n$, the minimum number of rounds required to burn the rest of the caterpillar is at least $\lceil \frac{L-n-3}{8} \rceil + 1$.
+\end{corollary}
+\begin{proof}
+First, since we colour a caterpillar by splitting it into pieces containing at most 3 path vertices, and colouring this piece before colouring the remainder, then at most 3 path vertices ahead of $v$ can be coloured - at most 2 other vertices in the same piece as $v$, and potentially one more in the next piece, if the ending constraints $B$ or $R$ are chosen. So the number of remaining path vertices is at least $L - n - 3$.
+
+To colour the remainder of the graph, we colour the path vertices adjacent to the left and right endpoint of the unburned section respectively. This means that at most 8 path vertices are burned per round, since the fire from these path vertices can spread inwards in both directions. This then repeats until no path vertices are remaining. At this point, some leaf vertices may still be unburned, but these will all be burned within one round. Therefore the minimum number of rounds required is at most $\lceil \frac{L-n-3}{8} \rceil + 1$, proving the corollary.
+\end{proof}
+
+An important remark of this corollary is that moving over one leaf vertex, going from position $n$ to position $n+1$, reduces the minimum number of rounds required by at most 1. And since the maximum rooted diameter of a tree rooted at a leaf at position $n+1$ is at most 1 more than that rooted at position $n$, the tree with maximum possible rooted diameter is still always found at the saame position as before.
+
+From this result, Theorem \ref{thm/root-diameter-bound-2} can be updated further:
+
+\begin{theorem}
+  \label{thm/root-diameter-bound-3}
+  
+  Consider a partial colouring of $G$ as produced by the above procedure, with a maximal caterpillar of length $L$ (hence $G$ has diameter $L$), and the forest of unburned vertices $F$ comprised of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is at most $\lfloor \frac{7L-26}{6} \rfloor$.
+  
+  \end{theorem}
+
+  Then in a similar manner, this theorem leads to updated bounds for Corollary \ref{cor/diameter_bound_full}:
+
+\begin{corollary}
+\label{cor/diameter_bound_full_2}
+    % i've slipped up somewhere, since this is greater than the last bound for large enough L
+Given a tree $G$ with diameter $L$, which is coloured by first colouring its maximal caterpillar $C_G$, the maximum number of red clusters on $G$ is at most $\frac{11L-30}{6}$.
+
+\end{corollary}
+
+
+
 
 {\bf Acknowledgments.}
 Firstly, I would like to thank my supervisors - Jessica Enright, William Pettersson and John Sylvester - for their continual guidance and support throughout the project. I would also like to thank my parents, for always caring for me, and supporting my goals when I thought they could never be attained. And, last but not least, I would like to thank my girlfriend Jodie, for her never-ending love and kindness.
