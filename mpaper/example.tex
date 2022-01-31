@@ -165,7 +165,7 @@ We now consider a natural extension of paths, and provide a method for counting 
 \begin{definition}
   \label{def/caterpillars}
 
-  A \emph{caterpillar graph} is a graph obtained by taking a path, and adding any number of vertices of degree 1 (known as leaves), that are adjacent to a vertex on the original path.
+  A \emph{caterpillar graph} is a graph obtained by taking a path, known as the \emph{spine} of a caterpillar graph, and adding any number of vertices of degree 1 (known as leaves), that are adjacent to a vertex on the original spine.
 
 \end{definition}
 
@@ -174,7 +174,7 @@ In order to count clusters on caterpillar graphs, it will be useful to introduce
 \begin{definition}
   \label{def/caterpillar-strings}
 
-  Given a caterpillar graph built on a path with $n$ vertices, its \emph{caterpillar string} is a sequence $C \in \mathbb{N}^n$ of the form $(c_1, \dots, c_n)$, where $c_i$ denotes the number of leaves adjacent to the $i^{th}$ path vertex. For instance, the caterpillar string $(1,0,2,3)$ represents the caterpillar graph shown in Figure [INSERT A PICTURE HERE].
+  Given a caterpillar graph built on a spine with $n$ vertices, its \emph{caterpillar string} is a sequence $C \in \mathbb{N}^n$ of the form $(c_1, \dots, c_n)$, where $c_i$ denotes the number of leaves adjacent to the $i^{th}$ spine vertex. For instance, the caterpillar string $(1,0,2,3)$ represents the caterpillar graph shown in Figure [INSERT A PICTURE HERE].
 
 \end{definition}
 
@@ -197,11 +197,11 @@ Clearly, there are a countably infinite number of caterpillar strings of length 
 
 \begin{proof}
 
-For the first reduction, suppose a given path vertex $v_i$ has at least $2$ adjacent leaves. Pick two of these leaves without loss of generality, calling them $l_1$ and $l_2$, and consider the subgraph induced by $v_i$, $l_1$ and $l_2$.
+For the first reduction, suppose a given spine vertex $v_i$ has at least $2$ adjacent leaves. Pick two of these leaves without loss of generality, calling them $l_1$ and $l_2$, and consider the subgraph induced by $v_i$, $l_1$ and $l_2$.
 
-Suppose that this subgraph contains $2$ red clusters. Then both leaves must be coloured red. However, this is only possible when $v_i$ is also red. Since both leaf vertices are not adjacent, 2 rounds are required to colour them both red, and hence the first one coloured red will spread to $v_i$, colouring it red. And if $v_i$ was already coloured blue, it would spread its colour to at least one of $l_1$ and $l_2$, so by contradiction this subgraph can contain at most $1$ red cluster. And since the leaves were chosen without any loss of generality, either no leaves are red, all leaves are red along with their common path vertex, or exactly one leaf is red, so all but one leaf can be removed without changing the overall number of clusters.
+Suppose that this subgraph contains $2$ red clusters. Then both leaves must be coloured red. However, this is only possible when $v_i$ is also red. Since both leaf vertices are not adjacent, 2 rounds are required to colour them both red, and hence the first one coloured red will spread to $v_i$, colouring it red. And if $v_i$ was already coloured blue, it would spread its colour to at least one of $l_1$ and $l_2$, so by contradiction this subgraph can contain at most $1$ red cluster. And since the leaves were chosen without any loss of generality, either no leaves are red, all leaves are red along with their common spine vertex, or exactly one leaf is red, so all but one leaf can be removed without changing the overall number of clusters.
 
-For the second reduction, if one of the endpoints has a leaf, the leaf can be treated as a path vertex rather than a leaf vertex, removing a leaf from the existing endpoint and becoming the new endpoint instead.
+For the second reduction, if one of the endpoints has a leaf, the leaf can be treated as a spine vertex rather than a leaf vertex, removing a leaf from the existing endpoint and becoming the new endpoint instead.
 % maybe a diagram here?
 \end{proof}
 
@@ -216,9 +216,9 @@ Given a reduced caterpillar string, partition this string into pieces of length 
 For each of these pieces, we can easily compute the maximum number of red clusters which originate in this piece, given some starting and ending constraints. These constraints are comprised of 4 distinct cases:
 
 \begin{itemize}
-  \item In case \emph{RW}, when colouring of this piece begins, the first path vertex is white, but the previous adjacent path vertex, which if it exists is not part of this piece, is coloured red.
-  \item Case \emph{BW} is equivalent to case \emph{RW}, except the previous path vertex is blue instead of red. This is also the case applied for the very first piece, in order to ensure that colouring the first path vertex red correctly counts the start of a new red cluster.
-  \item Case \emph{R} is where the first path vertex is already coloured red, since the colouring of the previous piece is not fully contained within that piece.
+  \item In case \emph{RW}, when colouring of this piece begins, the first spine vertex is white, but the previous adjacent spine vertex, which if it exists is not part of this piece, is coloured red.
+  \item Case \emph{BW} is equivalent to case \emph{RW}, except the previous spine vertex is blue instead of red. This is also the case applied for the very first piece, in order to ensure that colouring the first spine vertex red correctly counts the start of a new red cluster.
+  \item Case \emph{R} is where the first spine vertex is already coloured red, since the colouring of the previous piece is not fully contained within that piece.
   \item Case \emph{B} is analogous to case \emph{R}.
 \end{itemize}
 
@@ -226,7 +226,7 @@ These cases are defined for the start of a piece, but the ending constraints are
 
 Since these pieces are small, each of these computations is small and relatively simple to perform. For each piece, this then produces a weighted directed bipartite graph $G_P$, with vertex set $\{RW_{start}, BW_{start}, R_{start}, B_{start}, \\ RW_{end}, BW_{end}, R_{end}, B_{end}\}$, such that an edge exists from $X_{start}$ to $Y_{end}$ if there exists a colouring of piece $P$ with starting constraint $X$ and ending constraint $P$, with weight equal to the number of clusters originating in $P$.
 
-Once all of these bipartite graphs are computed, the ending vertices of each piece can be merged with the starting vertices of the next piece, along with adding in a common source and sink vertex, removing every case bar case \emph{BW} from the first piece, generating a directed acyclic multipartite graph $G$. Then, the maximum number of red clusters on the reduced caterpillar graph is equal to the length of the longest path in $G$.
+Once all of these bipartite graphs are computed, the ending vertices of each piece can be merged with the starting vertices of the next piece, along with adding in a common source and sink vertex, removing every case bar case \emph{BW} from the first piece, generating a directed acyclic multipartite graph $G$. Then, the maximum number of red clusters on the reduced caterpillar graph is equal to the length of the longest spine in $G$.
 
 For future reference, we shall summarise this algorithm below:
 
@@ -300,14 +300,14 @@ In conjunction with Corollary \ref{cor/path-clusters}, the previous lemma presen
 
 \subsection*{Counting monochromatic components in trees}
 
-Compared to our previous work on paths and caterpillar trees, trees present some unique challenges when counting monochromatic components. In particular, our strategies for colouring paths and caterpillar trees generally rely on being able to limit the spread of vertices, and proceed through the graph in a clear sequence. However, in general trees do not possess a convenient start or end point, so such a sequence is not so clear to find. As a result, rather than the exact results in previous sections, we focus on approximate results for trees, improving on our existing upper bounds. Our first result uses that all trees contain caterpillar graphs:
+Compared to our previous work on paths and caterpillar trees, trees present some unique challenges when counting monochromatic components. In particular, our strategies for colouring paths and caterpillar trees generally rely on being able to limit the spread of vertices, and proceed through the graph in a clear sequence. However, in general trees do not possess a convenient start or end point, so such a sequence is not so clear to find. As a result, rather than the exact results in previous sections, we focus on approximate results for trees, improving on our existing upper bounds. Our first aim is to provide some sort of sequence to a tree, and we start by using that all trees contain a caterpillar graph:
 
 \begin{definition}
   \label{def/maximal-caterpillar}
   Given a tree $T$, the \emph{maximal caterpillar of $T$}, denoted $C_T$, is the subgraph induced by all vertices in the longest path in $T$, along with all vertices which are distance $1$ from said path. If there are multiple longest paths in $T$, the maximal caterpillar of $T$ is induced by the path such that the number of vertices in the caterpillar is maximised.
 \end{definition}
 
-Once this caterpillar has been obtained, this can be coloured to attain a bound on red clusters for $T$:
+Once this caterpillar has been obtained, this can be coloured to attain an initial bound on red clusters for $T$:
 
 \begin{corollary}
   \label{def/tree-caterpillar}
@@ -335,47 +335,38 @@ However, the number of vertices in $B_h$ is $2^{h+1}-1$, so the caterpillar rati
 
 This shows that, while colouring the maximal caterpillar gives a lower bound on the maximum number of red clusters in a tree $G$, an arbitrarily large proportion of the graph is not contained within the maximal caterpillar. Hence, colouring the remainder of $G \setminus C_T$ will be key to obtaining a tighter lower bound on the maximum number of red clusters in $G$.
 
-We first remark that $G \setminus C_T$ must be disconnected, since otherwise $G$ would contain a cycle. In particular, $G \setminus C_T$ is comprised of a set of connected components that are all trees, so an effective approach for colouring trees could be applied recursively by generating successively smaller caterpillars. This suggests one idea for an initial approach:
+We first remark that $G \setminus C_T$ must be disconnected, since otherwise $G$ would contain a cycle. In particular, $G \setminus C_T$ is comprised of a set of connected components that are all trees, so we define $G \setminus C_T := F$ to denote that this subgraph is a forest. Our next aim will be to understand the structure of $F$, and how this structure can be exploited to improve our bounds on the maximum number of red clusters in $T$.
 
-\begin{enumerate}
-  \item Find the maximal caterpillar in $G$, $C_T$, and colour it using our previous techniques.
-  \item Consider the subgraph of $G$ induced by white vertices, say $F$, which is a forest.
-  \item Colour the tree in $F$ with greatest diameter, and repeat until the entire graph is coloured.
-\end{enumerate}
+\subsection{Colouring forests induced by a maximal caterpillar}
+\label{sub/colouring_forests}
 
-This approach must eventually terminate, since each tree in $F$ must have lower diameter than the maximal caterpillar that defined it, or else the longest path defining the maximal caterpillar would contain some vertices in $F$.
-
-
-Moreover, each tree in $F$ is adjacent to exactly one burned vertex - if it were adjacent to two or more burned vertices, this would define a cycle. We now use this fact to define some additional characteristics of each tree in $F$:
+To begin, each tree in $F$ is adjacent to exactly one burned vertex - if it were adjacent to two or more burned vertices, this would define a cycle. We now use this fact to define some additional characteristics of each tree in $F$:
 
 \begin{definition}
 \label{def/roots}
 
-Given a tree $T$ in $F$, a subgraph of a graph $G$, the \emph{root} of a tree, denoted $r_T$, is the vertex which is adjacent to an already burned vertex in $G$. The root is \emph{red-adjacent} if this burned vertex is red, with an analogous definition for a \emph{blue-adjacent} root. In addition, the \emph{rooted diameter} of $T$ is given by:
-
-\begin{equation*}
-rd(T) = 1 + \max_{v \in V(T)} d(r_{T},v)
-\end{equation*} 
+Given a tree $T$ in $F$, a subgraph of a graph $G$ induced by a maximal caterpillar $C_G$, the \emph{root} of a tree, denoted $r_T$, is the vertex which is adjacent to a vertex on $C_G$. The root is \emph{red-adjacent} if this vertex is red, with an analogous definition for a \emph{blue-adjacent} root. In addition, the \emph{size} of $T$ is given by: $$s(T) = 1 + \max_{v \in V(T)} d(r_{T},v)$$, 
+ 
 
 \end{definition}
 
-From these definitions, it is apparent that, without choosing any vertices in $T$ to burn, any tree $T$ will be fully burned in $rd(T)$ rounds. As a corollary to this, the maximum number of clusters originating in $T$ is at most $rd(T)$. This provides an initial upper bound on the maximum number of red clusters in the graph $G$:
+From these definitions, it is apparent that, without choosing any vertices in $T$ to burn, any tree $T$ will be fully burned in $s(T)$ rounds. As a corollary to this, the maximum number of clusters originating in $T$ is at most $s(T)$. This provides an initial upper bound on the maximum number of red clusters in the graph $G$:
 
 \begin{corollary}
 \label{cor/root-diameter-bound-1}
-Consider a partial colouring of $G$ as produced by the above procedure, and the forest of unburned vertices $F$ comprised of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is at most $$\max_{T \in \mathcal{T}} rd(T)$$
+Consider a partial colouring of $G$ as produced by the above procedure, and the forest of unburned vertices $F$ comprised of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is at most $$\max_{T \in \mathcal{T}} s(T)$$
 \end{corollary}
 
-Since this bound only considers the maximum rooted distance of any tree, this can allow for significant simplification when considering many trees in a forest, particularly for small rooted distances. For instance, if every tree has rooted diameter $1$, then every tree will be fully burned after 1 round. Therefore at most 1 cluster can be created, so as long as at least one tree has a blue-adjacent root.
+Since this bound only considers the maximum size of any tree, this can allow for significant simplification when considering many trees in a forest, particularly for small size. For instance, if every tree has size $1$, then every tree will be fully burned after 1 round. Therefore at most 1 cluster can be created, so as long as at least one tree has a blue-adjacent root.
 
-Since the caterpillar in $G$ was chosen to be maximal, this also imposes additional constraints on the rooted diameter of trees in $F$. This constraint relies on the underlying caterpillar providing a sequential structure to the tree, as described in the following definition:
+Since the caterpillar in $G$ was chosen to be maximal, this also imposes additional constraints on the size of trees in $F$. This constraint relies on the underlying caterpillar providing a sequential structure to the tree, as described in the following definition:
 
 \begin{definition}
 \label{def/tree-distance}
-Given a tree $G$ with a maximal caterpillar $C_G$, denoting the endpoints of the caterpillar as vertices $s$ and $e$, the \emph{caterpillar distance} of any leaf vertex $v$ on $C_G$, denoted $cd(v)$, equal to the length of the shortest path from $v$ to an endpoint of the longest path contained in $C_G$, minus 2.
+Given a tree $G$ with a maximal caterpillar $C_G$, denoting the endpoints of the caterpillar as vertices $s$ and $e$, the \emph{caterpillar distance} of any leaf vertex $v$ on $C_G$, denoted $cd(v)$, is equal to the length of the shortest path from $v$ to an endpoint of the spine of $C_G$, minus 2.
 \end{definition}
 
-Once this notion of distance to a caterpillar endpoint is defined, the maximal nature of this caterpillar implies constraints on the size of trees in the resulting forest $\mathcal{F}$:
+We mark that subtracting 2 from the caterpillar distance is necessary in order to removepOnce this notion of distance to a caterpillar endpoint is defined, the maximal nature of this caterpillar implies constraints on the size of trees in the resulting forest $\mathcal{F}$:
 
 \begin{lemma}
 \label{def/tree-size-constraint}
@@ -386,9 +377,9 @@ For each tree $T$ in a forest $\mathcal{F}$ induced by the maximal caterpillar $
 
 If this constraint does not hold for some tree $T$, then the longest path in the tree $G$ would travel through $T$, so our caterpillar $C_G$ would not be maximal.
 
-An important subtlety in this lemma is that the caterpillar distance of a vertex is only defined for leaf vertices on $C_G$. If there existed a tree in $G \setminus C_G$, rooted to some non-leaf vertex $v$ in $C_G$, then any vertices in the tree adjacent to $v$ could be added to $C_G$ as leaf vertices, contradicting that $C_G$ is rational, so any such tree must be rooted to a path vertex.
+An important subtlety in this lemma is that the caterpillar distance of a vertex is only defined for leaf vertices on $C_G$. If there existed a tree in $G \setminus C_G$, rooted to some spine vertex $v$ in $C_G$, then any vertices in the tree adjacent to $v$ could be added to $C_G$ as leaf vertices, contradicting that $C_G$ is maximal, so any such tree must be rooted to a leaf vertex.
 
-Combining this lemma with Corollary \ref{cor/root-diameter-bound-1}, along with the maximal distance from a path vertex to a caterpillar endpoint, gives another key bound for the number of clusters in $\mathcal{F}$:
+Combining this lemma with Corollary \ref{cor/root-diameter-bound-1}, along with the maximal distance from a spine vertex to a caterpillar endpoint, gives another key bound for the number of clusters in $\mathcal{F}$:
 
 \begin{theorem}
 \label{thm/root-diameter-bound-2}
@@ -417,12 +408,12 @@ This heuristic, however, can be improved further. In particular, this heuristic 
 
 \begin{corollary}
   \label{cor/min_rounds_caterpillar}
-  Given a maximal caterpillar $C_G$ with length $L$, and index its path vertices from $1$ to $L$, where vertex $1$ is coloured first when colouring a caterpillar. After colouring the leaf vertex $v$ adjacent to path vertex $n$, the minimum number of rounds required to burn the rest of the caterpillar is at least $\lceil \frac{L-n-3}{6} \rceil + 1$.
+  Given a maximal caterpillar $C_G$ with length $L$, and index its spine vertices from $1$ to $L$, where vertex $1$ is coloured first when colouring a caterpillar. After colouring the leaf vertex $v$ adjacent to spine vertex $n$, the minimum number of rounds required to burn the rest of the caterpillar is at least $\lceil \frac{L-n-3}{6} \rceil + 1$.
 \end{corollary}
 \begin{proof}
-First, since we colour a caterpillar by splitting it into pieces containing at most 3 path vertices, and colouring this piece before colouring the remainder, then at most 3 path vertices ahead of $v$ can be coloured - at most 2 other vertices in the same piece as $v$, and potentially one more in the next piece, if the ending constraints $B$ or $R$ are chosen. So the number of remaining path vertices is at least $L - n - 3$.
+First, since we colour a caterpillar by splitting it into pieces containing at most 3 spine vertices, and colouring this piece before colouring the remainder, then at most 3 spine vertices ahead of $v$ can be coloured - at most 2 other vertices in the same piece as $v$, and potentially one more in the next piece, if the ending constraints $B$ or $R$ are chosen. So the number of remaining spine vertices is at least $L - n - 3$.
 
-To colour the remainder of the graph, we colour the path vertices adjacent to the left and right endpoint of the unburned section respectively. This means that at most 6 path vertices are burned per round, since the fire from these path vertices can spread in both directions. This then repeats with the remaining unburned section of the path until no path vertices are remaining. At this point, some leaf vertices may still be unburned, but these will all be burned within one round. Therefore the minimum number of rounds required is at most $\lceil \frac{L-n-3}{6} \rceil + 1$, proving the corollary.
+To colour the remainder of the graph, we colour the spine vertices adjacent to the left and right endpoint of the unburned section respectively. This means that at most 6 spine vertices are burned per round, since the fire from these spine vertices can spread in both directions. This then repeats with the remaining unburned section of the spine until no spine vertices are remaining. At this point, some leaf vertices may still be unburned, but these will all be burned within one round. Therefore the minimum number of rounds required is at most $\lceil \frac{L-n-3}{6} \rceil + 1$, proving the corollary.
 \end{proof}
 
 An important remark of this corollary is that moving over one leaf vertex, going from position $n$ to position $n+1$, reduces the minimum number of rounds required by at most 1. And since the maximum rooted diameter of a tree rooted at a leaf at position $n+1$ is at most 1 more than that rooted at position $n$, the tree with maximum possible rooted diameter is still always found at the saame position as before.
