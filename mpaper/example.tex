@@ -436,7 +436,41 @@ Given a tree $G$ with diameter $L$, which is coloured by first colouring its max
 
 \end{corollary}
 
+We now move onto colouring graphs containing cycles, starting with cactus graphs.
 
+\section{Colouring cactus graphs}
+\label{sec/cactus_colouring}
+
+First, we provide a definition for cactus graphs:
+
+\begin{definition}
+  \label{def/cactus_graphs}
+
+  A \emph{cactus graph}, sometimes known as a cactus tree, is a connected graph where each edge is contained in at most one simple cycle. Equivalently, it is also a connected graph where each simple cycle has at most one vertex in common. 
+\end{definition}
+
+At first glance, the term "cactus tree" is somewhat counter-intuitive, since the defining feature of a tree is the absence of cycles. However, since [not quite sure how to justify this], an intuitive perspective on cactus graphs is to consider them as a tree structure of cycles, providing the key motivation for our work with cactus graphs.
+
+In particular, our initial aim will be to find a natural method of transforming cactus graphs into trees, such that our work in Section \ref{sub/colouring_forests} may be applied. One initial suggestion is to remove each cycle by contracting all edges in the cycle, effectively shrinking down each cycle to a single point. This method will certainly produce a tree, but particularly when the cactus graph contains large cycles, this method removes the notion of distance between two vertices on the same cycle, when this distance may be significant in creating clusters on the resulting tree.
+
+As previously discussed, one of the most important characteristics to consider when colouring a tree is the tree's diameter, so any transformation of a cactus graph should aim to preserve the graph's diameter, such that the path defining the cactus graph's diameter will serve as the spine for the resulting tree's maximal caterpillar after transformation. This operation, known as \emph{cycle folding}, is described in the following definition:
+
+\begin{definition}
+\label{def/cycle-folding}
+
+% this needs fixing, will probably rephrase this in terms of a map?
+
+Given a cactus graph $\mathcal{C}$, and a cycle $C$ in $\mathcal{C}$ with start vertices $s$ and an end vertex $e$, the \emph{cycle folding} of $\mathcal{C}$, denoted $\mathcal{C}_{s, e}$, is the graph produced by the following operation:
+
+\begin{itemize}
+  \item Define $P_{s,e}$ as the shortest path between $s$ and $e$ in $C$, including both endpoints.
+  \item For each vertex $v$ in $C \setminus P_{s,e}$, merge $v$ with the corresponding vertex $p$ in $P_{s,e}$ with $d(v,s) = d(p,s$).
+  \item If any vertices in $C \setminus P_{s,e}$ have not been merged, remove these vertices along with...
+\end{itemize}
+
+\end{definition}
+
+Note that, since each simple cycle has at most one vertex in common, our choice of $s$ and $e$ uniquely determines the cycle to be folded, hence the notation $\mathcal{C}_{s,e}$ need not explicitly mention the cycle to be folded.
 
 
 {\bf Acknowledgments.}
