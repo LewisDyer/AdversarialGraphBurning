@@ -460,18 +460,44 @@ As previously discussed, one of the most important characteristics to consider w
 
 % this needs fixing, will probably rephrase this in terms of a map?
 
-Given a cactus graph $\mathcal{C}$, and a cycle $C$ in $\mathcal{C}$ with start vertices $s$ and an end vertex $e$, the \emph{cycle folding} of $\mathcal{C}$, denoted $\mathcal{C}_{s, e}$, is the graph produced by the following operation:
+Given a cactus graph $\mathcal{C}$, and a cycle $C$ in $\mathcal{C}$ with start vertices $s$ and an end vertex $e$, the \emph{cycle folding} of $\mathcal{C}$ with respect to $s$ and $e$ is the graph produced by the following operation:
 
 \begin{itemize}
   \item Define $P_{s,e}$ as the shortest path between $s$ and $e$ in $C$, including both endpoints.
   \item For each vertex $v$ in $C \setminus P_{s,e}$, merge $v$ with the corresponding vertex $p$ in $P_{s,e}$ with $d(v,s) = d(p,s$).
-  \item If any vertices in $C \setminus P_{s,e}$ have not been merged, remove these vertices along with...
+  \item If any vertices in $C \setminus P_{s,e}$ have not been merged, remove these vertices along with the subgraph rooted at this vertex which is not contained in $C$.
 \end{itemize}
 
 \end{definition}
 
 Note that, since each simple cycle has at most one vertex in common, our choice of $s$ and $e$ uniquely determines the cycle to be folded, hence the notation $\mathcal{C}_{s,e}$ need not explicitly mention the cycle to be folded.
 
+The following procedure describes a reduction from a cactus graph to a tree, by repeatedly applying cycle folding:
+
+\begin{definition}
+  The \emph{cactus reduction} of a cactus graph $\mathcal{C}$ is the tree $T$ resulting from the following procedure:
+
+  \begin{enumerate}
+    \item Determine the diameter of $\mathcal{C}$, and let $P$ be the path between the endpoints $u$ and $v$ that define the diameter.
+    \item For every vertex in $P$ contained in some cycle $C$, determine the first and last vertex in $P$ contained in $C$, and label them $s$ and $e$ respectively. Perform cycle folding on $\mathcal{C}$ with respect to $s$ and $e$.
+    \item For any remaining subgraphs of $\mathcal{C}$ containing cycles, perform the same procedure, fixing one of the endpoints of $P$ to the vertex that has already been mapped at a previous step.
+  \end{enumerate}
+\end{definition}
+
+Our main motivation for introducing cycle folding is to transform a cactus graph into a tree while maintaining its diameter, so our next step is to check this property holds.
+
+\begin{theorem}
+  \label{thm/cactus-reduction-diameter}
+
+  Given a cactus graph $\mathcal{C}$ with diameter $d$, the resulting tree $T$ after cactus reduction also has diameter $d$.
+\end{theorem}
+
+\begin{proof}
+  
+  First, consider the path $P$ between endpoints $u$ and $v$ defining the diameter of $\mathcal{C}$. In particular, if an edge in $P$ between two vertices, say $x_i$ and $x_{i+1}$, is not contained in a cycle, then cycle folding does not change this edge, so the distance between $x_i$ and $x_{i+1}$ is unchanged.
+
+  Now if an edge in $P$ is contained in a cycle, consider $P_{s,e}$ as in Definition \ref{def/cycle-folding}, where $s$ and $e$ are vertices in $P$ representing the start and end of the cycle respectively. Since we merge every vertex in $P_{s,e}$ with some other vertex in the cycle, the distance between $s$ and $e$ is unchanged. Therefore, after cactus reduction, the distance between $u$ and $v$ is unchanged, so the diameter of $T$ is at least $d$.
+\end{proof}
 
 {\bf Acknowledgments.}
 Firstly, I would like to thank my supervisors - Jessica Enright, William Pettersson and John Sylvester - for their continual guidance and support throughout the project. I would also like to thank my parents, for always caring for me, and supporting my goals when I thought they could never be attained. And, last but not least, I would like to thank my girlfriend Jodie, for her never-ending love and kindness.
