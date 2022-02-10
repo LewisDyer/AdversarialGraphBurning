@@ -135,7 +135,7 @@ A useful question in the 2-player graph burning problem is to consider the maxim
   
 \end{proof}
 
-\section{Counting Monochromatic Components}
+\section{Colouring Caterpillar Graphs}
 
 \subsection{Monochromatic components on paths}
 
@@ -298,7 +298,8 @@ In the context of 2-player graph burning, this means that any instance of 2-play
 
 In conjunction with Corollary \ref{cor/path-clusters}, the previous lemma presents a surprising fact: Since the maximum number of clusters on a path is $\lceil \frac{n}{3} \rceil$, and $\lceil \frac{n}{4}\rceil$ on a cycle, adding a single edge can reduce the maximum possible number of clusters on a graph by an arbitrary amount. This suggests that the diameter of a graph is important.
 
-\subsection*{Counting monochromatic components in trees}
+\section{Colouring Trees}
+\label{sec/trees}
 
 Compared to our previous work on paths and caterpillar trees, trees present some unique challenges when counting monochromatic components. In particular, our strategies for colouring paths and caterpillar trees generally rely on being able to limit the spread of vertices, and proceed through the graph in a clear sequence. However, in general trees do not possess a convenient start or end point, so such a sequence is not so clear to find. As a result, rather than the exact results in previous sections, we focus on approximate results for trees, improving on our existing upper bounds. Our first aim is to provide some sort of sequence to a tree, and we start by using that all trees contain a caterpillar graph:
 
@@ -310,7 +311,7 @@ Compared to our previous work on paths and caterpillar trees, trees present some
 Once this caterpillar has been obtained, this can be coloured to attain an initial bound on red clusters for $T$:
 
 \begin{corollary}
-  \label{def/tree-caterpillar}
+  \label{cor/tree-caterpillar}
   Given a tree $T$, the maximum number of red clusters on $T$ is at least as many as the maximum number of red clusters on $C_T$.
 \end{corollary}
 
@@ -494,10 +495,27 @@ Our main motivation for introducing cycle folding is to transform a cactus graph
 
 \begin{proof}
   
-  First, consider the path $P$ between endpoints $u$ and $v$ defining the diameter of $\mathcal{C}$. In particular, if an edge in $P$ between two vertices, say $x_i$ and $x_{i+1}$, is not contained in a cycle, then cycle folding does not change this edge, so the distance between $x_i$ and $x_{i+1}$ is unchanged.
+First, consider the path $P$ between endpoints $u$ and $v$ defining the diameter of $\mathcal{C}$. In particular, if an edge in $P$ between two vertices, say $x_i$ and $x_{i+1}$, is not contained in a cycle, then cycle folding does not change this edge, so the distance between $x_i$ and $x_{i+1}$ is unchanged.
 
-  Now if an edge in $P$ is contained in a cycle, consider $P_{s,e}$ as in Definition \ref{def/cycle-folding}, where $s$ and $e$ are vertices in $P$ representing the start and end of the cycle respectively. Since we merge every vertex in $P_{s,e}$ with some other vertex in the cycle, the distance between $s$ and $e$ is unchanged. Therefore, after cactus reduction, the distance between $u$ and $v$ is unchanged, so the diameter of $T$ is at least $d$.
+Now if an edge in $P$ is contained in a cycle, consider $P_{s,e}$ as in Definition \ref{def/cycle-folding}, where $s$ and $e$ are vertices in $P$ representing the start and end of the cycle respectively. Since we merge every vertex in $P_{s,e}$ with some other vertex in the cycle, the distance between $s$ and $e$ is unchanged. Therefore, after cactus reduction, the distance between $u$ and $v$ is unchanged, so the diameter of $T$ is at least $d$.
+
+% this step is very rough at the moment, but I think it's the right idea?
+Moreover, since the distance between specified endpoints in each cycle is maintained by cycle folding, it cannot be the case that any pair of vertices $x$ and $y$ move further apart after cycle folding. Since the maximum distance between any pair of points in $\mathcal{C}$ is $d$, the diameter of $T$ is at most $d$, proving the theorem.
 \end{proof}
+
+As discussed in Section \ref{sec/trees}, when colouring trees, the optimal number of monochromatic components in a tree is closely connected to a tree's diameter. In cactus reduction, we have provided a method for transforming a cactus graph into a tree with the same diameter, allowing us to additionally exploit this connection for cactus graphs. We now aim to show the analogue to Corollary \ref{cor/tree-caterpillar}, to show that colouring the cactus reduction of $\mathcal{C}$ can be suitably extended to the whole of $\mathcal{C}$.
+
+\begin{corollary}
+\label{cor/colouring-extension}
+
+Given a valid colouring of $T$, the cactus reduction of $\mathcal{C}$, this is also a (not necessarily complete) valid colouring on $\mathcal{C}$.
+\end{corollary}
+
+\begin{proof}
+% extremely, extremely rough
+Given any two vertices in $T$, $s$ and $t$ such that $d(s,t)=x$ for some $x$, the preimages of $s$ and $t$ must be at least distance $x$ apart in $\mathcal{C}$, with similar reasoning to the final part of the proof of Theorem \ref{thm/cactus-reduction-diameter}.
+\end{proof}
+
 
 {\bf Acknowledgments.}
 Firstly, I would like to thank my supervisors - Jessica Enright, William Pettersson and John Sylvester - for their continual guidance and support throughout the project. I would also like to thank my parents, for always caring for me, and supporting my goals when I thought they could never be attained. And, last but not least, I would like to thank my girlfriend Jodie, for her never-ending love and kindness.
