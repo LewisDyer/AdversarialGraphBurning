@@ -500,7 +500,7 @@ First, consider the path $P$ between endpoints $u$ and $v$ defining the diameter
 Now if an edge in $P$ is contained in a cycle, consider $P_{s,e}$ as in Definition \ref{def/cycle-folding}, where $s$ and $e$ are vertices in $P$ representing the start and end of the cycle respectively. Since we merge every vertex in $P_{s,e}$ with some other vertex in the cycle, the distance between $s$ and $e$ is unchanged. Therefore, after cactus reduction, the distance between $u$ and $v$ is unchanged, so the diameter of $T$ is at least $d$.
 
 % this step is very rough at the moment, but I think it's the right idea?
-Moreover, since the distance between specified endpoints in each cycle is maintained by cycle folding, it cannot be the case that any pair of vertices $x$ and $y$ move further apart after cycle folding. Since the maximum distance between any pair of points in $\mathcal{C}$ is $d$, the diameter of $T$ is at most $d$, proving the theorem.
+Moreover, since the distance between specified endpoints in each cycle is maintained by cycle folding, it cannot be the case that any pair of vertices $x$ and $y$ move further apart after cycle folding, since no new edges are added, and vertices which were adjacent in $\mathcal{C}$ are also adjacent in $T$. Since the maximum distance between any pair of points in $\mathcal{C}$ is $d$, the diameter of $T$ is at most $d$, proving the theorem.
 \end{proof}
 
 As discussed in Section \ref{sec/trees}, when colouring trees, the optimal number of monochromatic components in a tree is closely connected to a tree's diameter. In cactus reduction, we have provided a method for transforming a cactus graph into a tree with the same diameter, allowing us to additionally exploit this connection for cactus graphs. We now aim to show the analogue to Corollary \ref{cor/tree-caterpillar}, to show that colouring the cactus reduction of $\mathcal{C}$ can be suitably extended to the whole of $\mathcal{C}$.
@@ -516,6 +516,17 @@ Given a valid colouring of $T$, the cactus reduction of $\mathcal{C}$, this is a
 Given any two vertices in $T$, $s$ and $t$ such that $d(s,t)=x$ for some $x$, the preimages of $s$ and $t$ must be at least distance $x$ apart in $\mathcal{C}$, with similar reasoning to the final part of the proof of Theorem \ref{thm/cactus-reduction-diameter}.
 \end{proof}
 
+From this corollary, we obtain an initial method for colouring a cactus graph $\mathcal{C}$:
+
+\begin{itemize}
+  \item Perform cactus reduction on $\mathcal{C}$ to obtain a tree $T$ with the same diameter.
+  \item Find a maximal caterpillar $C$ in $T$, whose spine is given by a path between two vertices defining the diameter of $T$.
+  \item Represent this caterpillar as a string as described in Definition \ref{def/caterpillar-strings}, and then perform caterpillar reduction as in Lemma \ref{lem/reduced-caterpillars} to obtain a reduced caterpillar string.
+  \item Using the procedure described in Definition \ref{def/caterpillar-algorithm}, colour the caterpillar represented by the given reduced caterpillar string.
+  \item Apply this colouring to the maximal caterpillar $C$.
+  \item Apply this colouring to the tree $T$, while also using Theorem \ref{thm/root-diameter-bound-3} to bound the number of clusters on $T \setminus C$.
+  \item Apply the resulting colouring to the cactus graph $\mathcal{C}$.
+\end{itemize}
 
 {\bf Acknowledgments.}
 Firstly, I would like to thank my supervisors - Jessica Enright, William Pettersson and John Sylvester - for their continual guidance and support throughout the project. I would also like to thank my parents, for always caring for me, and supporting my goals when I thought they could never be attained. And, last but not least, I would like to thank my girlfriend Jodie, for her never-ending love and kindness.

@@ -133,10 +133,13 @@ def combine_graphs(pieces, subgraphs):
 
     pos = nx.multipartite_layout(full_graph, subset_key="layer")
     nx.draw(full_graph, pos, with_labels=True)
+
+    edge_labels=dict([((u,v,),d['weight']) for u,v,d in full_graph.edges(data=True)])
+    nx.draw_networkx_edge_labels(full_graph,pos,edge_labels=edge_labels)
     plt.show()
 
     return(full_graph)
 
 if __name__ == '__main__':
     # 01011100
-    count_clusters("01011100")
+    count_clusters("0001011010010")
