@@ -465,8 +465,8 @@ Given a cactus graph $\mathcal{C}$, and a cycle $C$ in $\mathcal{C}$ with start 
 
 \begin{itemize}
   \item Define $P_{s,e}$ as the shortest path between $s$ and $e$ in $C$, including both endpoints.
-  \item For each vertex $v$ in $C \setminus P_{s,e}$, merge $v$ with the corresponding vertex $p$ in $P_{s,e}$ with $d(v,s) = d(p,s$).
-  \item If any vertices in $C \setminus P_{s,e}$ have not been merged, remove these vertices along with the subgraph rooted at this vertex which is not contained in $C$.
+  \item For each vertex $v$ in $C \setminus P_{s,e}$, identify $v$ with the corresponding vertex $p$ in $P_{s,e}$ with $d(v,s) = d(p,s$).
+  \item If any vertices in $C \setminus P_{s,e}$ have not been identified with another vertex, remove these vertices along with the subgraph rooted at this vertex which is not contained in $C$.
 \end{itemize}
 
 \end{definition}

@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex example"] 1644494841 "example.aux" "example.bbl" "example" 1644849033
+["bibtex example"] 1644494841 "example.aux" "example.bbl" "example" 1644920727
   "C:/Users/Lewis/AppData/Local/Programs/MiKTeX/bibtex/bst/bibtex/abbrv.bst" 1291864736 20329 b5fed53e10044d0f8112183785c759b1 ""
-  "example.aux" 1644848636 5693 63dd80be328120c853c6e0c5c3e254bc "pdflatex"
+  "example.aux" 1644920727 5693 63dd80be328120c853c6e0c5c3e254bc "pdflatex"
   "example.bib" 1634540663 524 b0795d3d831f12fc23fb7c43bf25d7a3 ""
   (generated)
   "example.blg"
   "example.bbl"
-["pdflatex"] 1644848635 "e:/Level 5/AdversarialGraphBurning/mpaper/example.tex" "e:/Level 5/AdversarialGraphBurning/mpaper/example.pdf" "example" 1644849033
+["pdflatex"] 1644920725 "e:/Level 5/AdversarialGraphBurning/mpaper/example.tex" "e:/Level 5/AdversarialGraphBurning/mpaper/example.pdf" "example" 1644920727
   "C:/Users/Lewis/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1601457415 10020124 075e6606d03103c915904faa8a5339ce ""
   "C:/Users/Lewis/AppData/Local/MiKTeX/pdftex/config/pdftex.map" 1641728870 279423 19f22bd235481a1f56e475b67e8924bc ""
   "C:/Users/Lewis/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -132,17 +132,17 @@
   "C:/Users/Lewis/AppData/Local/Programs/MiKTeX/tex/latex/tools/array.sty" 1580644884 12560 ce3f59ceae9d9a27bfe037d6bf1d903c ""
   "C:/Users/Lewis/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "CompSci_colour.pdf" 1634540663 28075 c76557abb17c39d627f34723eeeb3731 ""
-  "e:/Level 5/AdversarialGraphBurning/mpaper/example.aux" 1644848636 5693 63dd80be328120c853c6e0c5c3e254bc ""
-  "e:/Level 5/AdversarialGraphBurning/mpaper/example.tex" 1644849031 45152 1bc167f45b062d9856da4e9835fef1dc ""
-  "example.aux" 1644848636 5693 63dd80be328120c853c6e0c5c3e254bc "pdflatex"
+  "e:/Level 5/AdversarialGraphBurning/mpaper/example.aux" 1644920727 5693 63dd80be328120c853c6e0c5c3e254bc ""
+  "e:/Level 5/AdversarialGraphBurning/mpaper/example.tex" 1644920724 45179 19d773e278459be3db27a9a0cbf6166d ""
+  "example.aux" 1644920727 5693 63dd80be328120c853c6e0c5c3e254bc "pdflatex"
   "example.bbl" 1644494841 52 0eba253fc001332e731e8aba3f23127b "bibtex example"
-  "example.out" 1644848636 1038 c9391485c497f182334e42fc84368d07 "pdflatex"
-  "example.tex" 1644849031 45152 1bc167f45b062d9856da4e9835fef1dc ""
+  "example.out" 1644920727 1038 c9391485c497f182334e42fc84368d07 "pdflatex"
+  "example.tex" 1644920724 45179 19d773e278459be3db27a9a0cbf6166d ""
   "mpaper.cls" 1634540663 51868 1298b74c8ebec131630eb8b5706ada8b ""
   (generated)
+  "example.aux"
   "example.pdf"
   "e:/Level 5/AdversarialGraphBurning/mpaper/example.log"
-  "example.log"
-  "e:/Level 5/AdversarialGraphBurning/mpaper/example.pdf"
   "example.out"
-  "example.aux"
+  "e:/Level 5/AdversarialGraphBurning/mpaper/example.pdf"
+  "example.log"
