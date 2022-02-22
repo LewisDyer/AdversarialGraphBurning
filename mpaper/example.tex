@@ -489,11 +489,12 @@ Our main motivation for introducing cycle folding is to transform a cactus graph
 
 \begin{theorem}
   \label{thm/cactus-reduction-diameter}
-
-  Given a cactus graph $\mathcal{C}$ with diameter $d$, the resulting tree $T$ after cactus reduction also has diameter $d$.
+Cactus reduction preserves diameter.
 \end{theorem}
 
 \begin{proof}
+
+Throughout, take $\mathcal{C}$ to be a cactus graph, and $T$ the corresponding tree after cactus reduction.
   
 First, consider the path $P$ between endpoints $u$ and $v$ defining the diameter of $\mathcal{C}$. In particular, if an edge in $P$ between two vertices, say $x_i$ and $x_{i+1}$, is not contained in a cycle, then cycle folding does not change this edge, so the distance between $x_i$ and $x_{i+1}$ is unchanged.
 
@@ -527,6 +528,22 @@ From this corollary, we obtain an initial method for colouring a cactus graph $\
   \item Apply this colouring to the tree $T$, while also using Theorem \ref{thm/root-diameter-bound-3} to bound the number of clusters on $T \setminus C$.
   \item Apply the resulting colouring to the cactus graph $\mathcal{C}$.
 \end{itemize}
+
+One initial concern with cactus reduction is the potential for information about the graph being lost. For example, given a cycle with endpoints $s$ and $e$, then two paths can be defined betweeh these endpoints within the cycle. If these paths have different lengths, folding this cycle will result in some vertices being lost. This presents a concern that cycle folding cannot find the optimal colouring of the cactus graph. However, the situation is actually even worse - even when both paths between the endpoints are the same length, an optimal solution may not arise from cactus reduction, as the following example shows:
+
+\begin{lemma}
+  Let $M$ be the maximum number of red clusters that can arise from any colouring of a given graph $G$ under the 2-GB process. Then if $G$ is a cactus graph, the maximum number of red clusters on a tree $T$ obtained via cactus reduction on $G$ may be strictly less than $M$.
+\end{lemma}
+
+\begin{proof}
+  Consider $C_100$, which is a cycle graph. Without loss of generality, pick any two vertices $u$ and $v$ such that $d(u,v) = 50$, which is the diameter of $C_100$.
+
+  If cactus reduction is performed, the resulting tree is a path on $51$ vertices. By Corollary \ref{cor/path-clusters}, the maximum number of red clusters attainable on this path is $17$. However, as shown in Lemma \ref{lem/cycle-clusters}, the maximum number of clusters attainable on $C_100$ is actually $25$.
+
+\end{proof}
+
+Indeed, following this example to its logical extreme, cactus reduction can lead to an arbitrarily large number of clusters being removed from the optimal number after cactus reduction. Since a cycle with $n$ vertices contains at most $\lceil \frac{n}{4} \rceil$ red clusters, and a path with $\lfloor \frac{n}{2} \rfloor$ vertices contains at most $\lceil \frac{\lfloor \frac{n}{2} \rfloor}{3} \rceil$ red clusters, then cactus reduction removes at most $\lceil \frac{n}{12} \rceil$ red clusters from this cycle.
+
 
 {\bf Acknowledgments.}
 Firstly, I would like to thank my supervisors - Jessica Enright, William Pettersson and John Sylvester - for their continual guidance and support throughout the project. I would also like to thank my parents, for always caring for me, and supporting my goals when I thought they could never be attained. And, last but not least, I would like to thank my girlfriend Jodie, for her never-ending love and kindness.
