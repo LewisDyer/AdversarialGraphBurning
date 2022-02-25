@@ -1,9 +1,9 @@
 \documentclass{mpaper}
 
-\newtheorem{definition}{Definition}[section]
-\newtheorem{corollary}{Corollary}[section]
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}{Lemma}[section]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
 
 \begin{document}
 
@@ -46,35 +46,52 @@ First, we formalise the process of 2-Player Graph Burning on a graph $G$. Throug
   \item \emph{Green} vertices have been burned by \emph{both} players.
 \end{enumerate}
 
-At time $t=0$, all vertices are initially white. Each round consists of two main steps. First, both players simultaneously choose a white vertex, burning the vertex into that player's respective colour. Secondly, all non-white vertices spread their colour onto adjacent white vertices, according to the following rules:
+At time $t=0$, all vertices are initially white. Each round consists of two main steps. First, both players simultaneously choose a white vertex, burning the vertex into that player's respective colour. Secondly, all non-white vertices, including green vertices, spread their colour onto adjacent white vertices, according to the following rules:
 
 \begin{itemize}
-  \item If a white vertex is burned by multiple vertices, all with the same colour, the white vertex is also burned with the same colour.
+  \item If a white vertex is burned by one or more vertices, all with the same colour, the white vertex is also burned with the same colour.
   \item If a white vertex is burned by both red and blue vertices, the white vertex will become green.
   \item If a white vertex is burned by either red or blue vertices (but not both), and also by green vertices, the white vertex will become red or blue, respectively. 
 \end{itemize}
 
 \end{definition}
 
-In particular, these rules ensure that this process is symmetrical, so the choice of player is unimportant.
+In particular, these rules ensure that this process is symmetrical, so player 1 and player 2 can be interchanged without loss of generality.
 
-Our main interest in this problem will be to count the maximum number of monochromatic components that can appear in any colouring of $G$ resulting from an instance of the 2-GB process. Our definition of "monochromatic components" differs slightly from most other uses of the term, so we define it separately here to account for these differences, and use slightly different terminology to emphasise these differences:
+\subsection{The cluster-counting problem}
+
+Our main interest in this paper will be to count the maximum number of monochromatic components that can appear in any colouring of $G$ resulting from an instance of the 2-GB process. However, since we treat green vertices as being both red and blue simultaneously, defining "red monochromatic components" is somewhat ambiguous, so we modify the 2-GB process slightly to accommodate for this:
 
 \begin{definition}
-  \label{def/clusters}
-
-Given a graph $G$, with an assignment of colours resulting from the 2-GB process, a \emph{red cluster} is a connected component in the subgraph induced by all red and green vertices in $G$. 
-
-We also introduce the restriction that, in the 2-GB process, both players may only choose to burn the same vertex if there are no other remaining white vertices to burn.
+  \label{def/2-GB-modified}
+  
+  The \emph{red-focused} 2-player Graph Burning process is equivalent to the 2-GB process described in \ref{def/2-GB}, with the constraint that no vertices may be coloured green. Instead, if a vertex would ever be coloured green, it is coloured red instead.
 \end{definition}
 
-We note that only red clusters are defined here - blue clusters could of course be defined similarly, though since the 2-GB process is symmetrical we need only define red clusters.
+Throughout this paper, take 2-GB to be the red-focused 2-player Graph Burning process, unless otherwise specified.
 
-In addition, the latter restriction on 2-GB is relatively minor, and mainly aims to remove some degenerate cases when counting red clusters, without needing to explicitly define exceptions for later results.
+After making this modification, we now formally define the main problem discussed:
+
+\begin{definition}
+  \label{def/cluster-counting}
+  CLUSTER-COUNTING-DECISION is a problem determining whether a colouring with a given number of red clusters is attainable on a given graph.
+  
+  \begin{itemize}
+      \item \textbf{Instance}: A graph $G$ and an integer $k$.
+      \item \textbf{Question}: Does there exist a colouring of $G$, arising from the 2-GB process, such that $G$ contains at least $k$ red monochromatic components?
+  \end{itemize}
+  
+  CLUSTER-COUNTING is the corresponding optimisation problem:
+  
+  \begin{itemize}
+      \item \textbf{Instance}: A graph $G$.
+      \item \textbf{Question}: What is the largest integer $k$ such that there exists a colouring of $G$ arising from 2-GB with at least $k$ red monochromatic components?
+  \end{itemize}
+\end{definition}
 
 \subsection{Burning Sequences}
 
-We now introduce a compact notation for describing a particular instance of 2-player graph burning.
+We now introduce a compact notation for describing colourings which arise from 2-player graph burning:
 
 \begin{definition}
 \label{def/burning-sequence}
@@ -96,7 +113,7 @@ Given a burning sequence $B$, $B$ is said to be \emph{valid} if:
 
 \end{definition}
 
-From this definition, an immediate corollary is that the original graph burning problem is a subset of 2-player graph burning:
+From this definition, an immediate corollary is that any valid sequence in the original graph burning problem corresponds to a unique valid burning sequence in 2-player graph burning:
 
 \begin{corollary}
 \label{cor/burning-subset}
@@ -107,7 +124,8 @@ Given a valid burning sequence for the original graph burning problem, say $(v_1
 
 \subsection{Bounding the length of burning sequences}
 
-A useful question in the 2-player graph burning problem is to consider the maximum number of rounds required for this process to terminate, providing an upper bound for the number of valid burning sequences for a graph $G$. The following result gives a useful bound for connected graphs:
+%A useful question in the 2-player graph burning problem is to consider the maximum number of rounds required for this process to terminate, providing an upper bound for the number of valid burning sequences for a graph $G$. 
+From Definition \ref{def/valid-burning}, it is clear that the size of a valid burning sequence must be bounded. Our first objective is to determine the maximum size of any valid burning sequence in a graph $G$, or equivalently the maximum number of rounds required to burn an entire graph $G$ using 2-GB. The following result gives a useful initial bound for connected graphs:
 
 \begin{theorem}
   \label{thm/connected-bound}
@@ -165,8 +183,8 @@ We now consider a natural extension of paths, and provide a method for counting 
 \begin{definition}
   \label{def/caterpillars}
 
-  A \emph{caterpillar graph} is a graph obtained by taking a path, known as the \emph{spine} of a caterpillar graph, and adding any number of vertices of degree 1 (known as leaves), that are adjacent to a vertex on the original spine.
-
+  A \emph{caterpillar graph} is a tree such that all vertices are within distance $1$ of some central path. We call this central path the \emph{spine}, and all vertices that are not contained in the central path are known as \emph{leaves}.
+  
 \end{definition}
 
 In order to count clusters on caterpillar graphs, it will be useful to introduce more compact notation for describing caterpillar graphs:
@@ -183,7 +201,7 @@ Clearly, there are a countably infinite number of caterpillar strings of length 
 \begin{lemma}
   \label{lem/reduced-caterpillars}
 
-  Given a caterpillar string $C$, the maximum number of red clusters in $C$ is equal to the maximum number of red clusters in the caterpillar string given by
+  Given a caterpillar string $C$, the maximum number of red clusters attainable in $C$ via 2-GB is equal to the maximum number of red clusters attainable in the caterpillar represented by the caterpillar string:
 
   \begin{equation*}
   C'_i = \begin{cases}
@@ -192,7 +210,7 @@ Clearly, there are a countably infinite number of caterpillar strings of length 
   \end{cases}
   \end{equation*}
 
-  Moreover, given such a caterpillar string $C'$, if the first or last element in $C'$ is $1$, this can be removed and two zeros can be appended to the start or end of the sequence respectively, giving an equivalent caterpillar string, say $C''$. After performing these two operations, we say that $C''$ is a \emph{reduced caterpillar string}.
+  In other words, if a spine vertex has more than 1 leaf, any additional leaves may be disregarded. Moreover, given such a caterpillar string $C'$, if the first or last element in $C'$ is $1$, this can be removed and two zeros can be appended to the start or end of the sequence respectively, giving an equivalent caterpillar string, say $C''$. After performing these two operations, we say that $C''$ is a \emph{reduced caterpillar string}.
 \end{lemma}
 
 \begin{proof}
