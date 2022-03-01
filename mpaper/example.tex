@@ -172,7 +172,12 @@ Firstly, since each round can introduce at most 1 red cluster, and since the max
 
 Now let $G$ be the path on $n$ vertices. Listing the vertices of $G$ in order from $v_1, v_2, \dots, v_n$, the burning sequence $(v_1, v_2), (v_4, v_5), \dots, (v_{n-2}, v_{n-1})$ contains $\lceil \frac{n}{3} \rceil$ red clusters.
 
-%might add a diagram here?
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.65]{mpaper/figures/PathColouring.pdf}
+    \caption{An example of colouring a path, denoting $v_1$ as the leftmost vertex and so on.}
+    \label{fig/path-colouring}
+\end{figure}
 
 \end{proof}
 
@@ -192,7 +197,16 @@ In order to count clusters on caterpillar graphs, it will be useful to introduce
 \begin{definition}
   \label{def/caterpillar-strings}
 
-  Given a caterpillar graph built on a spine with $n$ vertices, its \emph{caterpillar string} is a sequence $C \in \mathbb{N}^n$ of the form $(c_1, \dots, c_n)$, where $c_i$ denotes the number of leaves adjacent to the $i^{th}$ spine vertex. For instance, the caterpillar string $(1,0,2,3)$ represents the caterpillar graph shown in Figure [INSERT A PICTURE HERE].
+  Given a caterpillar graph built on a spine with $n$ vertices, its \emph{caterpillar string} is a sequence $C \in \mathbb{N}^n$ of the form $(c_1, \dots, c_n)$, where $c_i$ denotes the number of leaves adjacent to the $i^{th}$ spine vertex. For instance, the caterpillar string $(1,0,2,3)$ represents the caterpillar graph shown in Figure \ref{fig/test-caterpillar-string}.
+  
+  \begin{figure}
+      \centering
+      \includegraphics{mpaper/figures/testCaterpillarString.pdf}
+      \caption{The caterpillar graph represented by the caterpillar string $(1,0,2,3)$. Note that reversing any caterpillar string gives an isomorphic graph.}
+      \label{fig/test-caterpillar-string}
+  \end{figure}
+  
+  
 
 \end{definition}
 
@@ -217,10 +231,24 @@ Clearly, there are a countably infinite number of caterpillar strings of length 
 
 For the first reduction, suppose a given spine vertex $v_i$ has at least $2$ adjacent leaves. Pick two of these leaves without loss of generality, calling them $l_1$ and $l_2$, and consider the subgraph induced by $v_i$, $l_1$ and $l_2$.
 
+\begin{figure}
+    \centering
+    \includegraphics{mpaper/figures/CaterpillarReduction.pdf}
+    \caption{In short, the proof of the first reduction is that the partial colouring presented here may never occur, and hence any given spine vertex and its associated leaves, can contain at most one red cluster.}
+    \label{fig/caterpillar-reduction-1}
+\end{figure}
+
 Suppose that this subgraph contains $2$ red clusters. Then both leaves must be coloured red. However, this is only possible when $v_i$ is also red. Since both leaf vertices are not adjacent, 2 rounds are required to colour them both red, and hence the first one coloured red will spread to $v_i$, colouring it red. And if $v_i$ was already coloured blue, it would spread its colour to at least one of $l_1$ and $l_2$, so by contradiction this subgraph can contain at most $1$ red cluster. And since the leaves were chosen without any loss of generality, either no leaves are red, all leaves are red along with their common spine vertex, or exactly one leaf is red, so all but one leaf can be removed without changing the overall number of clusters.
 
 For the second reduction, if one of the endpoints has a leaf, the leaf can be treated as a spine vertex rather than a leaf vertex, removing a leaf from the existing endpoint and becoming the new endpoint instead.
 % maybe a diagram here?
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{mpaper/figures/CaterpillarReduction2.pdf}
+    \caption{An example of the second reduction - the caterpillar with string \texttt{111} is reduced to the caterpillar with string \texttt{00100}, such that both caterpillars are isomorphic.}
+    \label{fig/caterpillar-reduction-2}
+\end{figure}
 \end{proof}
 
 Therefore, the set of reduced caterpillar strings of length $n$ is given by the set of bitstrings of length $n$ beginning and ending with a $0$, hence there are $2^{n-2}$ reduced caterpillar strings of length n. In practice this may be reduced even further, since reversing the reduced caterpillar string gives another string that may be different, but which always represents an isomorphic caterpillar graph.
@@ -239,6 +267,13 @@ For each of these pieces, we can easily compute the maximum number of red cluste
   \item Case \emph{R} is where the first spine vertex is already coloured red, since the colouring of the previous piece is not fully contained within that piece.
   \item Case \emph{B} is analogous to case \emph{R}.
 \end{itemize}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.75]{mpaper/figures/CaterpillarPieceColouring.pdf}
+    \caption{This figure shows the case where the caterpillar piece \texttt{101} is coloured, with starting case BW (so the previous spine vertex is already coloured blue) and ending case R (with the spine vertex after the piece being coloured red), showing that 2 red clusters are attainable in this case.}
+    \label{fig/caterpillar-piece-colouring}
+\end{figure}
 
 These cases are defined for the start of a piece, but the ending constraints are analogous, and crucially correspond to the same starting constraint of the next piece.
 
