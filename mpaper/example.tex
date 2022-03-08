@@ -60,6 +60,8 @@ In particular, these rules ensure that this process is symmetrical, so player 1 
 
 \subsection{The cluster-counting problem}
 
+\newcommand{\cluster}{\textsc{ClusterCounting  }}
+
 Our main interest in this paper will be to count the maximum number of monochromatic components that can appear in any colouring of $G$ resulting from an instance of the 2-GB process. However, since we treat green vertices as being both red and blue simultaneously, defining "red monochromatic components" is somewhat ambiguous, so we modify the 2-GB process slightly to accommodate for this:
 
 \begin{definition}
@@ -74,19 +76,23 @@ After making this modification, we now formally define the main problem discusse
 
 \begin{definition}
   \label{def/cluster-counting}
-  CLUSTER-COUNTING-DECISION is a problem determining whether a colouring with a given number of red clusters is attainable on a given graph.
+  \cluster  is a decision problem determining whether a colouring with a given number of red clusters is attainable on a given graph.
   
   \begin{itemize}
       \item \textbf{Instance}: A graph $G$ and an integer $k$.
-      \item \textbf{Question}: Does there exist a colouring of $G$, arising from the 2-GB process, such that $G$ contains at least $k$ red monochromatic components?
+      \item \textbf{Question}: Does there exist a colouring of $G$, arising from 2-GB, such that $G$ contains at least $k$ red monochromatic components?
   \end{itemize}
   
-  CLUSTER-COUNTING is the corresponding optimisation problem:
+  \cluster also refers to the corresponding optimisation problem:
   
   \begin{itemize}
       \item \textbf{Instance}: A graph $G$.
       \item \textbf{Question}: What is the largest integer $k$ such that there exists a colouring of $G$ arising from 2-GB with at least $k$ red monochromatic components?
   \end{itemize}
+  
+  Throughout this paper, \cluster refers to the optimisation problem, unless otherwise specified.
+  
+  
 \end{definition}
 
 \subsection{Burning Sequences}
@@ -125,7 +131,31 @@ Given a valid burning sequence for the original graph burning problem, say $(v_1
 \subsection{Bounding the length of burning sequences}
 
 %A useful question in the 2-player graph burning problem is to consider the maximum number of rounds required for this process to terminate, providing an upper bound for the number of valid burning sequences for a graph $G$. 
-From Definition \ref{def/valid-burning}, it is clear that the size of a valid burning sequence must be bounded. Our first objective is to determine the maximum size of any valid burning sequence in a graph $G$, or equivalently the maximum number of rounds required to burn an entire graph $G$ using 2-GB. The following result gives a useful initial bound for connected graphs:
+From Definition \ref{def/valid-burning}, it is clear that the size of a valid burning sequence must be bounded. Our first objective is to determine the maximum size of any valid burning sequence in a graph $G$, or equivalently the maximum number of rounds required to burn an entire graph $G$ using 2-GB.
+
+A key heuristic when counting the maximal number of monochromatic components for a particular graph $G$ is the \emph{diameter} of $G$:
+
+\begin{definition}
+\label{def/diameter}
+  Given a graph $G$ with vertex set $V(G)$, the \emph{diameter} of $G$ is given by
+  
+  \begin{align*}
+  D(G) = \max_{u \in V(G), v \in V(G)} d(u,v)
+  \end{align*}
+
+  where $d(u,v)$ is the length of the shortest path between $u$ and $v$, and if no such path exists we say that $d(u,v) = \infty$.
+\end{definition}
+
+In the context of 2-player graph burning, this means that any instance of 2-player graph burning on $G$ will terminate within $D(G)$ rounds, when $G$ is connected. Therefore, the following bound on the maximum number of possible clusters over a connected graph $G$ is immediate:
+
+\begin{theorem}
+\label{def/diameter_bound}
+
+For any connected graph $G$, the maximum number of red clusters attainable on $G$ is $d(G)$.
+
+\end{theorem}
+
+This bound is an initial example of a global bound, which can be computed by just considering the diameter of a graph. However, the following result shows that this can be easily improved for some types of graphs, namely graphs on $n$ vertices with diameter at least $\frac{n}{3}$:
 
 \begin{theorem}
   \label{thm/connected-bound}
@@ -137,7 +167,7 @@ From Definition \ref{def/valid-burning}, it is clear that the size of a valid bu
 
   If $U$ contains at least $3$ vertices, then we choose $2$ vertices to initially burn, say $v_1$ and $v_2$, and we need to show that at least one other distinct vertex is adjacent to $v_1$ or $v_2$. Considering the possible degrees of $v_1$ and $v_2$ in $U$, there are two potentially problematic cases, while the other cases are straightforward.
 
-  If $v_1$ and $v_2$ are both adjacent and have degree $1$, then no other vertices are adjacent to them. However, since $U$ has at least $3$ vertices, some other vertex $v_3$ must be in $U$, but not connected to $v_1$ or $v_2$. However, since $G$ is connected, $v_3$ must be adjacent to some non-white vertex in $G$, so $v_3$ must also be removed this round. A similar argument holds when $v_1$ and $v_2$ are both degree $0$.
+  If $v_1$ and $v_2$ are both adjacent and have degree $1$, then no other vertices are adjacent to them. However, since $U$ has at least $3$ vertices, some other vertex $v_3$ must be in $U$, but not connected to $v_1$ or $v_2$. However, since $G$ is connected, $v_3$ must be adjacent to some non-white vertex in $G$, so $v_3$ must also be removed this round. A similar argument holds when $v_1$ and $v_2$ are both degree $0$ in $U$.
   
   %If every vertex in $U$ is of degree at least $2$, then we are done - the two chosen vertices are removed from $U$, and at least one other vertex must be adjacent to these choices, and thus is removed.
   
@@ -153,11 +183,7 @@ From Definition \ref{def/valid-burning}, it is clear that the size of a valid bu
   
 \end{proof}
 
-\section{Colouring Caterpillar Graphs}
-
-\subsection{Monochromatic components on paths}
-
-Our first key observation when counting red clusters is that at most one cluster can be added per round. This is because red vertices can be added in two different ways. If red vertices are added via spreading from adjacent vertices, no new clusters are created in this way (though existing clusters may be merged together, \emph{reducing} the number of red clusters on the graph). So red clusters can only be created by player 1 choosing vertices to burn, but only one vertex can be burned by player 1 each turn. Coupled with Theorem \ref{thm/connected-bound}, this gives a useful bound for the number of clusters on connected graphs:
+The following corollary shows that the bound described in Theorem \ref{thm/connected-bound} is tight, being attainable on paths:
 
 \begin{corollary}
   \label{cor/path-clusters}
@@ -180,6 +206,23 @@ Now let $G$ be the path on $n$ vertices. Listing the vertices of $G$ in order fr
 \end{figure}
 
 \end{proof}
+
+As a further example of the proof technique illustrated in Corollary \ref{cor/path-clusters}, the following lemma solves \cluster for cycles:
+
+\begin{lemma}
+\label{lem/cycle-clusters}
+  Let $G$ be a cycle on $n$ vertices. Then the maximum number of red clusters on $G$ is $\lceil \frac{n}{4} \rceil$, and this bound is tight.
+\end{lemma}
+
+\begin{proof}
+  Firstly, labelling the vertices of $G$ as $v_1, \dots, v_n$ in order, keeping in mind that $v_1$ is adjacent to $v_n$, the burning sequence $(v_1, v_n), (v_{n-2}, v_3), (v_5, v_{n-4}), \dots$ attains $\lceil \frac{n}{4} \rceil$ red clusters, since at each round except possibly the last, $4$ vertices are burned and $1$ new red cluster is started.
+
+  Secondly, since every vertex has degree $2$, at least $4$ vertices must be burned every round, with the proof of this following a very similar structure to Corollary \ref{cor/path-clusters}. And since at most $1$ cluster can be created per round, the maximum number of red clusters on $G$ is at most $\lceil \frac{n}{4} \rceil$.
+\end{proof}
+
+In conjunction with Corollary \ref{cor/path-clusters}, the previous lemma presents a surprising fact: Since the maximum number of clusters on a path is $\lceil \frac{n}{3} \rceil$, and $\lceil \frac{n}{4}\rceil$ on a cycle, adding a single edge can reduce the maximum possible number of clusters on a graph by an arbitrary amount. This suggests that the diameter of a graph is an important heuristic in the \cluster problem.
+
+\section{Colouring Caterpillar Graphs}
 
 \subsection{Caterpillar graphs}
 
@@ -210,7 +253,7 @@ In order to count clusters on caterpillar graphs, it will be useful to introduce
 
 \end{definition}
 
-Clearly, there are a countably infinite number of caterpillar strings of length n. However, for the purposes of counting clusters, the following lemma shows that we can reduce the set of caterpillar strings to a finite subset of strings of a given form:
+Clearly, there are a countably infinite number of caterpillar strings of length $n$. However, the following lemma shows that for the purposes of \cluster we only need to consider a finite set of strings representing caterpillars.
 
 \begin{lemma}
   \label{lem/reduced-caterpillars}
@@ -251,7 +294,7 @@ For the second reduction, if one of the endpoints has a leaf, the leaf can be tr
 \end{figure}
 \end{proof}
 
-Therefore, the set of reduced caterpillar strings of length $n$ is given by the set of bitstrings of length $n$ beginning and ending with a $0$, hence there are $2^{n-2}$ reduced caterpillar strings of length n. In practice this may be reduced even further, since reversing the reduced caterpillar string gives another string that may be different, but which always represents an isomorphic caterpillar graph.
+Therefore, the set of reduced caterpillar strings of length $n$ is given by the set of bitstrings of length $n$ beginning and ending with a $0$, and hence there are $2^{n-2}$ reduced caterpillar strings of length n. In practice this may be reduced even further, since reversing the reduced caterpillar string gives another string that may be different, but which always represents an isomorphic caterpillar graph.
 
 \subsection{Monochromatic components on caterpillar graphs}
 
@@ -277,9 +320,27 @@ For each of these pieces, we can easily compute the maximum number of red cluste
 
 These cases are defined for the start of a piece, but the ending constraints are analogous, and crucially correspond to the same starting constraint of the next piece.
 
-Since these pieces are small, each of these computations is small and relatively simple to perform. For each piece, this then produces a weighted directed bipartite graph $G_P$, with vertex set $\{RW_{start}, BW_{start}, R_{start}, B_{start}, \\ RW_{end}, BW_{end}, R_{end}, B_{end}\}$, such that an edge exists from $X_{start}$ to $Y_{end}$ if there exists a colouring of piece $P$ with starting constraint $X$ and ending constraint $P$, with weight equal to the number of clusters originating in $P$.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.75]{mpaper/figures/ColouringGraph101.pdf}
+    \caption{The bipartite graph $G_{\texttt{101}}$ representing colourings of the caterpillar graph with string \texttt{101}, with starting constraints on the left and ending constraints on the right. Note that all edges have weight 1 unless otherwise specified, and directions on edges have been omitted to improve clarity.}
+    \label{fig/colouring_101}
+\end{figure}
 
-Once all of these bipartite graphs are computed, the ending vertices of each piece can be merged with the starting vertices of the next piece, along with adding in a common source and sink vertex, removing every case bar case \emph{BW} from the first piece, generating a directed acyclic multipartite graph $G$. Then, the maximum number of red clusters on the reduced caterpillar graph is equal to the length of the longest spine in $G$.
+Since these pieces are small, each of these computations is small and relatively simple to perform. For each piece, this then produces a weighted directed bipartite graph $G_P$, with vertex set $\{RW_{start}, BW_{start}, R_{start}, B_{start}, \\ RW_{end}, BW_{end}, R_{end}, B_{end}\}$, such that an edge exists from $X_{start}$ to $Y_{end}$ if there exists a colouring of piece $P$ with starting constraint $X$ and ending constraint $P$, with weight equal to the number of clusters originating in $P$. An example of one of these graphs, namely $G_{\texttt{101}}$, is provided in \ref{fig/colouring-101}.
+
+\begin{figure*}
+\begin{center}
+    \centering
+    \includegraphics[scale=0.75]{mpaper/figures/Colouring_10100.pdf}
+    \caption{The combined multipartite graph resulting from colouring the caterpillar with string \texttt{10100}, with unreachable vertices removed. The third layer of vertices merges together the ending constraints of piece \texttt{101} with the starting constraints of piece \texttt{00}}
+    \label{fig/colouring-10100}
+\end{center}
+\end{figure*}
+
+Once all of these bipartite graphs are computed, the ending vertices of each piece can be merged with the starting vertices of the next piece, along with adding in a common source and sink vertex, removing every case bar case \emph{BW} from the first piece, generating a directed acyclic multipartite graph $G$. Then, the maximum number of red clusters on the reduced caterpillar graph is equal to the length of the longest spine in $G$. An example of this combined graph, attained from colouring the caterpillar with string \texttt{10100}, is shown in Figure \ref{fig/colouring-10100}.
+
+
 
 For future reference, we shall summarise this algorithm below:
 
@@ -309,7 +370,7 @@ This proof proceeds by induction on the number of pieces in $G$.
 
  If $G$ has just one piece, then clearly colouring this piece will attain the optimal colouring, so the base case trivially holds.
 
- Now suppose the lemma holds for any (not necessarily reduced) caterpillar graph consisting of at most $n-1$ pieces. Then $G$, a caterpillar graph with $n$ pieces, is made up of the concatenation of two caterpillar graphs - one graph with $n-1$ pieces followed by one piece.
+ Now suppose the lemma holds for any (not necessarily reduced) caterpillar graph consisting of at most $n-1$ pieces. Then $G$, a caterpillar graph with $n$ pieces, is made up of the concatenation of two caterpillar graphs - one graph with $n-1$ pieces, followed by one piece.
 
 If either end piece is fully coloured first, the lemma holds from the inductive hypothesis. If a different piece is fully covered first, then $G$ is split into two smaller graphs, each with length less than $n-1$ pieces. If an optimal colouring for one of these graphs is attained using the inductive hypothesis, then the colouring will spread to the other piece, so it is not possible to colour each of these pieces sequentially - and hence, this colouring cannot be better than the optimal colouring, so the lemma holds in this case.
 
@@ -320,36 +381,6 @@ Now suppose the first piece coloured is not fully covered, so another piece star
 Note that this lemma holds for caterpillar graphs even if they are not fully reduced - in particular, their strings need not start or end in a $0$. This allows induction to be applied, since concatenating non-reduced caterpillar graphs can still lead to a reduced caterpillar graph.
 
 The algorithm being exact follows from this lemma, since the multipartite graph constructed during the algorithm describes all possible ways to colour the caterpillar graph sequentially, and since the longest path is chosen the most optimal way to colour the whole graph is chosen, even if this means deviating from the greedy approach.
-
-\subsection{Graph diameter in 2-player graph burning}
-
-A key heuristic when counting the maximal number of monochromatic components for a particular graph $G$ is the \emph{diameter} of $G$:
-
-\begin{definition}
-\label{def/diameter}
-  Given a graph $G$ with vertex set $V(G)$, the \emph{diameter} of $G$ is given by
-  
-  \begin{align*}
-  D(G) = \max_{u \in V(G), v \in V(G)} d(u,v)
-  \end{align*}
-
-  where $d(u,v)$ is the length of the shortest path between $u$ and $v$, and if no such path exists we say that $d(u,v) = \infty$.
-\end{definition}
-
-In the context of 2-player graph burning, this means that any instance of 2-player graph burning on $G$ will terminate within $D(G)$ rounds, when $G$ is connected. The following example suggests that graphs with low diameter tend to admit fewer clusters than high diameter graphs:
-
-\begin{lemma}
-\label{lem/cycle-clusters}
-  Let $G$ be a cycle on $n$ vertices. Then the maximum number of red clusters on $G$ is $\lceil \frac{n}{4} \rceil$, and this bound is tight.
-\end{lemma}
-
-\begin{proof}
-  Firstly, labelling the vertices of $G$ as $v_1, \dots, v_n$ in order, keeping in mind that $v_1$ is adjacent to $v_n$, the burning sequence $(v_1, v_n), (v_{n-2}, v_3), (v_5, v_{n-4}), \dots$ attains $\lceil \frac{n}{4} \rceil$ red clusters, since at each round except possibly the last, $4$ vertices are burned and $1$ new red cluster is started.
-
-  Secondly, since every vertex has degree $2$, at least $4$ vertices must be burned every round, with the proof of this following a very similar structure to Corollary \ref{cor/path-clusters}. And since at most $1$ cluster can be created per round, the maximum number of red clusters on $G$ is at most $\lceil \frac{n}{4} \rceil$.
-\end{proof}
-
-In conjunction with Corollary \ref{cor/path-clusters}, the previous lemma presents a surprising fact: Since the maximum number of clusters on a path is $\lceil \frac{n}{3} \rceil$, and $\lceil \frac{n}{4}\rceil$ on a cycle, adding a single edge can reduce the maximum possible number of clusters on a graph by an arbitrary amount. This suggests that the diameter of a graph is important.
 
 \section{Colouring Trees}
 \label{sec/trees}
