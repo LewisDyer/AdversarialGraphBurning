@@ -19,18 +19,22 @@ We introduce 2-burning, an extension of the graph burning process to contagion w
 \end{abstract}
 
 \section{Introduction}
+\vspace{1em}
 
 INTRO GOES HERE
 
 \section{Background}
+\vspace{1em}
 
 BACKGROUND GOES HERE, PROBABLY DESCRIBING GRAPH BURNING
 
 
 \section{2-Player Graph Burning}
+\vspace{1em}
 % define 2-GB formally (not sure if defining regular graph burning is needed formally?)
 
 \subsection{Defining 2-Player Graph Burning}
+\vspace{1em}
 
 First, we formalise the process of 2-Player Graph Burning on a graph $G$. Throughout, we presume that $G$ is a finite, simple, undirected graph.
 
@@ -46,7 +50,7 @@ First, we formalise the process of 2-Player Graph Burning on a graph $G$. Throug
   \item \emph{Green} vertices have been burned by \emph{both} players.
 \end{enumerate}
 
-At time $t=0$, all vertices are initially white. Each round consists of two main steps. First, both players simultaneously choose a white vertex, burning the vertex into that player's respective colour. Secondly, all non-white vertices, including green vertices, spread their colour onto adjacent white vertices, according to the following rules:
+At time $t=0$, all vertices are initially white. Each round consists of two main steps. First, both players simultaneously choose a white vertex, burning the vertex into that player's respective colour. Players may also choose to burn the same vertex simultaneously. Secondly, all non-white vertices, including green vertices, spread their colour onto adjacent white vertices, according to the following rules:
 
 \begin{itemize}
   \item If a white vertex is burned by one or more vertices, all with the same colour, the white vertex is also burned with the same colour.
@@ -59,8 +63,10 @@ At time $t=0$, all vertices are initially white. Each round consists of two main
 In particular, these rules ensure that this process is symmetrical, so player 1 and player 2 can be interchanged without loss of generality.
 
 \subsection{The cluster-counting problem}
+\vspace{1em}
 
-\newcommand{\cluster}{\textsc{ClusterCounting  }}
+\newcommand{\kcluster}{\textsc{kCluster  }}
+\newcommand{\maxcluster}{\textsc{MaxCluster  }}
 
 Our main interest in this paper will be to count the maximum number of monochromatic components that can appear in any colouring of $G$ resulting from an instance of the 2-GB process. However, since we treat green vertices as being both red and blue simultaneously, defining "red monochromatic components" is somewhat ambiguous, so we modify the 2-GB process slightly to accommodate for this:
 
@@ -76,26 +82,24 @@ After making this modification, we now formally define the main problem discusse
 
 \begin{definition}
   \label{def/cluster-counting}
-  \cluster  is a decision problem determining whether a colouring with a given number of red clusters is attainable on a given graph.
+  \kcluster is a decision problem determining whether a colouring with a given number of red clusters is attainable on a given graph.
   
   \begin{itemize}
       \item \textbf{Instance}: A graph $G$ and an integer $k$.
       \item \textbf{Question}: Does there exist a colouring of $G$, arising from 2-GB, such that $G$ contains at least $k$ red monochromatic components?
   \end{itemize}
   
-  \cluster also refers to the corresponding optimisation problem:
+  \maxcluster refers to the corresponding optimisation problem:
   
   \begin{itemize}
       \item \textbf{Instance}: A graph $G$.
       \item \textbf{Question}: What is the largest integer $k$ such that there exists a colouring of $G$ arising from 2-GB with at least $k$ red monochromatic components?
   \end{itemize}
   
-  Throughout this paper, \cluster refers to the optimisation problem, unless otherwise specified.
-  
-  
 \end{definition}
 
 \subsection{Burning Sequences}
+\vspace{1em}
 
 We now introduce a compact notation for describing colourings which arise from 2-player graph burning:
 
@@ -113,7 +117,7 @@ This sequence describes possible choices for the first $n$ rounds of the 2-GB pr
 Given a burning sequence $B$, $B$ is said to be \emph{valid} if:
 
 \begin{enumerate}
-  \item For every vertex that appears in the $i^{th}$ term of $B$, say $v_i$, for every vertex in the $j^{th}$ term of $B$ such that $j < i$, say $v_j$ the distance between $v_i$ and $v_j$ is at most $(i-j)$.
+  \item For every vertex that appears in the $i^{th}$ term of $B$, say $v_i$, for every vertex in the $j^{th}$ term of $B$ such that $j < i$, say $v_j$ the distance between $v_i$ and $v_j$ is at least $(i-j)$.
   \item After the burning sequence described by $B$ is completed on $G$, every vertex is $G$ is non-white. 
 \end{enumerate}
 
@@ -129,6 +133,7 @@ Given a valid burning sequence for the original graph burning problem, say $(v_1
 \end{corollary}
 
 \subsection{Bounding the length of burning sequences}
+\vspace{1em}
 
 %A useful question in the 2-player graph burning problem is to consider the maximum number of rounds required for this process to terminate, providing an upper bound for the number of valid burning sequences for a graph $G$. 
 From Definition \ref{def/valid-burning}, it is clear that the size of a valid burning sequence must be bounded. Our first objective is to determine the maximum size of any valid burning sequence in a graph $G$, or equivalently the maximum number of rounds required to burn an entire graph $G$ using 2-GB.
@@ -194,7 +199,13 @@ The following corollary shows that the bound described in Theorem \ref{thm/conne
 
 \begin{proof}
 
-Firstly, since each round can introduce at most 1 red cluster, and since the maximum number of rounds on $G$ is $\lceil \frac{n}{3} \rceil$ by Theorem \ref{thm/connected-bound}, the maximum number of red clusters on $G$ is $\lceil \frac{n}{3} \rceil$.
+Firstly, since each round can introduce at most 1 red cluster, and since the maximum number of rounds on $G$ is $\lceil \frac{n}{3} \rceil$ by Theorem \ref{thm/connected-bound}, the maximum number of red clusters on $G$ is $\lceil \frac{n}{3} \rceil$. This is described in the following lemma for future reference:
+
+\begin{lemma}
+  \ref{lem/round-bound}
+  
+  Consider a graph $G$, and suppose that $G$ is always fully burned after $k$ rounds of 2-burning. Then $G$ contains at most $k$ red clusters.
+\end{lemma}
 
 Now let $G$ be the path on $n$ vertices. Listing the vertices of $G$ in order from $v_1, v_2, \dots, v_n$, the burning sequence $(v_1, v_2), (v_4, v_5), \dots, (v_{n-2}, v_{n-1})$ contains $\lceil \frac{n}{3} \rceil$ red clusters.
 
@@ -207,24 +218,32 @@ Now let $G$ be the path on $n$ vertices. Listing the vertices of $G$ in order fr
 
 \end{proof}
 
-As a further example of the proof technique illustrated in Corollary \ref{cor/path-clusters}, the following lemma solves \cluster for cycles:
+As a further example of the proof technique illustrated in Corollary \ref{cor/path-clusters}, the following lemma solves \maxcluster for cycles:
 
 \begin{lemma}
 \label{lem/cycle-clusters}
-  Let $G$ be a cycle on $n$ vertices. Then the maximum number of red clusters on $G$ is $\lceil \frac{n}{4} \rceil$, and this bound is tight.
+  Let $G$ be a cycle on $n$ vertices with $n /gt 1$. Then the maximum number of red clusters on $G$ is $\lceil \frac{n-1}{4} \rceil$, and this bound is tight.
 \end{lemma}
 
 \begin{proof}
-  Firstly, labelling the vertices of $G$ as $v_1, \dots, v_n$ in order, keeping in mind that $v_1$ is adjacent to $v_n$, the burning sequence $(v_1, v_n), (v_{n-2}, v_3), (v_5, v_{n-4}), \dots$ attains $\lceil \frac{n}{4} \rceil$ red clusters, since at each round except possibly the last, $4$ vertices are burned and $1$ new red cluster is started.
+  Firstly, labelling the vertices of $G$ as $v_1, \dots, v_n$ in order, keeping in mind that $v_1$ is adjacent to $v_n$, the burning sequence $(v_1, v_n), (v_{n-2}, v_3), (v_5, v_{n-4}), \dots$ attains $\lceil \frac{n-1}{4} \rceil$ red clusters, since at each round $1$ new red cluster is started and, with the exception of potentially the final round, $4$ vertices are burned. An example of this colouring is shown for $C_12$ in Figure \ref{fig/cycle-colouring}. Note that when $n$ is one more than a multiple of $4$, no new cluster appears in the final round, since there is only $1$ vertex remaining and it is adjacent to a red vertex.
 
-  Secondly, since every vertex has degree $2$, at least $4$ vertices must be burned every round, with the proof of this following a very similar structure to Corollary \ref{cor/path-clusters}. And since at most $1$ cluster can be created per round, the maximum number of red clusters on $G$ is at most $\lceil \frac{n}{4} \rceil$.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{mpaper/figures/CycleColouring.pdf}
+    \caption{An example of colouring $C_{12}$, the cycle graph on $12$ vertices.}
+    \label{fig/cycle-colouring}
+\end{figure}
+  Secondly, since every vertex has degree $2$, at least $4$ vertices must be burned every round, with the proof of this following a very similar structure to Corollary \ref{cor/path-clusters}. And since at most $1$ cluster can be created per round, the maximum number of red clusters on $G$ is at most $\lceil \frac{n-1}{4} \rceil$.
 \end{proof}
 
-In conjunction with Corollary \ref{cor/path-clusters}, the previous lemma presents a surprising fact: Since the maximum number of clusters on a path is $\lceil \frac{n}{3} \rceil$, and $\lceil \frac{n}{4}\rceil$ on a cycle, adding a single edge can reduce the maximum possible number of clusters on a graph by an arbitrary amount. This suggests that the diameter of a graph is an important heuristic in the \cluster problem.
+In conjunction with Corollary \ref{cor/path-clusters}, the previous lemma presents a surprising fact: Since the maximum number of clusters on a path is $\lceil \frac{n}{3} \rceil$, and $\lceil \frac{n}{4}\rceil$ on a cycle, adding a single edge can reduce the maximum possible number of clusters on a graph by an arbitrary amount. This suggests that the diameter of a graph is an important heuristic in the \maxcluster problem.
 
 \section{Colouring Caterpillar Graphs}
+\vspace{1em}
 
 \subsection{Caterpillar graphs}
+\vspace{1em}
 
 We now consider a natural extension of paths, and provide a method for counting clusters on these graphs.
 
@@ -253,7 +272,7 @@ In order to count clusters on caterpillar graphs, it will be useful to introduce
 
 \end{definition}
 
-Clearly, there are a countably infinite number of caterpillar strings of length $n$. However, the following lemma shows that for the purposes of \cluster we only need to consider a finite set of strings representing caterpillars.
+Clearly, there are a countably infinite number of caterpillar strings of length $n$. However, the following lemma shows that for the purposes of \maxcluster we only need to consider a finite set of strings representing caterpillars.
 
 \begin{lemma}
   \label{lem/reduced-caterpillars}
@@ -299,6 +318,7 @@ In other words, if a spine vertex has more than 1 leaf, any additional leaves ma
 Therefore, the set of reduced caterpillar strings of length $n$ is given by the set of bitstrings of length $n$ beginning and ending with a $0$, and hence there are $2^{n-2}$ reduced caterpillar strings of length n. In practice this may be reduced even further, since reversing the reduced caterpillar string gives another string that may be different, but which always represents an isomorphic caterpillar graph.
 
 \subsection{Monochromatic components on caterpillar graphs}
+\vspace{1em}
 
 As discussed in Lemma \ref{lem/reduced-caterpillars}, we can transform any caterpillar graph into a reduced caterpillar graph while keeping the same number of maximum red clusters on the graph. We now present the following algorithm to count the maximum number of red clusters on any reduced caterpillar graph:
 
@@ -398,38 +418,22 @@ We then aim to prove that colouring in sequence is required for an optimal colou
   In all cases, if any caterpillar with at most $n$ pieces can be coloured optimally in sequence, then any caterpillar with at most $n+1$ pieces can also be coloured optimally in sequence, and so the theorem follows by induction.
 \end{proof}
 
-%\begin{lemma}
-%\label{lem/sequential-optimal}
-%For a (not necessarily reduced) caterpillar graph $G$ split into a series of pieces of length at most 3 as in the previous algorithm, say $P_1, \dots, P_n$, the optimal colouring in terms of maximising red clusters is attained by colouring $P_1$, then $P_2$, and so on up to $P_n$.
-%\end{lemma}
-%\begin{proof}
-%This proof proceeds by induction on the number of pieces in $G$.
-
-%If $G$ has just one piece, then clearly colouring this piece will attain the optimal colouring, so the base case trivially holds.
-
-%Now suppose the lemma holds for any (not necessarily reduced) caterpillar graph consisting of at most $n-1$ pieces. Then $G$, a caterpillar graph with $n$ pieces, is formed by the concatenation of two caterpillar graphs - one graph with $n-1$ pieces, followed by one piece.
-
-%If $P_1$ is fully coloured first, the lemma holds from the inductive hypothesis. If a different piece is fully covered first, then $G$ is split into two smaller graphs, each with length less than $n-1$ pieces. If an optimal colouring for one of these graphs is attained using the inductive hypothesis, then the colouring will spread to the other piece, so it is not possible to colour each of these pieces sequentially - and hence, this colouring cannot be better than the optimal colouring, so the lemma holds in this case.
-
-%Now suppose the first piece coloured is not fully covered, so another piece starts being coloured before the first piece is finished. Then the possible colourings on this first piece are a subset of all possible colourings, so the number of red clusters on this first piece cannot be any better than optimal. Then applying the inductive hypothesis to the remaining pieces means that the result holds.
-
-%\end{proof}
-
 Note that this lemma holds for caterpillar graphs even if they are not fully reduced - in particular, their strings need not start or end in a $0$. This allows induction to be applied, since concatenating non-reduced caterpillar graphs can still lead to a reduced caterpillar graph.
 
 The algorithm being exact follows from this lemma, since the multipartite graph constructed during the algorithm describes all possible ways to colour the caterpillar graph in sequence, and since the longest path is chosen the most optimal way to colour the whole graph is chosen, even if this means deviating from the greedy approach.
 
 \section{Colouring Trees}
 \label{sec/trees}
+\vspace{1em}
 
-Compared to our previous work on paths and caterpillar trees, trees present some unique challenges when counting monochromatic components. In particular, our strategies for colouring paths and caterpillar trees generally rely on being able to exploit a linear structure in a graph in order to colour a small number of vertices in each round. Since at most one cluster can be created per round, a natural aim for maximising the number of clusters in a graph is to maximise the number of rounds taken to burn the entire graph. However, in general trees do not possess a convenient start or end point, so finding a linear structure to exploit in a tree is more complicated than for paths or caterpillars. As a result, rather than the exact results in previous sections, we focus on approximate results for trees, improving on our existing upper bounds for counting monochromatic components. Our first aim is to provide some sort of sequence to a tree, and we start by using that all trees contain a caterpillar graph:
+Compared to our previous work on paths and caterpillar trees, trees present some unique challenges when counting monochromatic components. In particular, our strategies for colouring paths and caterpillar trees generally rely on being able to exploit a linear structure in a graph in order to colour a small number of vertices in each round. Since at most one cluster can be created per round, a natural aim for maximising the number of clusters in a graph is to maximise the number of rounds taken to burn the entire graph. However, in general trees do not possess a convenient start or end point, so finding a linear structure to exploit in a tree is more complicated than for paths or caterpillars. As a result, rather than the exact results in previous sections, we focus on approximate results for trees, improving on our existing upper bounds for counting monochromatic components. To make use of our previous results on caterpillars, we consider caterpillars contained within trees via the following definition:
 
 \begin{definition}
   \label{def/maximal-caterpillar}
   Given a tree $T$, a \emph{maximal caterpillar of $T$}, denoted $C_T$, is a subgraph induced by all vertices in a longest path in $T$, along with all vertices which are distance $1$ from this path.
 \end{definition}
 
-Note that in general this caterpillar is not unique
+Note that in general this caterpillar is not unique, so any maximal caterpillar can be chosen arbitrarily.
 
 Once this caterpillar has been obtained, this can be coloured to attain an initial bound on red clusters for $T$:
 
@@ -452,7 +456,14 @@ A natural suggestion is that the tightness of this bound depends on how many ver
 \begin{proof}
 
 In this proof, we describe a family of trees such that the caterpillar ratio of trees in this family gets arbitrarily close to zero.
-Let $B_h$ be the perfect binary tree with height $h$. Then the longest path on $B_h$ is obtained by travelling between a leaf node in the left subtree of the root and a leaf node in the right subtree of the root, and this path has length $2h+1$. This path has $2(h-1)$ internal nodes, and each internal node has 2 children, with one child being included in the longest path and the other child being included in the maximum caterpillar, so the number of vertices in $M_{B_h}$ is equal to $4h-1$.
+Let $B_h$ be the perfect binary tree with height $h$, such a $B_6$ as shown in Figure \ref{fig/binary-tree}. Then the longest path on $B_h$ is obtained by travelling between a leaf node in the left subtree of the root and a leaf node in the right subtree of the root, and this path has length $2h+1$. This path has $2(h-1)$ internal nodes, and each internal node has 2 children, with one child being included in the longest path and the other child being included in the maximum caterpillar, so the number of vertices in $M_{B_h}$ is equal to $4h-1$.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.45]{mpaper/figures/BinaryTree.pdf}
+    \caption{The perfect binary tree with height $6$, $B_6$, with a maximal caterpillar in $B_6$ shaded.}
+    \label{fig/binary-tree}
+\end{figure}
 
 However, the number of vertices in $B_h$ is $2^{h+1}-1$, so the caterpillar ratio of $B_h$ is $\frac{4h-1}{2^{h+1}-1}$, which tends to $0$ as $h$ tends to $\infty$.
 \end{proof}
@@ -465,13 +476,14 @@ We first remark that $G \setminus C_T$ must be disconnected, since otherwise $G$
 
 \subsection{Colouring forests induced by removing a maximal caterpillar}
 \label{sub/colouring_forests}
+\vspace{1em}
 
 To begin, each tree in $F$ is adjacent to exactly one vertex in $C_T$ - if it were adjacent to two or more vertices in the maximal caterpillar, this would define a cycle. We now use this fact to define some additional characteristics of each tree in $F$:
 
 \begin{definition}
 \label{def/roots}
 
-Given a tree $T$ in $F$, a subgraph of a graph $G$ induced by a maximal caterpillar $C_G$, the \emph{root} of a tree, denoted $r_T$, is the vertex which is adjacent to a vertex on $C_G$. The root is \emph{red-adjacent} if this vertex is red, with an analogous definition for a \emph{blue-adjacent} root. In addition, the \emph{size} of $T$ is given by: $$s(T) = 1 + \max_{v \in V(T)} d(r_{T},v)$$.
+Given a tree $T$ in $F$, a subgraph of a graph $G$ induced by a maximal caterpillar $C_G$, the \emph{root} of tree $T$, denoted $r_T$, is the vertex which is adjacent to a vertex on $C_G$. The root is \emph{red-adjacent} if this vertex is red, with an analogous definition for a \emph{blue-adjacent} root. In addition, the \emph{size} of $T$ is given by: $$s(T) = 1 + \max_{v \in V(T)} d(r_{T},v)$$.
  
 \end{definition}
 From these definitions, it is apparent that, without choosing any vertices in $T$ to burn, any tree $T$ will be fully burned in $s(T)$ rounds. As a corollary to this, the maximum number of clusters originating in $T$ is at most $s(T)$. This provides an initial upper bound on the maximum number of red clusters in the graph $G$:
@@ -487,15 +499,15 @@ Since the caterpillar in $G$ was chosen to be maximal, this also imposes additio
 
 \begin{definition}
 \label{def/tree-distance}
-Given a tree $G$ with a maximal caterpillar $C_G$, denoting the endpoints of the caterpillar as vertices $s$ and $e$, the \emph{caterpillar distance} of any leaf vertex $v$ on $C_G$, denoted $cd(v)$, is equal to the length of the shortest path from $v$ to an endpoint of the spine of $C_G$, minus 2.
+Given a tree $G$ with a maximal caterpillar $C_G$, denoting the endpoints of the caterpillar as vertices $s$ and $e$, the \emph{caterpillar distance} of any leaf vertex $v$ on $C_G$, denoted $cd(v)$, is equal to the length of the shortest path from $v$ to an endpoint of the spine of $C_G$, minus 1.
 \end{definition}
 
-We mark that subtracting 2 from the caterpillar distance is necessary in order to remove the endpoints of this graph from the total. Once this notion of distance to a caterpillar endpoint is defined, the maximal nature of this caterpillar implies constraints on the size of trees in the resulting forest $\mathcal{F}$:
+Once this notion of distance to a caterpillar endpoint is defined, the maximal nature of this caterpillar implies constraints on the size of trees in the resulting forest $\mathcal{F}$:
 
 \begin{lemma}
 \label{def/tree-size-constraint}
 
-For each tree $T$ in a forest $\mathcal{F}$ induced by the maximal caterpillar $C_G$, the rooted distance of $T$ is at most $cd(r_T)$.
+For each tree $T$ in a forest $\mathcal{F}$ induced by the maximal caterpillar $C_G$, the maximum distance from the root of $T$ to any other vertex in $T$ is at most $cd(r_T)$.
 
 \end{lemma}
 
@@ -508,7 +520,7 @@ Combining this lemma with Corollary \ref{cor/root-diameter-bound-1}, along with 
 \begin{theorem}
 \label{thm/root-diameter-bound-2}
 
-Consider a partial colouring of $G$ as produced by the algorithm in Definition \ref{def/caterpillar-algorithm}, with a maximal caterpillar of length $L$ (hence $G$ has diameter $L$), and the forest of unburned vertices $F$ made up of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is at most $\lfloor \frac{L}{2} - 1 \rfloor$.
+Consider a partial colouring of $G$ as produced by the algorithm in Definition \ref{def/caterpillar-algorithm}, with a maximal caterpillar of length $L$ (hence $G$ has diameter $L$), and the forest of vertices not in the maximal caterpillar, $F$,  made up of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is at most $\lfloor \frac{L}{2} - 1 \rfloor$.
 
 \end{theorem}
 
@@ -519,7 +531,7 @@ Furthermore, since the maximum number of red clusters on the maximal caterpillar
 \begin{corollary}
 \label{cor/diameter_bound_full}
 
-Given a tree $G$ with diameter $L$, which is coloured by first colouring its maximal caterpillar $C_G$, the maximum number of red clusters on $G$ is at most $\frac{7(L-1)}{6}$.
+Given a tree $G$ with diameter $L$, which is coloured by first colouring its maximal caterpillar $C_G$, the maximum number of red clusters on $G$ is at most $\frac{7(L-10)}{6}$.
 \end{corollary}
 
 \begin{proof}
@@ -528,19 +540,20 @@ Given a tree $G$ with diameter $L$, which is coloured by first colouring its max
 
 This corollary leads to a potentially useful heuristic for the maximum number of red clusters in a tree, without performing any explicit colouring. Indeed, Corollary \ref{cor/diameter_bound_full} only requires computing the diameter of a given tree, which can be computed in O($|V|$) time. However, this method assumes that colouring the maximal caterpillar first maximises the total number of red clusters in the tree, which may not be the case.
 
-This heuristic, however, can be improved further. In particular, this heuristic makes the assumption that the trees outside the maximal caterpillar retain the same size until the caterpillar is completed, whereas in reality vertices within these trees will start burning the round after their root is burned. Therefore, after burning a root vertex, we need to consider the minimum number of rounds to burn the remainder of the caterpillar.
+This heuristic can be improved further. In particular, this heuristic makes the assumption that the trees outside the maximal caterpillar retain the same size until the caterpillar is completed, whereas in reality vertices within these trees will start burning the round after their root is burned. Therefore, after burning a root vertex, we need to consider the minimum number of rounds to burn the remainder of the caterpillar.
 
 \begin{corollary}
   \label{cor/min_rounds_caterpillar}
-  Given a maximal caterpillar $C_G$ with length $L$, and index its spine vertices from $1$ to $L$, where vertex $1$ is coloured first when colouring a caterpillar. After colouring the leaf vertex $v$ adjacent to spine vertex $n$, the minimum number of rounds required to burn the rest of the caterpillar is at least $\lceil \frac{L-n-3}{6} \rceil + 1$.
+  Consider a maximal caterpillar $C_G$ in a graph $G$ with length $L$, and index its spine vertices from $1$ to $L$ in order. After colouring the leaf vertex $v$ adjacent to spine vertex $n$, the minimum number of rounds required to burn the rest of the caterpillar is at least $\lceil \frac{L-n-3}{6} \rceil + 1$.
 \end{corollary}
+
 \begin{proof}
-First, since we colour a caterpillar by splitting it into pieces containing at most 3 spine vertices, and colouring this piece before colouring the remainder, then at most 3 spine vertices ahead of $v$ can be coloured - at most 2 other vertices in the same piece as $v$, and potentially one more in the next piece, if the ending constraints $B$ or $R$ are chosen. So the number of remaining spine vertices is at least $L - n - 3$.
+First, since we colour a caterpillar by splitting it into pieces containing at most 3 spine vertices, and we colour the piece containing $v$ before colouring the remainder remainder of the caterpillar, then at most 3 spine vertices ahead of $v$ can be coloured - at most 2 other vertices in the same piece as $v$, and potentially one more in the next piece, if the ending constraints $B$ or $R$ are chosen. So the number of remaining spine vertices is at least $L - n - 3$.
 
 To colour the remainder of the graph, we colour the spine vertices adjacent to the left and right endpoint of the unburned section respectively. This means that at most 6 spine vertices are burned per round, since the fire from these spine vertices can spread in both directions. This then repeats with the remaining unburned section of the spine until no spine vertices are remaining. At this point, some leaf vertices may still be unburned, but these will all be burned within one round. Therefore the minimum number of rounds required is at most $\lceil \frac{L-n-3}{6} \rceil + 1$, proving the corollary.
 \end{proof}
 
-An important remark of this corollary is that moving over one leaf vertex, going from position $n$ to position $n+1$, reduces the minimum number of rounds required by at most 1. And since the maximum rooted diameter of a tree rooted at a leaf at position $n+1$ is at most 1 more than that rooted at position $n$, the tree with maximum possible rooted diameter is still always found at the saame position as before.
+An important remark of this corollary is that moving over one leaf vertex, going from position $n$ to position $n+1$, reduces the minimum number of rounds required by at most 1. And since the maximum rooted diameter of a tree rooted at a leaf at position $n+1$ is at most 1 more than that rooted at position $n$, the tree with maximum possible rooted diameter is still always found at the same position as before, namely at the midpoint between the endpoints of the maximal caterpillar's spine.
 
 From this result, Theorem \ref{thm/root-diameter-bound-2} can be updated further:
 
@@ -549,14 +562,26 @@ From this result, Theorem \ref{thm/root-diameter-bound-2} can be updated further
   
   Consider a partial colouring of $G$ as produced by the above procedure, with a maximal caterpillar of length $L$ (hence $G$ has diameter $L$), and the forest of unburned vertices $F$ comprised of a set of trees $\mathcal{T}$. Then the maximum number of red clusters on $F$ is at most $\lfloor \frac{7L-26}{6} \rfloor$.
   
-  \end{theorem}
+\end{theorem}
+  
+\begin{proof}
+  As previously discussed, the maximum size of any tree in $F$, defined by a maximal caterpillar with diameter $L$, is $\lfloor \frac{L}{2} - 1 \rfloor$.
+  
+  Now Corollary \ref{cor/min_rounds_caterpillar} shows us that, after burning the tree associated with spine vertex $n$, the minimum number of rounds required to burn the remainder of the caterpillar is $\lceil \frac{L-n-3}{6} \rceil + 1$, and this occurs when $n=\frac{L}{2}$. Hence the maximum size of any tree in $F$, and hence the maximum number of rest clusters on $F$, is given by
+  
+  \begin{align*}
+      &\lfloor \frac{L}{2} - 1 \rfloor - \left(\lceil \frac{\frac{L}{2}-3}{6} \rceil + 1\right) \\
+      &\leq \frac{L}{2}  - \lceil \frac{L-6}{12} \rceil - 1 \\
+      &\leq \frac{L-2}{2} - \frac{L-6}{12} \\
+      &= \frac{5L-6}{12}
+  \end{align*}
+\end{proof}
 
   Then in a similar manner, this theorem leads to updated bounds for Corollary \ref{cor/diameter_bound_full}:
 
 \begin{corollary}
 \label{cor/diameter_bound_full_2}
-    % i've slipped up somewhere, since this is greater than the last bound for large enough L
-Given a tree $G$ with diameter $L$, which is coloured by first colouring its maximal caterpillar $C_G$, the maximum number of red clusters on $G$ is at most $\frac{13(L-2)}{12}$.
+Given a tree $G$ with diameter $L$, which is coloured by first colouring its maximal caterpillar $C_G$, the maximum number of red clusters on $G$ is at most $\frac{13L-14}{12}$.
 
 \end{corollary}
 
@@ -564,6 +589,7 @@ We now move onto colouring graphs containing cycles, starting with cactus graphs
 
 \section{Colouring cactus graphs}
 \label{sec/cactus_colouring}
+\vspace{1em}
 
 First, we provide a definition for cactus graphs:
 
